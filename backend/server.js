@@ -94,6 +94,8 @@ const pageBRoutes = require("./routes/pageBRoutes");
 const pageCRoutes = require("./routes/pageCRoutes");
 const pageDRoutes = require("./routes/pageDRoutes");
 const aboutRoutes = require("./routes/aboutRoutes"); // ✅ Only About routes now
+const blogRoutes = require("./routes/blogRoutes"); // ✅ Add this
+const coinRoutes = require("./routes/coinRoutes"); // ✅ Add this
 
 // ✅ Initialize App
 const app = express();
@@ -126,7 +128,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// ✅ Routes
+// ✅ API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/home", homeRoutes);
 app.use("/api/home/skills", skillsRoutes);
@@ -138,6 +140,9 @@ app.use("/api/home/pageD", pageDRoutes);
 
 // ✅ About routes (Team, Service, Contact handled via About)
 app.use("/api/about", aboutRoutes);
+
+app.use("/api/blog", blogRoutes);
+app.use("/api/coins", coinRoutes);
 
 // ✅ Root Test Route
 app.get("/", (req, res) => {

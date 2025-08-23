@@ -2,7 +2,7 @@
 import React from "react";
 import { Link, Routes, Route } from "react-router-dom";
 import ProjectManager from "./ProjectManager";
-import InternshipManager from "./InternshipManager";
+import FresherOpportunityManager from "./FresherOpportunityManager";
 import BlogManager from "./BlogManager";
 import JourneyManager from "./JourneyManager";
 import AssistantManager from "./AssistantManager";
@@ -21,7 +21,7 @@ import {
 // 🧪 Dummy chart data
 const chartData = [
   { name: "Projects", value: 12 },
-  { name: "Internships", value: 5 },
+  { name: "Fresher Opportunities", value: 5 },
   { name: "Blogs", value: 8 },
   { name: "Journey", value: 4 },
   { name: "Feedback", value: 6 },
@@ -42,7 +42,7 @@ const AdminDashboard = () => {
         </div>
         <div className="bg-green-100 p-4 rounded-lg text-center shadow">
           <p className="text-2xl font-bold">5</p>
-          <p className="text-gray-700">Internships</p>
+          <p className="text-gray-700">Fresher Opportunities</p>
         </div>
         <div className="bg-blue-100 p-4 rounded-lg text-center shadow">
           <p className="text-2xl font-bold">8</p>
@@ -70,9 +70,10 @@ const AdminDashboard = () => {
         <Link to="projects" className="admin-link-card">
           📊 Projects
         </Link>
-        <Link to="internships" className="admin-link-card">
-          💼 Internships
+        <Link to="fresher-opportunities" className="admin-link-card">
+          💼 Fresher Opportunities
         </Link>
+
         <Link to="blogs" className="admin-link-card">
           ✍️ Blogs
         </Link>
@@ -90,7 +91,10 @@ const AdminDashboard = () => {
       {/* 🔄 Nested Admin Routes */}
       <Routes>
         <Route path="projects" element={<ProjectManager />} />
-        <Route path="internships" element={<InternshipManager />} />
+        <Route
+          path="fresher-opportunities"
+          element={<FresherOpportunityManager />}
+        />
         <Route path="blogs" element={<BlogManager />} />
         <Route path="journey" element={<JourneyManager />} />
         <Route path="assistant" element={<AssistantManager />} />

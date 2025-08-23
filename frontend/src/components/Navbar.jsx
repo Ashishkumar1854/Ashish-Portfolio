@@ -140,10 +140,11 @@ const Navbar = () => {
     { to: "/about", label: "About" },
     { to: "/projects", label: "Projects" },
     {
-      to: "/internships",
-      label: "Internships",
+      to: "/fresher-opportunities",
+      label: "Fresher Opportunities",
       guestProtected: true, // 👈 flag
     },
+
     {
       to: "/feedback",
       label: "Feedback",

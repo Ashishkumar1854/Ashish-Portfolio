@@ -160,3 +160,27 @@ frontend/
 └── README.md
 
 15august polish kr rhe h
+
+backend/
+├── controllers/
+│ ├── blogController.js
+│ ├── coinController.js
+├── models/
+│ ├── Blog.js
+│ ├── Coin.js
+│ └── Activity.js
+├── routes/
+│ ├── blogRoutes.js
+│ └── coinRoutes.js
+└── middleware/
+└── adminAuth.js
+
+frontend/
+├── pages/
+│ └── Blog.jsx
+├── components/
+│ └── BlogCard.jsx
+├── components/admin/
+│ └── BlogForm.jsx
+└── context/
+└── AuthContext.jsx

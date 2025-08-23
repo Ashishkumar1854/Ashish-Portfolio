@@ -23,7 +23,7 @@ import OtpEmailPage from "./pages/OtpEmailPage";
 import VerifyOtpPage from "./pages/VerifyOtpPage";
 import About from "./pages/About";
 import Projects from "./pages/Project";
-import Internships from "./pages/Internship";
+import FresherOpportunities from "./pages/FresherOpportunities";
 import Feedback from "./pages/Feedback";
 import Journey from "./pages/Journey";
 import Blog from "./pages/Blog";
@@ -46,7 +46,10 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
-            <Route path="/internships" element={<Internships />} />
+            <Route
+              path="/fresherOpportunities"
+              element={<FresherOpportunities />}
+            />
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/journey" element={<Journey />} />
             <Route path="/blog" element={<Blog />} />
