@@ -2,185 +2,158 @@ ashish-portfolio/
 ├── backend/ ← Express.js + MongoDB (API Server)
 └── frontend/ ← React + Tailwind CSS (Client App)
 
-backend/
-├── config/ ← MongoDB config
-│ └── db.js
-│
-├── controllers/ ← Route handlers (business logic)
-│ ├── authController.js
-│ ├── blogController.js
-│ ├── feedbackController.js
-│ ├── hireController.js
-│ ├── homeController.js
-│ ├── internshipController.js
-│ ├── journeyController.js
-│ ├── linkController.js
-│ ├── pageAController.js
-│ ├── projectController.js
-│ ├── skillsController.js
-│ ├── teamController.js
-│ ├── timelineController.js
-│ └── visionController.js
-│
-├── middleware/ ← Auth & utility middlewares
-│ ├── authMiddleware.js
-│ ├── corsConfig.js
-│ └── upload.js
-│
-├── models/ ← Mongoose schemas
-│ ├── Blog.js
-│ ├── contact.js
-│ ├── Feedback.js
-│ ├── Hire.js
-│ ├── Home.js
-│ ├── Internship.js
-│ ├── Journey.js
-│ ├── LinkInfo.js
-│ ├── Project.js
-│ ├── service.js
-│ ├── Skill.js
-│ ├── teamMember.js
-│ ├── Timeline.js
-│ └── User.js
-│
-├── routes/ ← Route files for each section
-│ ├── authRoutes.js
-│ ├── blogRoutes.js
-│ ├── contactRoutes.js
-│ ├── feedbackRoutes.js
-│ ├── hireRoutes.js
-│ ├── homeRoutes.js
-│ ├── internshipRoutes.js
-│ ├── journeyRoutes.js
-│ ├── linkRoutes.js
-│ ├── pageARoutes.js
-│ ├── projectRoutes.js
-│ ├── serviceRoutes.js
-│ ├── skills.js
-│ ├── teamRoutes.js
-│ ├── timelineRoutes.js
-│ └── visionRoutes.js
-│
-├── utils/ ← Helpers (non-middleware)
-│ ├── generateToken.js
-│ └── sendEmail.js
-│
-├── uploads/ ← Uploaded files (images etc.)
-│
-├── server.js ← Entry point (Express app)
-├── package.json
-└── package-lock.json
-
-frontend/
-├── public/ ← Static assets
-│ └── (index.html, images...)
-│
-├── src/
-│ ├── auth/ ← Auth components
-│ │ ├── AuthModal.jsx
-│ │ ├── ForgotPasswordForm.jsx
-│ │ ├── LoginForm.jsx
-│ │ ├── ProfileMenu.jsx
-│ │ ├── RegisterForm.jsx
-│ │ └── ResetPassword.jsx
-│ │
-│ ├── components/ ← UI sections
-│ │ ├── Navbar.jsx
-│ │ ├── Footer.jsx
-│ │ ├── BlogCard.jsx
-│ │ ├── ContactSection.jsx
-│ │ ├── FeedbackCard.jsx
-│ │ ├── HeroSection.jsx
-│ │ ├── HireForm.jsx
-│ │ ├── InternshipList.jsx
-│ │ ├── PageASection.jsx
-│ │ ├── PageBSection.jsx
-│ │ ├── ProjectCard.jsx
-│ │ ├── ScrollingLinks.jsx
-│ │ ├── ServiceSection.jsx
-│ │ ├── SkillsSection.jsx
-│ │ ├── TeamSection.jsx
-│ │ ├── TimelineCard.jsx
-│ │ ├── VisionSection.jsx
-│ │ ├── ChartBoard.jsx
-│ │ ├── ChatBubble.jsx
-│ │ └── VoiceRecorder.jsx
-│ │
-│ ├── components/admin/ ← Admin-specific forms
-│ │ ├── BlogForm.jsx
-│ │ ├── InternshipForm.jsx
-│ │ ├── ProjectForm.jsx
-│ │ ├── ServiceForm.jsx
-│ │ ├── SkillForm.jsx
-│ │ ├── TeamForm.jsx
-│ │ └── TimelineEditor.jsx
-│ │
-│ ├── context/
-│ │ └── AuthContext.jsx
-│ │
-│ ├── pages/ ← Main page-level components
-│ │ ├── About.jsx
-│ │ ├── Assistant.jsx
-│ │ ├── Blog.jsx
-│ │ ├── Feedback.jsx
-│ │ ├── Home.jsx
-│ │ ├── Internship.jsx
-│ │ ├── Journey.jsx
-│ │ ├── Login.jsx
-│ │ ├── OtpEmailPage.jsx
-│ │ ├── Project.jsx
-│ │ ├── Register.jsx
-│ │ ├── VerifyOtpPage.jsx
-│ │ └── VerifySuccess.jsx
-│ │
-│ ├── pages/admin/ ← Admin dashboards (per section)
-│ │ ├── AdminDashboard.jsx
-│ │ ├── AssistantManager.jsx
-│ │ ├── BlogManager.jsx
-│ │ ├── FeedbackViewer.jsx
-│ │ ├── InternshipManager.jsx
-│ │ ├── JourneyManager.jsx
-│ │ ├── ProjectManager.jsx
-│ │ ├── SkillManager.jsx
-│ │ └── TeamManager.jsx
-│ │
-│ ├── App.js
-│ ├── App.css
-│ ├── App.test.js
-│ ├── index.js
-│ ├── index.css
-│ ├── logo.svg
-│ ├── reportWebVitals.js
-│ └── setupTests.js
-│
-├── tailwind.config.js
-├── postcss.config.js
-├── package.json
-├── package-lock.json
-└── README.md
-
-15august polish kr rhe h
-
-backend/
-├── controllers/
-│ ├── blogController.js
-│ ├── coinController.js
-├── models/
-│ ├── Blog.js
-│ ├── Coin.js
-│ └── Activity.js
-├── routes/
-│ ├── blogRoutes.js
-│ └── coinRoutes.js
-└── middleware/
-└── adminAuth.js
-
-frontend/
-├── pages/
-│ └── Blog.jsx
-├── components/
-│ └── BlogCard.jsx
-├── components/admin/
-│ └── BlogForm.jsx
-└── context/
-└── AuthContext.jsx
+┣ backend/
+┃ ┣ config/
+┃ ┣ controllers/
+┃ ┃ ┣ aboutController.js
+┃ ┃ ┣ authController.js
+┃ ┃ ┣ blogController.js
+┃ ┃ ┣ coinController.js
+┃ ┃ ┣ feedbackController.js
+┃ ┃ ┣ fresherOpportunityController.js
+┃ ┃ ┣ hireController.js
+┃ ┃ ┣ homeController.js
+┃ ┃ ┣ journeyController.js
+┃ ┃ ┣ linkController.js
+┃ ┃ ┣ pageAController.js
+┃ ┃ ┣ pageBController.js
+┃ ┃ ┣ pageCController.js
+┃ ┃ ┣ pageDController.js
+┃ ┃ ┣ projectController.js
+┃ ┃ ┣ skillsController.js
+┃ ┃ ┣ timelineController.js
+┃ ┃ ┗ visionController.js
+┃ ┣ middleware/
+┃ ┃ ┣ authMiddleware.js
+┃ ┃ ┣ corsConfig.js
+┃ ┃ ┗ upload.js
+┃ ┣ models/
+┃ ┃ ┣ About.js
+┃ ┃ ┣ Blog.js
+┃ ┃ ┣ Coin.js
+┃ ┃ ┣ Feedback.js
+┃ ┃ ┣ FresherOpportunity.js
+┃ ┃ ┣ Hire.js
+┃ ┃ ┣ Home.js
+┃ ┃ ┣ Journey.js
+┃ ┃ ┣ LinkInfo.js
+┃ ┃ ┣ Project.js
+┃ ┃ ┣ Timeline.js
+┃ ┃ ┗ User.js
+┃ ┣ routes/
+┃ ┃ ┣ aboutRoutes.js
+┃ ┃ ┣ authRoutes.js
+┃ ┃ ┣ blogRoutes.js
+┃ ┃ ┣ coinRoutes.js
+┃ ┃ ┣ feedbackRoutes.js
+┃ ┃ ┣ fresherOpportunityRoutes.js
+┃ ┃ ┣ hireRoutes.js
+┃ ┃ ┣ homeRoutes.js
+┃ ┃ ┣ journeyRoutes.js
+┃ ┃ ┣ linkRoutes.js
+┃ ┃ ┣ pageARoutes.js
+┃ ┃ ┣ pageBRoutes.js
+┃ ┃ ┣ pageCRoutes.js
+┃ ┃ ┣ pageDRoutes.js
+┃ ┃ ┣ projectRoutes.js
+┃ ┃ ┣ skillsRoutes.js
+┃ ┃ ┣ timelineRoutes.js
+┃ ┃ ┣ visionRoutes.js
+┃ ┃ ┗ startup_guide.pdf
+┃ ┣ uploads/
+┃ ┃ ┣ 1752770572811-698736347.pdf
+┃ ┃ ┗ sample.pdf
+┃ ┣ utils/
+┃ ┃ ┣ generateToken.js
+┃ ┃ ┗ sendEmail.js
+┃ ┣ node_modules/
+┃ ┣ package.json
+┃ ┣ package-lock.json
+┃ ┗ server.js
+┣ frontend/
+┃ ┣ public/
+┃ ┣ src/
+┃ ┃ ┣ auth/
+┃ ┃ ┃ ┣ AuthModal.jsx
+┃ ┃ ┃ ┣ ForgotPasswordForm.jsx
+┃ ┃ ┃ ┣ LoginForm.jsx
+┃ ┃ ┃ ┣ ProfileMenu.jsx
+┃ ┃ ┃ ┣ RegisterForm.jsx
+┃ ┃ ┃ ┗ ResetPassword.jsx
+┃ ┃ ┣ components/
+┃ ┃ ┃ ┣ admin/
+┃ ┃ ┃ ┃ ┣ BlogForm.jsx
+┃ ┃ ┃ ┃ ┣ ContactForm.jsx
+┃ ┃ ┃ ┃ ┣ FresherOpportunityForm.jsx
+┃ ┃ ┃ ┃ ┣ ProjectForm.jsx
+┃ ┃ ┃ ┃ ┣ ServiceForm.jsx
+┃ ┃ ┃ ┃ ┣ SkillForm.jsx
+┃ ┃ ┃ ┃ ┣ TeamForm.jsx
+┃ ┃ ┃ ┃ ┗ TimelineEditor.jsx
+┃ ┃ ┃ ┣ BinodAISection.jsx
+┃ ┃ ┃ ┣ BlogCard.jsx
+┃ ┃ ┃ ┣ ChartBoard.jsx
+┃ ┃ ┃ ┣ ChatBubble.jsx
+┃ ┃ ┃ ┣ ContactSection.jsx
+┃ ┃ ┃ ┣ FeedbackCard.jsx
+┃ ┃ ┃ ┣ Footer.jsx
+┃ ┃ ┃ ┣ FresherOpportunityList.jsx
+┃ ┃ ┃ ┣ HeroSection.jsx
+┃ ┃ ┃ ┣ HireForm.jsx
+┃ ┃ ┃ ┣ InternshipList.jsx
+┃ ┃ ┃ ┣ Navbar.jsx
+┃ ┃ ┃ ┣ PageASection.jsx
+┃ ┃ ┃ ┣ PageBSection.jsx
+┃ ┃ ┃ ┣ PageCSection.jsx
+┃ ┃ ┃ ┣ ProjectCard.jsx
+┃ ┃ ┃ ┣ ProjectSection.jsx
+┃ ┃ ┃ ┣ ScrollingLinks.jsx
+┃ ┃ ┃ ┣ ServiceSection.jsx
+┃ ┃ ┃ ┣ SkillsSection.jsx
+┃ ┃ ┃ ┣ TeamSection.jsx
+┃ ┃ ┃ ┣ TimelineCard.jsx
+┃ ┃ ┃ ┣ VisionSection.jsx
+┃ ┃ ┃ ┗ VoiceRecorder.jsx
+┃ ┃ ┣ context/
+┃ ┃ ┃ ┗ AuthContext.jsx
+┃ ┃ ┣ pages/
+┃ ┃ ┃ ┣ Admin/
+┃ ┃ ┃ ┃ ┣ AdminDashboard.jsx
+┃ ┃ ┃ ┃ ┣ AssistantManager.jsx
+┃ ┃ ┃ ┃ ┣ BlogManager.jsx
+┃ ┃ ┃ ┃ ┣ FeedbackViewer.jsx
+┃ ┃ ┃ ┃ ┣ FresherOpportunityManager.jsx
+┃ ┃ ┃ ┃ ┣ JourneyManager.jsx
+┃ ┃ ┃ ┃ ┣ ProjectManager.jsx
+┃ ┃ ┃ ┃ ┣ SkillManager.jsx
+┃ ┃ ┃ ┃ ┗ UserManager.jsx
+┃ ┃ ┃ ┣ About.jsx
+┃ ┃ ┃ ┣ Assistant.jsx
+┃ ┃ ┃ ┣ Blog.jsx
+┃ ┃ ┃ ┣ Feedback.jsx
+┃ ┃ ┃ ┣ FresherOpportunities.jsx
+┃ ┃ ┃ ┣ Home.jsx
+┃ ┃ ┃ ┣ Journey.jsx
+┃ ┃ ┃ ┣ Login.jsx
+┃ ┃ ┃ ┣ OtpEmailPage.jsx
+┃ ┃ ┃ ┣ Project.jsx
+┃ ┃ ┃ ┣ Register.jsx
+┃ ┃ ┃ ┣ VerifyOtpPage.jsx
+┃ ┃ ┃ ┗ VerifySuccess.jsx
+┃ ┃ ┣ App.css
+┃ ┃ ┣ App.js
+┃ ┃ ┣ App.test.js
+┃ ┃ ┣ index.css
+┃ ┃ ┣ index.js
+┃ ┃ ┣ logo.svg
+┃ ┃ ┣ protector/
+┃ ┃ ┣ reportWebVitals.js
+┃ ┃ ┗ setupTests.js
+┃ ┣ node_modules/
+┃ ┣ package.json
+┃ ┣ package-lock.json
+┃ ┣ postcss.config.js
+┃ ┣ tailwind.config.js
+┃ ┗ README.md
+┣ project-structure.md
+┗ python/

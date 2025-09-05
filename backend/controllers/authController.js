@@ -614,7 +614,7 @@ exports.registerUser = async (req, res) => {
         <p style="margin-top: 20px;">
           🔔 Make sure to check our dashboard daily for new updates and hidden opportunities!
         </p>
-        <a href="${process.env.CLIENT_URL}" 
+        <a href="${process.env.CLIENT_URL}"
           style="display: inline-block; margin-top: 20px; padding: 10px 16px; background-color: #10b981; color: #fff; border-radius: 6px; text-decoration: none;">
           Explore Dashboard Now 🚀
         </a>

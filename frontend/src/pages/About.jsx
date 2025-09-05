@@ -233,8 +233,9 @@
 
 // export default About;
 
-//21/08
+//04/09
 
+// frontend/src/pages/About.jsx
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import TeamSection from "../components/TeamSection";
@@ -244,6 +245,7 @@ import TeamForm from "../components/admin/TeamForm";
 import ServiceForm from "../components/admin/ServiceForm";
 import ContactForm from "../components/admin/ContactForm";
 import BinodAISection from "../components/BinodAISection";
+import { useAuth } from "../context/AuthContext";
 
 const About = () => {
   const [teams, setTeams] = useState([]);
@@ -251,17 +253,15 @@ const About = () => {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Replace with real auth context
-  const user = { role: "admin" };
-  const usage = 2;
-  const limit = 5;
+  const { user, token } = useAuth(); // token for auth
 
+  const API_BASE = process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
+
+  // Fetch About data
   useEffect(() => {
     const fetchAbout = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/api/about`
-        );
+        const res = await axios.get(`${API_BASE}/api/about`);
         setTeams(res.data.teams || []);
         setServices(res.data.services || []);
         setContacts(res.data.contacts || []);
@@ -272,13 +272,47 @@ const About = () => {
       }
     };
     fetchAbout();
-  }, []);
+  }, [API_BASE]);
+
+  // Delete handlers
+  const handleDeleteTeam = async (id) => {
+    try {
+      await axios.delete(`${API_BASE}/api/about/team/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setTeams((prev) => prev.filter((m) => m._id !== id));
+    } catch (err) {
+      console.error("Delete team failed:", err);
+    }
+  };
+
+  const handleDeleteService = async (id) => {
+    try {
+      await axios.delete(`${API_BASE}/api/about/service/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setServices((prev) => prev.filter((s) => s._id !== id));
+    } catch (err) {
+      console.error("Delete service failed:", err);
+    }
+  };
+
+  const handleDeleteContact = async (id) => {
+    try {
+      await axios.delete(`${API_BASE}/api/about/contact/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setContacts((prev) => prev.filter((c) => c._id !== id));
+    } catch (err) {
+      console.error("Delete contact failed:", err);
+    }
+  };
 
   if (loading) return <p className="text-center mt-8">Loading...</p>;
 
   return (
     <div className="max-w-5xl mx-auto p-8">
-      <BinodAISection user={user} usage={usage} limit={limit} />
+      <BinodAISection user={user} />
 
       <h1 className="text-4xl font-bold mb-8 text-center">Meet Our Team 🚀</h1>
       {user?.role === "admin" && (
@@ -286,11 +320,7 @@ const About = () => {
           onAdd={(newMember) => setTeams((prev) => [...prev, newMember])}
         />
       )}
-      <TeamSection
-        teams={teams}
-        onDelete={(id) => setTeams((prev) => prev.filter((m) => m._id !== id))}
-        user={user}
-      />
+      <TeamSection teams={teams} onDelete={handleDeleteTeam} user={user} />
 
       <h2 className="text-3xl font-bold my-8 text-center">💼 Our Services</h2>
       {user?.role === "admin" && (
@@ -300,9 +330,7 @@ const About = () => {
       )}
       <ServiceSection
         services={services}
-        onDelete={(id) =>
-          setServices((prev) => prev.filter((s) => s._id !== id))
-        }
+        onDelete={handleDeleteService}
         user={user}
       />
 
@@ -316,9 +344,7 @@ const About = () => {
       )}
       <ContactSection
         contacts={contacts}
-        onDelete={(id) =>
-          setContacts((prev) => prev.filter((c) => c._id !== id))
-        }
+        onDelete={handleDeleteContact}
         user={user}
       />
     </div>

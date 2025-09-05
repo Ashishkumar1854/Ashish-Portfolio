@@ -47,9 +47,10 @@ function App() {
             <Route path="/about" element={<About />} />
             <Route path="/projects" element={<Projects />} />
             <Route
-              path="/fresherOpportunities"
+              path="/fresher-opportunities"
               element={<FresherOpportunities />}
             />
+
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/journey" element={<Journey />} />
             <Route path="/blog" element={<Blog />} />

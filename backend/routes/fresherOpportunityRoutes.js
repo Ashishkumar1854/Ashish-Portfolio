@@ -1,14 +1,36 @@
-import express from "express";
-import {
+// import express from "express";
+// import {
+//   createOpportunity,
+//   getOpportunities,
+//   deleteOpportunity,
+// } from "../controllers/fresherOpportunityController.js";
+
+// const router = express.Router();
+
+// router.post("/", createOpportunity);
+// router.get("/", getOpportunities);
+// router.delete("/:id", deleteOpportunity);
+
+// export default router;
+
+//05/09
+
+const express = require("express");
+const router = express.Router();
+
+const {
   createOpportunity,
   getOpportunities,
   deleteOpportunity,
-} from "../controllers/fresherOpportunityController.js";
+} = require("../controllers/fresherOpportunityController");
 
-const router = express.Router();
+const { protect, adminAuth } = require("../middleware/authMiddleware");
 
-router.post("/", createOpportunity);
+// Public: view opportunities
 router.get("/", getOpportunities);
-router.delete("/:id", deleteOpportunity);
 
-export default router;
+// Admin: add/delete
+router.post("/", protect, adminAuth, createOpportunity);
+router.delete("/:id", protect, adminAuth, deleteOpportunity);
+
+module.exports = router;

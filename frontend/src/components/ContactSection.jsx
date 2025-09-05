@@ -193,57 +193,195 @@
 
 //21/07
 
+// import React from "react";
+// import { motion } from "framer-motion";
+
+// const ContactSection = ({ contacts = [], onDelete, user }) => {
+//   const grouped = contacts.reduce((acc, item) => {
+//     acc[item.type] = acc[item.type] || [];
+//     acc[item.type].push(item.value);
+//     return acc;
+//   }, {});
+
+//   return (
+//     <section className="space-y-6">
+//       {/* Normal User View */}
+//       <motion.div
+//         initial={{ opacity: 0, y: 20 }}
+//         animate={{ opacity: 1, y: 0 }}
+//         transition={{ delay: 0.2 }}
+//         className="bg-white p-6 rounded shadow hover:shadow-md transition mb-6"
+//       >
+//         {grouped.phone && (
+//           <p>
+//             <strong>Phones:</strong> {grouped.phone.join(", ")}
+//           </p>
+//         )}
+//         {grouped.email && (
+//           <p>
+//             <strong>Emails:</strong> {grouped.email.join(", ")}
+//           </p>
+//         )}
+//         {grouped.linkedin && (
+//           <p>
+//             <strong>LinkedIn:</strong> {grouped.linkedin.join(", ")}
+//           </p>
+//         )}
+//         {grouped.github && (
+//           <p>
+//             <strong>GitHub:</strong> {grouped.github.join(", ")}
+//           </p>
+//         )}
+//         {grouped.twitter && (
+//           <p>
+//             <strong>Twitter:</strong> {grouped.twitter.join(", ")}
+//           </p>
+//         )}
+//         {grouped.instagram && (
+//           <p>
+//             <strong>Instagram:</strong> {grouped.instagram.join(", ")}
+//           </p>
+//         )}
+//       </motion.div>
+
+//       {/* Admin View */}
+//       {user?.role === "admin" && (
+//         <div className="space-y-4">
+//           {contacts.map((contact, i) => (
+//             <motion.div
+//               key={contact._id}
+//               initial={{ opacity: 0, y: 20 }}
+//               animate={{ opacity: 1, y: 0 }}
+//               transition={{ delay: i * 0.1 }}
+//               className="bg-white p-4 rounded shadow hover:shadow-md transition mb-4 flex justify-between items-center"
+//             >
+//               <div>
+//                 <p>
+//                   <strong>Type:</strong> {contact.type}
+//                 </p>
+//                 <p>
+//                   <strong>Value:</strong> {contact.value}
+//                 </p>
+//               </div>
+//               <button
+//                 onClick={() => onDelete(contact._id)}
+//                 className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+//               >
+//                 Delete
+//               </button>
+//             </motion.div>
+//           ))}
+//         </div>
+//       )}
+//     </section>
+//   );
+// };
+
+// export default ContactSection;
+
+// import React from "react";
+// import { motion } from "framer-motion";
+
+// const ContactSection = ({ contacts = [], onDelete, user }) => {
+//   const grouped = contacts.reduce((acc, item) => {
+//     acc[item.type] = acc[item.type] || [];
+//     acc[item.type].push(item.value);
+//     return acc;
+//   }, {});
+
+//   return (
+//     <section>
+//       <motion.div
+//         initial={{ opacity: 0, y: 20 }}
+//         animate={{ opacity: 1, y: 0 }}
+//         transition={{ delay: 0.2 }}
+//         className="bg-white p-6 rounded shadow hover:shadow-md transition mb-6"
+//       >
+//         {grouped.phone && (
+//           <p>
+//             <strong>Phones:</strong> {grouped.phone.join(", ")}
+//           </p>
+//         )}
+//         {grouped.email && (
+//           <p>
+//             <strong>Emails:</strong> {grouped.email.join(", ")}
+//           </p>
+//         )}
+//         {grouped.linkedin && (
+//           <p>
+//             <strong>LinkedIn:</strong> {grouped.linkedin.join(", ")}
+//           </p>
+//         )}
+//         {grouped.github && (
+//           <p>
+//             <strong>GitHub:</strong> {grouped.github.join(", ")}
+//           </p>
+//         )}
+//         {grouped.twitter && (
+//           <p>
+//             <strong>Twitter:</strong> {grouped.twitter.join(", ")}
+//           </p>
+//         )}
+//         {grouped.instagram && (
+//           <p>
+//             <strong>Instagram:</strong> {grouped.instagram.join(", ")}
+//           </p>
+//         )}
+//       </motion.div>
+
+//       {user?.role === "admin" &&
+//         contacts.map((contact, i) => (
+//           <motion.div
+//             key={contact._id}
+//             initial={{ opacity: 0, y: 20 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             transition={{ delay: i * 0.1 }}
+//             className="bg-white p-4 rounded shadow hover:shadow-md transition mb-4 flex justify-between items-center"
+//           >
+//             <div>
+//               <p>
+//                 <strong>Type:</strong> {contact.type}
+//               </p>
+//               <p>
+//                 <strong>Value:</strong> {contact.value}
+//               </p>
+//             </div>
+//             <button
+//               onClick={() => onDelete(contact._id)}
+//               className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+//             >
+//               Delete
+//             </button>
+//           </motion.div>
+//         ))}
+//     </section>
+//   );
+// };
+
+// export default ContactSection;
+
 import React from "react";
 import { motion } from "framer-motion";
 
 const ContactSection = ({ contacts = [], onDelete, user }) => {
-  const grouped = contacts.reduce((acc, item) => {
-    acc[item.type] = acc[item.type] || [];
-    acc[item.type].push(item.value);
-    return acc;
-  }, {});
-
   return (
-    <section className="my-10">
-      <h2 className="text-3xl font-bold mb-6 text-center">
-        📞 Contact Information
-      </h2>
-
+    <section>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2 }}
         className="bg-white p-6 rounded shadow hover:shadow-md transition mb-6"
       >
-        {grouped.phone && (
-          <p>
-            <strong>Phones:</strong> {grouped.phone.join(", ")}
-          </p>
-        )}
-        {grouped.email && (
-          <p>
-            <strong>Emails:</strong> {grouped.email.join(", ")}
-          </p>
-        )}
-        {grouped.linkedin && (
-          <p>
-            <strong>LinkedIn:</strong> {grouped.linkedin.join(", ")}
-          </p>
-        )}
-        {grouped.github && (
-          <p>
-            <strong>GitHub:</strong> {grouped.github.join(", ")}
-          </p>
-        )}
-        {grouped.twitter && (
-          <p>
-            <strong>Twitter:</strong> {grouped.twitter.join(", ")}
-          </p>
-        )}
-        {grouped.instagram && (
-          <p>
-            <strong>Instagram:</strong> {grouped.instagram.join(", ")}
-          </p>
+        <h2 className="text-lg font-bold mb-2">📞 Contact Information</h2>
+
+        {contacts.length === 0 ? (
+          <p className="text-gray-500">No contact details available</p>
+        ) : (
+          contacts.map((contact, i) => (
+            <p key={i} className="mb-1">
+              <strong>{contact.type}:</strong> {contact.value}
+            </p>
+          ))
         )}
       </motion.div>
 
