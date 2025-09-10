@@ -173,6 +173,7 @@
 // export default ProfileMenu;
 
 //04/09/2026
+// // File: src/auth/ProfileMenu.jsx
 
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";

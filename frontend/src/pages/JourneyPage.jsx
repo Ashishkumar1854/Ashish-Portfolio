@@ -1,5 +1,3 @@
-// // src/pages/JourneyPage.jsx
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import {
@@ -10,22 +8,23 @@ import "react-vertical-timeline-component/style.min.css";
 import { useAuth } from "../context/AuthContext";
 import JourneyManager from "./Admin/JourneyManager";
 
-const Journey = () => {
+const JourneyPage = () => {
   const [journeyTimeline, setJourneyTimeline] = useState([]);
   const { user } = useAuth();
   const API_BASE = process.env.REACT_APP_BACKEND_URL || "http://localhost:5001";
 
+  // 🔁 Fetch journey entries from backend
   useEffect(() => {
     const fetchJourney = async () => {
       try {
         const res = await axios.get(`${API_BASE}/api/journey`);
         setJourneyTimeline(res.data);
       } catch (err) {
-        console.error("Failed to load journey data:", err);
+        console.error("Failed to load journey data 🚫", err);
       }
     };
     fetchJourney();
-  }, [API_BASE]);
+  }, []);
 
   return (
     <div className="p-6 max-w-5xl mx-auto">
@@ -48,7 +47,7 @@ const Journey = () => {
         ))}
       </VerticalTimeline>
 
-      {/* Admin-only Section */}
+      {/* Admin Section */}
       {user?.role === "admin" && (
         <div className="mt-10">
           <JourneyManager />
@@ -58,4 +57,4 @@ const Journey = () => {
   );
 };
 
-export default Journey;
+export default JourneyPage;

@@ -178,6 +178,8 @@ const pageDRoutes = require("./routes/pageDRoutes");
 const aboutRoutes = require("./routes/aboutRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const fresherOpportunityRoutes = require("./routes/fresherOpportunityRoutes");
+const feedbackRoutes = require("./routes/feedbackRoutes"); // ⭐ Added
+const journeyRoutes = require("./routes/journeyRoutes");
 
 // Controllers for email cron
 const {
@@ -220,6 +222,8 @@ app.use("/api/home/pageD", pageDRoutes);
 app.use("/api/about", aboutRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/fresher-opportunities", fresherOpportunityRoutes);
+app.use("/api/feedback", feedbackRoutes); // ⭐ Feedback API mount
+app.use("/api/journey", journeyRoutes);
 
 // Root test
 app.get("/", (req, res) => {
