@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import ChatBubble from "../components/ChatBubble";
 import VoiceRecorder from "../components/VoiceRecorder";
-import HireForm from "../components/HireForm"; // ✅ NEW IMPORT
-
+// import HireForm from "../components/HireForm"; // ✅
+import HireForm from "../pages/HireForm"; // ✅ NEW IMPORT
 const AssistantPage = () => {
   const [chat, setChat] = useState([]);
   const [input, setInput] = useState("");
