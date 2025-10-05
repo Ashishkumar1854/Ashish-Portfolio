@@ -1,4 +1,5 @@
 // ✅ src/components/BlogHero.jsx
+
 import React from "react";
 
 const BlogHero = ({ onSearch }) => {

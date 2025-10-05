@@ -24,6 +24,8 @@ const aboutRoutes = require("./routes/aboutRoutes");
 const projectRoutes = require("./routes/projectRoutes");
 const fresherOpportunityRoutes = require("./routes/fresherOpportunityRoutes");
 const feedbackRoutes = require("./routes/feedbackRoutes"); // ⭐ Added
+const blogRoutes = require("./routes/blogRoutes");
+
 const journeyRoutes = require("./routes/journeyRoutes");
 const hireRoutes = require("./routes/hireRoutes");
 const adminHireRoutes = require("./routes/adminHireRoutes");
@@ -70,6 +72,8 @@ app.use("/api/about", aboutRoutes);
 app.use("/api/projects", projectRoutes);
 app.use("/api/fresher-opportunities", fresherOpportunityRoutes);
 app.use("/api/feedback", feedbackRoutes); // ⭐ Feedback API mount
+app.use("/api/blogs", blogRoutes);
+
 app.use("/api/journey", journeyRoutes);
 app.use("/api", hireRoutes);
 

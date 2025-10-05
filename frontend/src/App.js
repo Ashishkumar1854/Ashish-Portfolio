@@ -113,6 +113,10 @@ import FresherOpportunities from "./pages/FresherOpportunities";
 import Feedback from "./pages/Feedback";
 import Journey from "./pages/Journey";
 import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail"; // ← Add this import
+
+import BlogManager from "./pages/Admin/BlogManager";
+
 import Assistant from "./pages/Assistant";
 import HireForm from "./pages/HireForm";
 
@@ -149,11 +153,24 @@ function App() {
             <Route path="/assistant" element={<Assistant />} />
             <Route path="/hire" element={<HireForm />} />
 
+            {/* Blog Detail Page */}
+            <Route path="/blog/:id" element={<BlogDetail />} />
+
             {/* Auth / OTP / Reset Password */}
             <Route path="/otp-login" element={<OtpEmailPage />} />
             <Route path="/verify-otp" element={<VerifyOtpPage />} />
             <Route path="/verify-success" element={<VerifySuccess />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+            {/* 🧾 Optional: Admin Blog Manager (Standalone page) */}
+            <Route
+              path="/admin/blogs"
+              element={
+                <ProtectedRoute allowedRoles={["admin"]}>
+                  <BlogManager />
+                </ProtectedRoute>
+              }
+            />
 
             {/* 🛡️ Protected Admin Route */}
             <Route

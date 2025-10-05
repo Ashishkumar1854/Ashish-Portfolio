@@ -1,28 +1,48 @@
+//routes/blogRoutes.js
+
+// const express = require("express");
+// const router = express.Router();
+// const {
+//   createBlog,
+//   getBlogs,
+//   getBlogById,
+//   updateBlog,
+//   deleteBlog,
+// } = require("../controllers/blogController");
+// const { protect, adminAuth } = require("../middleware/authMiddleware");
+
+// // 🟢 Public
+// router.get("/", getBlogs);
+// router.get("/:id", getBlogById);
+
+// // 🔒 Admin only
+// router.post("/", protect, adminAuth, createBlog);
+// router.put("/:id", protect, adminAuth, updateBlog);
+// router.delete("/:id", protect, adminAuth, deleteBlog);
+
+// module.exports = router;
+
 const express = require("express");
 const router = express.Router();
-const { protect, admin } = require("../middleware/authMiddleware");
-const blogController = require("../controllers/blogController");
-const commentController = require("../controllers/commentController");
-const likeController = require("../controllers/likeController");
-const shareController = require("../controllers/shareController");
+const {
+  createBlog,
+  getBlogs,
+  getBlogById,
+  updateBlog,
+  deleteBlog,
+} = require("../controllers/blogController");
+const { protect, adminAuth } = require("../middleware/authMiddleware");
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-// Blog CRUD
-router.get("/", blogController.getAllBlogs);
-router.get("/:slug", blogController.getBlogBySlug);
-router.post("/", protect, admin, blogController.createBlog);
-router.put("/:id", protect, admin, blogController.updateBlog);
-router.delete("/:id", protect, admin, blogController.deleteBlog);
-router.patch("/:id/verify", protect, admin, blogController.verifyBlog);
+// 🟢 Public
+router.get("/", getBlogs);
+router.get("/:id", getBlogById);
 
-// Likes
-router.post("/:id/like", protect, likeController.toggleLike);
-
-// Comments
-router.get("/:id/comments", commentController.getComments);
-router.post("/:id/comments", protect, commentController.addComment);
-router.delete("/comments/:commentId", protect, commentController.deleteComment);
-
-// Shares
-router.post("/:id/share", protect, shareController.addShare);
+// 🔒 Admin only with image upload
+router.post("/", protect, adminAuth, upload.single("image"), createBlog);
+router.put("/:id", protect, adminAuth, upload.single("image"), updateBlog);
+router.delete("/:id", protect, adminAuth, deleteBlog);
 
 module.exports = router;
