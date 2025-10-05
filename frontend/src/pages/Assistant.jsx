@@ -76,14 +76,14 @@ const AssistantPage = () => {
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
       {/* Push content below navbar */}
-      <div className="max-w-2xl mx-auto p-6 mt-[80px] flex flex-col h-[calc(100vh-80px)]">
+      <div className="w-full max-w-2xl mx-auto p-4 sm:p-6 mt-[80px] flex flex-col h-[calc(100vh-80px)]">
         {/* Header */}
-        <h2 className="text-3xl font-bold text-center mb-4">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-4 sm:mb-6">
           Ashish Assistant 🤖
         </h2>
 
         {/* Chat Area */}
-        <div className="flex-1 flex flex-col gap-3 p-4 bg-white rounded-2xl shadow-lg border overflow-y-auto">
+        <div className="flex-1 flex flex-col gap-3 p-3 sm:p-4 bg-white rounded-2xl shadow-lg border overflow-y-auto">
           {chat.map((msg, idx) => (
             <ChatBubble
               key={idx}
@@ -105,16 +105,16 @@ const AssistantPage = () => {
         </div>
 
         {/* Input Section */}
-        <div className="mt-4 flex gap-2">
+        <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row gap-2">
           <input
-            className="flex-1 border p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400"
+            className="flex-1 border p-2 sm:p-3 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-400 w-full"
             placeholder="Type your message..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSend()}
           />
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition"
+            className="bg-blue-500 text-white px-4 py-2 rounded-xl hover:bg-blue-600 transition w-full sm:w-auto"
             onClick={handleSend}
           >
             Send
@@ -122,23 +122,23 @@ const AssistantPage = () => {
         </div>
 
         {/* Action Buttons */}
-        <div className="mt-4 text-center space-x-2 flex flex-wrap justify-center gap-2">
+        <div className="mt-3 sm:mt-4 text-center flex flex-wrap justify-center gap-2">
           <button
-            className="bg-yellow-400 text-black px-5 py-2 rounded-xl hover:bg-yellow-500 transition"
+            className="bg-yellow-400 text-black px-4 sm:px-5 py-2 rounded-xl hover:bg-yellow-500 transition w-full sm:w-auto"
             onClick={() => setIsVoiceOpen(true)}
           >
             🗣️ Talk to Me
           </button>
 
           <button
-            className="bg-green-500 text-white px-5 py-2 rounded-xl hover:bg-green-600 transition"
+            className="bg-green-500 text-white px-4 sm:px-5 py-2 rounded-xl hover:bg-green-600 transition w-full sm:w-auto"
             onClick={() => setIsHireOpen(true)}
           >
             💼 Hire Freelancer
           </button>
 
           <button
-            className="bg-gray-500 text-white px-5 py-2 rounded-xl hover:bg-gray-600 transition"
+            className="bg-gray-500 text-white px-4 sm:px-5 py-2 rounded-xl hover:bg-gray-600 transition w-full sm:w-auto"
             onClick={handleClear}
           >
             🔁 Clear Chat
@@ -146,10 +146,10 @@ const AssistantPage = () => {
         </div>
 
         {/* Voice Settings */}
-        <div className="mt-4 flex flex-col gap-2 items-center">
+        <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row gap-2 items-center justify-center">
           <button
             onClick={() => setIsMuted((prev) => !prev)}
-            className={`px-4 py-2 rounded-xl text-white transition ${
+            className={`px-4 py-2 rounded-xl text-white transition w-full sm:w-auto ${
               isMuted ? "bg-red-500" : "bg-green-500"
             }`}
           >
@@ -161,7 +161,7 @@ const AssistantPage = () => {
             onChange={(e) =>
               setSelectedVoice(voices.find((v) => v.name === e.target.value))
             }
-            className="border p-2 rounded w-full max-w-sm"
+            className="border p-2 rounded w-full sm:w-auto max-w-xs"
           >
             {voices.map((voice, i) => (
               <option key={i} value={voice.name}>

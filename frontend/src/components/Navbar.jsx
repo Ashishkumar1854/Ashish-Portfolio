@@ -76,15 +76,6 @@ const Navbar = () => {
 
             {/* Right: Search + Auth + Mobile Hamburger */}
             <div className="flex items-center gap-4">
-              {/* Search (hidden on small) */}
-              <div className="hidden md:flex items-center bg-gray-100 rounded-md px-2 py-1 border focus-within:ring-1 focus-within:ring-blue-500">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  className="w-36 sm:w-44 px-2 py-1 bg-transparent text-sm focus:outline-none"
-                />
-              </div>
-
               {/* Profile/Register */}
               <div className="hidden md:block">
                 {!user ? (

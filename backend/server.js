@@ -29,6 +29,7 @@ const blogRoutes = require("./routes/blogRoutes");
 const journeyRoutes = require("./routes/journeyRoutes");
 const hireRoutes = require("./routes/hireRoutes");
 const adminHireRoutes = require("./routes/adminHireRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 // Controllers for email cron
 const {
@@ -79,6 +80,8 @@ app.use("/api", hireRoutes);
 
 // ✅ Mount under /api/admin with protect + adminAuth middleware
 app.use("/api/admin", adminHireRoutes);
+
+app.use("/api/admin", adminRoutes);
 
 // Root test
 app.get("/", (req, res) => {
