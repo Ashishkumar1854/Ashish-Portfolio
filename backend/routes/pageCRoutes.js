@@ -3,12 +3,12 @@
 // const {
 //   getPageC,
 //   savePageC,
-//   // deletePageC,
+//   deleteTestimonial,
 // } = require("../controllers/pageCController");
 
 // router.get("/", getPageC);
 // router.post("/", savePageC);
-// // router.delete("/:id", deletePageC); // ✅ Add this
+// router.delete("/:index", deleteTestimonial); // ✅ delete by index in array
 
 // module.exports = router;
 
@@ -22,6 +22,6 @@ const {
 
 router.get("/", getPageC);
 router.post("/", savePageC);
-router.delete("/:index", deleteTestimonial); // ✅ delete by index in array
+router.delete("/:index", deleteTestimonial);
 
 module.exports = router;

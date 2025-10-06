@@ -46,6 +46,7 @@ const HireForm = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+      console.log(res.data);
 
       setMessage("✅ Request submitted successfully!");
       setFormData({
@@ -133,6 +134,7 @@ const HireForm = () => {
           <option value="App Development">App Developmensdt</option>
           <option value="Content Writing">Content Writing</option>
           <option value="Design">Design</option>
+          <option value="Other">Other</option>
         </select>
 
         {/* Budget */}

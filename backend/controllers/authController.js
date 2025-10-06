@@ -14,10 +14,7 @@ exports.registerUser = async (req, res) => {
   try {
     let { name, email, password, role } = req.body;
 
-    const allowedAdmins = [
-      "ashishkyadav.dev@gmail.com",
-      "kashish84396@gmail.com",
-    ];
+    const allowedAdmins = ["stonebytetech@gmail.com", "kashish84396@gmail.com"];
     const isAdmin = allowedAdmins.includes(email.toLowerCase());
 
     if (role === "admin" && !isAdmin) {
@@ -52,13 +49,15 @@ exports.registerUser = async (req, res) => {
       "🎉 Welcome to Ashish Bhai Community!",
       `
         <p>Hey <strong>${user.name}</strong>,</p>
-        <p>✅ You're now officially part of the <strong>Ashish Bhai</strong> tech family! 🔥</p>
+        <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
         <hr style="margin: 16px 0;"/>
         <h3>🚀 Here's what you get access to:</h3>
         <ul style="line-height: 1.6; font-size: 15px;">
           <li>💼 <strong>Latest Internship & Job Alerts</strong> directly from top companies</li>
-          <li>📘 <strong>Exclusive Tech Blogs</strong> to boost your skills</li>
+          <li>📘 <strong>Exclusive Tech Blogs (Hottest interview questions)</strong> to boost your skills</li>
           <li>💻 <strong>Freelancing Gigs & Projects</strong> - Start earning right now</li>
+          <li>💻 <strong>Hire a Freelancer</strong> - If you want to hire a freelancer, you can hire my services and also check my rating.</li>
+          <li>💰 <strong>Client Referral Bonus</strong> - If you provide a client for freelancing, you will get 20% of the earnings.</li>
           <li>🔍 <strong>Direct Links to Company Careers</strong> - No more searching around</li>
         </ul>
         <p style="margin-top: 20px;">
@@ -98,7 +97,7 @@ exports.loginUser = async (req, res) => {
 
     await sendEmail(
       user.email,
-      "✅ Login Alert - Ashish Bhai",
+      "✅ Login Alert - StoneByte Platform",
       `
       <p>Hey ${user.name},</p>
       <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
