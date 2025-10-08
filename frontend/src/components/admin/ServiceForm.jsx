@@ -1,5 +1,9 @@
-// import { useState } from "react";
+// //21/08
+
+// import React, { useState } from "react";
 // import axios from "axios";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
 
 // const ServiceForm = ({ onAdd }) => {
 //   const [title, setTitle] = useState("");
@@ -32,12 +36,14 @@
 //         onChange={(e) => setTitle(e.target.value)}
 //         className="w-full border p-2 rounded"
 //       />
-//       <textarea
-//         placeholder="Description"
+
+//       <ReactQuill
+//         theme="snow"
 //         value={description}
-//         onChange={(e) => setDescription(e.target.value)}
-//         className="w-full border p-2 rounded"
+//         onChange={setDescription}
+//         placeholder="Service Description (use headings, bullets, etc.)"
 //       />
+
 //       <button
 //         type="submit"
 //         className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
@@ -50,10 +56,11 @@
 
 // export default ServiceForm;
 
-//21/08
-
-import { useState } from "react";
+// src/components/ServiceForm.jsx
+import React, { useState } from "react";
 import axios from "axios";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const ServiceForm = ({ onAdd }) => {
   const [title, setTitle] = useState("");
@@ -75,30 +82,46 @@ const ServiceForm = ({ onAdd }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-3 border p-4 rounded shadow-md mb-6"
-    >
-      <input
-        type="text"
-        placeholder="Service Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        className="w-full border p-2 rounded"
-      />
-      <textarea
-        placeholder="Description"
-        value={description}
-        onChange={(e) => setDescription(e.target.value)}
-        className="w-full border p-2 rounded"
-      />
-      <button
-        type="submit"
-        className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+    <div className="grid md:grid-cols-2 gap-6">
+      {/* Form */}
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-3 border p-4 rounded shadow-md"
       >
-        Add Service
-      </button>
-    </form>
+        <input
+          type="text"
+          placeholder="Service Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="w-full border p-2 rounded"
+        />
+
+        <ReactQuill
+          theme="snow"
+          value={description}
+          onChange={setDescription}
+          placeholder="Service Description"
+        />
+
+        <button
+          type="submit"
+          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+        >
+          Add Service
+        </button>
+      </form>
+
+      {/* Live Preview */}
+      <div className="border p-4 rounded shadow-md bg-gray-50">
+        <h3 className="font-bold text-lg mb-3">{title || "Service Preview"}</h3>
+        <div
+          className="prose max-w-full"
+          dangerouslySetInnerHTML={{
+            __html: description || "<p>No description yet</p>",
+          }}
+        />
+      </div>
+    </div>
   );
 };
 

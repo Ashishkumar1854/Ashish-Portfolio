@@ -27,6 +27,8 @@ const feedbackRoutes = require("./routes/feedbackRoutes"); // ⭐ Added
 const blogRoutes = require("./routes/blogRoutes");
 
 const journeyRoutes = require("./routes/journeyRoutes");
+const assistantRoutes = require("./routes/assistantRoutes");
+
 const hireRoutes = require("./routes/hireRoutes");
 const adminHireRoutes = require("./routes/adminHireRoutes");
 const adminRoutes = require("./routes/adminRoutes");
@@ -76,6 +78,8 @@ app.use("/api/feedback", feedbackRoutes); // ⭐ Feedback API mount
 app.use("/api/blogs", blogRoutes);
 
 app.use("/api/journey", journeyRoutes);
+app.use("/api/assistant", assistantRoutes);
+
 app.use("/api", hireRoutes);
 
 // ✅ Mount under /api/admin with protect + adminAuth middleware

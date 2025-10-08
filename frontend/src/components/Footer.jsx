@@ -17,7 +17,7 @@ const Footer = () => {
             />
           </Link>
           <p className="text-gray-300 text-sm max-w-xs">
-            Hi! I’m <strong>Ashish Bhai</strong>, an{" "}
+            Hi! I’m <strong>Ashish Kumar</strong>, an{" "}
             <span className="text-indigo-400 font-medium">
               innovative developer
             </span>
@@ -35,7 +35,7 @@ const Footer = () => {
           <p className="text-sm">
             Email:{" "}
             <a href="mailto:ashish@example.com" className="hover:text-white">
-              ashish@example.com
+              stonebytetech@gmail.com
             </a>
           </p>
           <p className="text-sm mt-1">
@@ -88,7 +88,7 @@ const Footer = () => {
 
       {/* Copyright */}
       <div className="border-t border-gray-700 mt-6 pt-3 text-center text-gray-400 text-xs">
-        © 2025 Ashish Bhai. All rights reserved.
+        © 2025 StoneByte. All rights reserved.
       </div>
     </footer>
   );
