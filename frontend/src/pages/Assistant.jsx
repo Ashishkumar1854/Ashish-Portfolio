@@ -446,7 +446,17 @@ const Assistant = () => {
           onResult={handleVoiceResult}
         />
       )}
-      {isHireOpen && <HireForm onClose={() => setIsHireOpen(false)} />}
+
+      {/* ✅ Fixed HireForm mount issue */}
+      {isHireOpen && (
+        <HireForm
+          key={isHireOpen ? "open" : "closed"}
+          onClose={() => {
+            setIsHireOpen(false);
+            setTimeout(() => setIsHireOpen(false), 0);
+          }}
+        />
+      )}
     </div>
   );
 };
