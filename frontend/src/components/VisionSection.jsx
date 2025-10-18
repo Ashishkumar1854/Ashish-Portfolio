@@ -1,10 +1,12 @@
-// // src/components/VisionSection.jsx
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
 // import { motion } from "framer-motion";
+// import { useAuth } from "../context/AuthContext"; // ✅ added
 
 // const VisionSection = () => {
+//   const { user } = useAuth(); // ✅ get user
 //   const [visions, setVisions] = useState([]);
+//   const [newVision, setNewVision] = useState({ title: "", text: "" });
 
 //   useEffect(() => {
 //     const fetchVision = async () => {
@@ -20,17 +22,45 @@
 //     fetchVision();
 //   }, []);
 
+//   const handleAdd = async () => {
+//     try {
+//       const updated = [...visions, newVision];
+//       await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/home`, {
+//         section: "vision",
+//         content: updated,
+//       });
+//       setVisions(updated);
+//       setNewVision({ title: "", text: "" });
+//     } catch (err) {
+//       console.error("Add Vision Error:", err);
+//     }
+//   };
+
+//   const handleDelete = async (index) => {
+//     try {
+//       const updated = visions.filter((_, i) => i !== index);
+//       await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/home`, {
+//         section: "vision",
+//         content: updated,
+//       });
+//       setVisions(updated);
+//     } catch (err) {
+//       console.error("Delete Vision Error:", err);
+//     }
+//   };
+
 //   return (
 //     <section
 //       id="vision"
 //       className="relative overflow-hidden bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 py-16 px-8 rounded-xl shadow-xl space-y-16 text-center"
 //     >
-//       {/* Background Glows */}
+//       {/* Glows */}
 //       <div className="absolute top-0 left-0 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
 //       <div className="absolute bottom-0 right-0 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse"></div>
 
 //       <h1 className="text-5xl font-bold mb-4 text-blue-900">🌟 My Vision</h1>
-//       {/* 🚀 Main Vision Statement */}
+
+//       {/* Vision Summary */}
 //       <motion.div
 //         initial={{ opacity: 0, y: 40 }}
 //         animate={{ opacity: 1, y: 0 }}
@@ -50,7 +80,7 @@
 //         </p>
 //       </motion.div>
 
-//       {/* 🛠️ Mission Blocks (Dynamic from DB) */}
+//       {/* 🛠️ Vision Cards */}
 //       <div className="relative z-10 grid md:grid-cols-2 gap-10">
 //         {visions.map((vision, idx) => (
 //           <motion.div
@@ -63,7 +93,6 @@
 //             <h4 className="text-2xl font-semibold text-yellow-600 mb-2">
 //               {vision.title}
 //             </h4>
-//             {/* ✅ Auto handle array or string */}
 //             {Array.isArray(vision.text) ? (
 //               vision.text.map((para, i) => (
 //                 <p
@@ -74,11 +103,54 @@
 //                 </p>
 //               ))
 //             ) : (
-//               <p className="text-gray-700 leading-relaxed">{vision.text}</p>
+//               <p className="text-gray-700 leading-relaxed text-left">
+//                 {vision.text}
+//               </p>
+//             )}
+//             {user?.role === "admin" && (
+//               <button
+//                 onClick={() => handleDelete(idx)}
+//                 className="mt-4 bg-red-500 hover:bg-red-600 text-white px-4 py-1 rounded text-sm"
+//               >
+//                 Delete
+//               </button>
 //             )}
 //           </motion.div>
 //         ))}
 //       </div>
+
+//       {/* ➕ Admin Add Panel */}
+//       {user?.role === "admin" && (
+//         <div className="relative z-10 max-w-xl mx-auto mt-10 space-y-4 bg-white p-6 rounded-xl shadow-md border">
+//           <h3 className="text-lg font-bold text-gray-800">
+//             ➕ Add Vision Point
+//           </h3>
+//           <input
+//             type="text"
+//             placeholder="Title"
+//             value={newVision.title}
+//             onChange={(e) =>
+//               setNewVision({ ...newVision, title: e.target.value })
+//             }
+//             className="w-full border px-3 py-2 rounded"
+//           />
+//           <textarea
+//             placeholder="Description"
+//             rows={3}
+//             value={newVision.text}
+//             onChange={(e) =>
+//               setNewVision({ ...newVision, text: e.target.value })
+//             }
+//             className="w-full border px-3 py-2 rounded"
+//           ></textarea>
+//           <button
+//             onClick={handleAdd}
+//             className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+//           >
+//             ✅ Add Vision
+//           </button>
+//         </div>
+//       )}
 //     </section>
 //   );
 // };
@@ -86,21 +158,19 @@
 // export default VisionSection;
 
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
-import { useAuth } from "../context/AuthContext"; // ✅ added
+import { useAuth } from "../context/AuthContext";
+import API from "../utils/api"; // ✅ unified API
 
 const VisionSection = () => {
-  const { user } = useAuth(); // ✅ get user
+  const { user } = useAuth();
   const [visions, setVisions] = useState([]);
   const [newVision, setNewVision] = useState({ title: "", text: "" });
 
   useEffect(() => {
     const fetchVision = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/api/home/vision`
-        );
+        const res = await API.get("/api/home/vision"); // ✅ replaced axios
         setVisions(res.data.data?.content || []);
       } catch (err) {
         console.error("Fetch Vision Error:", err);
@@ -112,7 +182,8 @@ const VisionSection = () => {
   const handleAdd = async () => {
     try {
       const updated = [...visions, newVision];
-      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/home`, {
+      await API.post("/api/home", {
+        // ✅ replaced axios
         section: "vision",
         content: updated,
       });
@@ -126,7 +197,8 @@ const VisionSection = () => {
   const handleDelete = async (index) => {
     try {
       const updated = visions.filter((_, i) => i !== index);
-      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/home`, {
+      await API.post("/api/home", {
+        // ✅ replaced axios
         section: "vision",
         content: updated,
       });

@@ -46,7 +46,7 @@ exports.registerUser = async (req, res) => {
     // ✅ Send confirmation email
     await sendEmail(
       user.email,
-      "🎉 Welcome to Ashish Bhai Community!",
+      "🎉 Welcome to Ashish  Community!",
       `
         <p>Hey <strong>${user.name}</strong>,</p>
         <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
@@ -67,7 +67,7 @@ exports.registerUser = async (req, res) => {
           style="display: inline-block; margin-top: 20px; padding: 10px 16px; background-color: #10b981; color: #fff; border-radius: 6px; text-decoration: none;">
           Explore Dashboard Now 🚀
         </a>
-        <p style="margin-top: 30px;">Cheers,<br/>💚 <strong>Team Ashish Bhai</strong></p>
+        <p style="margin-top: 30px;">Cheers,<br/>💚 <strong>Team Ashish </strong></p>
       `
     );
 
@@ -169,7 +169,7 @@ exports.forgotPassword = async (req, res) => {
 
     await sendEmail(
       email,
-      "🔑 Reset Your Password - Ashish Bhai",
+      "🔑 Reset Your Password - Ashish ",
       `<p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`
     );
 
@@ -215,7 +215,7 @@ exports.sendOTP = async (req, res) => {
 
     await sendEmail(
       email,
-      "🔢 Your OTP - Ashish Bhai",
+      "🔢 Your OTP - Ashish ",
       `<p>Your OTP is: <strong>${otp}</strong></p>`
     );
 

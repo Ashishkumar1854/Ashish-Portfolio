@@ -1,3 +1,5 @@
+// //06 oct
+
 // import React, { useEffect, useState } from "react";
 // import axios from "axios";
 // import { motion } from "framer-motion";
@@ -6,11 +8,11 @@
 
 // const PageBSection = () => {
 //   const { user } = useAuth();
-//   const [data, setData] = useState(null);
+//   const [data, setData] = useState([]);
 //   const [form, setForm] = useState({
 //     title: "",
 //     description: "",
-//     link: "", // ✅ single link field
+//     link: "",
 //   });
 
 //   useEffect(() => {
@@ -21,7 +23,10 @@
 //         );
 
 //         if (res.data?.data?.content) {
-//           setData(res.data.data.content);
+//           const contentArray = Array.isArray(res.data.data.content)
+//             ? res.data.data.content
+//             : [res.data.data.content];
+//           setData(contentArray);
 //         } else {
 //           toast.warn("⚠️ Unexpected PageB data structure.");
 //         }
@@ -49,8 +54,11 @@
 //       );
 
 //       if (res.data?.data?.content) {
+//         const contentArray = Array.isArray(res.data.data.content)
+//           ? res.data.data.content
+//           : [res.data.data.content];
 //         toast.success("✅ Page B updated!");
-//         setData(res.data.data.content);
+//         setData(contentArray);
 //         setForm({ title: "", description: "", link: "" });
 //       } else {
 //         toast.warn("⚠️ No content returned after update.");
@@ -63,10 +71,12 @@
 //     }
 //   };
 
-//   const handleDelete = async () => {
+//   const handleDelete = async (index) => {
 //     try {
-//       await axios.delete(`${process.env.REACT_APP_BACKEND_URL}/api/home/pageB`);
-//       setData(null);
+//       await axios.delete(
+//         `${process.env.REACT_APP_BACKEND_URL}/api/home/pageB/${index}`
+//       );
+//       setData((prev) => prev.filter((_, i) => i !== index)); // remove locally
 //       toast.success("🗑️ Page B content deleted");
 //     } catch (err) {
 //       console.error("❌ Delete Error", err);
@@ -103,36 +113,39 @@
 //         </p>
 //       </motion.div>
 
-//       {/* Content Card */}
-//       {data ? (
-//         <motion.div
-//           className="bg-white p-6 max-w-3xl mx-auto rounded-xl shadow-lg space-y-4"
-//           initial={{ opacity: 0, y: 30 }}
-//           animate={{ opacity: 1, y: 0 }}
-//         >
-//           <h3 className="text-3xl font-bold text-green-700">{data.title}</h3>
-//           <p className="text-gray-700">{data.description}</p>
+//       {/* Content Cards */}
+//       {data && data.length > 0 ? (
+//         data.map((item, idx) => (
+//           <motion.div
+//             key={idx}
+//             className="bg-white p-6 max-w-3xl mx-auto rounded-xl shadow-lg space-y-4"
+//             initial={{ opacity: 0, y: 30 }}
+//             animate={{ opacity: 1, y: 0 }}
+//           >
+//             <h3 className="text-3xl font-bold text-green-700">{item.title}</h3>
+//             <p className="text-gray-700">{item.description}</p>
 
-//           {data.link && (
-//             <a
-//               href={data.link}
-//               target="_blank"
-//               rel="noopener noreferrer"
-//               className="inline-block px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition"
-//             >
-//               📎 View Document
-//             </a>
-//           )}
+//             {item.link && (
+//               <a
+//                 href={item.link}
+//                 target="_blank"
+//                 rel="noopener noreferrer"
+//                 className="inline-block px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition"
+//               >
+//                 📎 View Document
+//               </a>
+//             )}
 
-//           {user?.role === "admin" && (
-//             <button
-//               onClick={handleDelete}
-//               className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-//             >
-//               🗑️ Delete Content
-//             </button>
-//           )}
-//         </motion.div>
+//             {user?.role === "admin" && (
+//               <button
+//                 onClick={() => handleDelete(idx)}
+//                 className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+//               >
+//                 🗑️ Delete Content
+//               </button>
+//             )}
+//           </motion.div>
+//         ))
 //       ) : (
 //         <p className="text-center text-gray-500 font-medium">
 //           🚫 No Page B content available.
@@ -189,13 +202,11 @@
 
 // export default PageBSection;
 
-//06 oct
-
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
+import API from "../utils/api"; // ✅ centralized axios instance
 
 const PageBSection = () => {
   const { user } = useAuth();
@@ -209,9 +220,7 @@ const PageBSection = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/api/home/pageB`
-        );
+        const res = await API.get("/api/home/pageB");
 
         if (res.data?.data?.content) {
           const contentArray = Array.isArray(res.data.data.content)
@@ -239,10 +248,7 @@ const PageBSection = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/home/pageB`,
-        form
-      );
+      const res = await API.post("/api/home/pageB", form);
 
       if (res.data?.data?.content) {
         const contentArray = Array.isArray(res.data.data.content)
@@ -264,9 +270,7 @@ const PageBSection = () => {
 
   const handleDelete = async (index) => {
     try {
-      await axios.delete(
-        `${process.env.REACT_APP_BACKEND_URL}/api/home/pageB/${index}`
-      );
+      await API.delete(`/api/home/pageB/${index}`);
       setData((prev) => prev.filter((_, i) => i !== index)); // remove locally
       toast.success("🗑️ Page B content deleted");
     } catch (err) {

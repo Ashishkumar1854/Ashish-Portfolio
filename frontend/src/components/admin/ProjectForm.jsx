@@ -1,12 +1,17 @@
+// // frontend/src/components/admin/ProjectForm.jsx
 // import React, { useState } from "react";
+// import { useAuth } from "../../context/AuthContext";
 
-// const ProjectForm = ({ user, onAdd }) => {
+// const ProjectForm = ({ onAdd }) => {
 //   const [form, setForm] = useState({
 //     title: "",
 //     description: "",
 //     githubLink: "",
 //     liveDemoLink: "",
+//     techStack: "", // comma-separated from input, optional
 //   });
+
+//   const { user } = useAuth(); // ensure auth context available
 
 //   const handleChange = (e) =>
 //     setForm({ ...form, [e.target.name]: e.target.value });
@@ -14,91 +19,45 @@
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
 
+//     // optional: convert techStack string to array
+//     const techStackArray = form.techStack
+//       ? form.techStack
+//           .split(",")
+//           .map((t) => t.trim())
+//           .filter(Boolean)
+//       : [];
+
 //     try {
 //       const res = await fetch("http://localhost:5001/api/projects", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ ...form, email: user?.email }),
+//         credentials: "include", // important - send cookie so backend can identify req.user
+//         body: JSON.stringify({
+//           title: form.title,
+//           description: form.description,
+//           githubLink: form.githubLink,
+//           liveDemoLink: form.liveDemoLink,
+//           techStack: techStackArray,
+//         }),
 //       });
 
 //       const data = await res.json().catch(() => ({}));
 //       if (!res.ok) return alert(data.message || "Failed to add project");
-
-//       onAdd(data); // Update parent
-//       setForm({ title: "", description: "", githubLink: "", liveDemoLink: "" });
+//       onAdd(); // parent triggers re-fetch or update
+//       setForm({
+//         title: "",
+//         description: "",
+//         githubLink: "",
+//         liveDemoLink: "",
+//         techStack: "",
+//       });
 //     } catch (err) {
 //       console.error("Add project failed:", err);
 //     }
 //   };
 
-//   return (
-//     <form
-//       onSubmit={handleSubmit}
-//       className="p-4 bg-yellow-50 rounded shadow-md"
-//     >
-//       <input
-//         name="title"
-//         value={form.title}
-//         onChange={handleChange}
-//         placeholder="Title"
-//         required
-//       />
-//       <input
-//         name="githubLink"
-//         value={form.githubLink}
-//         onChange={handleChange}
-//         placeholder="GitHub Link"
-//         required
-//       />
-//       <input
-//         name="liveDemoLink"
-//         value={form.liveDemoLink}
-//         onChange={handleChange}
-//         placeholder="Live URL"
-//       />
-//       <textarea
-//         name="description"
-//         value={form.description}
-//         onChange={handleChange}
-//         placeholder="Description"
-//         required
-//       />
-//       <button type="submit">➕ Add Project</button>
-//     </form>
-//   );
-// };
-
-// export default ProjectForm;
-// //21/08
-// import React, { useState } from "react";
-
-// const ProjectForm = ({ user, onAdd }) => {
-//   const [form, setForm] = useState({
-//     title: "",
-//     description: "",
-//     githubLink: "",
-//     liveDemoLink: "",
-//   });
-
-//   const handleChange = (e) =>
-//     setForm({ ...form, [e.target.name]: e.target.value });
-
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     try {
-//       const res = await fetch("http://localhost:5001/api/projects", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ ...form, email: user?.email }),
-//       });
-//       const data = await res.json().catch(() => ({}));
-//       if (!res.ok) return alert(data.message || "Failed to add project");
-//       onAdd(); // trigger parent re-fetch
-//       setForm({ title: "", description: "", githubLink: "", liveDemoLink: "" });
-//     } catch (err) {
-//       console.error("Add project failed:", err);
-//     }
-//   };
+//   // If user isn't admin, hide the form (safety)
+//   if (user?.role !== "admin") return null;
 
 //   return (
 //     <form
@@ -132,6 +91,14 @@
 //           onChange={handleChange}
 //           className="p-2 border rounded-md"
 //         />
+//         <input
+//           type="text"
+//           name="techStack"
+//           placeholder="Tech Stack (comma separated, e.g. React,Node)"
+//           value={form.techStack}
+//           onChange={handleChange}
+//           className="p-2 border rounded-md col-span-1 md:col-span-2"
+//         />
 //         <textarea
 //           name="description"
 //           placeholder="Description"
@@ -153,11 +120,9 @@
 
 // export default ProjectForm;
 
-//05/09
-
-// frontend/src/components/admin/ProjectForm.jsx
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import API from "../../utils/api"; // ✅ unified API
 
 const ProjectForm = ({ onAdd }) => {
   const [form, setForm] = useState({
@@ -165,10 +130,10 @@ const ProjectForm = ({ onAdd }) => {
     description: "",
     githubLink: "",
     liveDemoLink: "",
-    techStack: "", // comma-separated from input, optional
+    techStack: "", // comma-separated from input
   });
 
-  const { user } = useAuth(); // ensure auth context available
+  const { user } = useAuth();
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -176,7 +141,6 @@ const ProjectForm = ({ onAdd }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // optional: convert techStack string to array
     const techStackArray = form.techStack
       ? form.techStack
           .split(",")
@@ -185,21 +149,14 @@ const ProjectForm = ({ onAdd }) => {
       : [];
 
     try {
-      const res = await fetch("http://localhost:5001/api/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include", // important - send cookie so backend can identify req.user
-        body: JSON.stringify({
-          title: form.title,
-          description: form.description,
-          githubLink: form.githubLink,
-          liveDemoLink: form.liveDemoLink,
-          techStack: techStackArray,
-        }),
+      const { data } = await API.post("/api/projects", {
+        title: form.title,
+        description: form.description,
+        githubLink: form.githubLink,
+        liveDemoLink: form.liveDemoLink,
+        techStack: techStackArray,
       });
 
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) return alert(data.message || "Failed to add project");
       onAdd(); // parent triggers re-fetch or update
       setForm({
         title: "",
@@ -209,11 +166,12 @@ const ProjectForm = ({ onAdd }) => {
         techStack: "",
       });
     } catch (err) {
-      console.error("Add project failed:", err);
+      console.error("Add project failed:", err?.response?.data || err);
+      alert(err?.response?.data?.message || "Failed to add project");
     }
   };
 
-  // If user isn't admin, hide the form (safety)
+  // Only admins can see the form
   if (user?.role !== "admin") return null;
 
   return (

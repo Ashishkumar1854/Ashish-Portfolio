@@ -29,7 +29,7 @@ const baseNavItems = [
   },
   { to: "/blog", label: "Blog", icon: FileText, guestProtected: true },
   { to: "/journey", label: "My Journey", icon: BookOpen },
-  { to: "/assistant", label: "Hire Me / Assistant", icon: Headphones },
+  { to: "/assistant", label: "Hire Me ", icon: Headphones },
   {
     to: "/admin",
     label: "Admin Dashboard",

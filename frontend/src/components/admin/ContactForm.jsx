@@ -1,3 +1,5 @@
+// //21/08
+
 // import { useState } from "react";
 // import axios from "axios";
 
@@ -51,10 +53,8 @@
 
 // export default ContactForm;
 
-//21/08
-
 import { useState } from "react";
-import axios from "axios";
+import API from "../../utils/api"; // ✅ correct path
 
 const ContactForm = ({ onAdd }) => {
   const [type, setType] = useState("");
@@ -63,10 +63,7 @@ const ContactForm = ({ onAdd }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/about/contact`,
-        { type, value }
-      );
+      const res = await API.post("/api/about/contact", { type, value }); // ✅ replaced axios
       onAdd(res.data);
       setType("");
       setValue("");

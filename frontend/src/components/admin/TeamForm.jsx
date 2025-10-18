@@ -1,3 +1,4 @@
+// //21/07
 // import { useState } from "react";
 // import axios from "axios";
 
@@ -101,9 +102,9 @@
 
 // export default TeamForm;
 
-//21/07
+// src/components/TeamForm.jsx
 import { useState } from "react";
-import axios from "axios";
+import API from "../../utils/api"; // ✅ centralized API
 
 const TeamForm = ({ onAdd }) => {
   const [name, setName] = useState("");
@@ -117,17 +118,14 @@ const TeamForm = ({ onAdd }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/about/team`,
-        {
-          name,
-          role,
-          bio,
-          image,
-          socials: { linkedin, github, twitter },
-        }
-      );
-      onAdd(res.data);
+      const { data } = await API.post("/api/about/team", {
+        name,
+        role,
+        bio,
+        image,
+        socials: { linkedin, github, twitter },
+      });
+      onAdd(data);
       setName("");
       setRole("");
       setBio("");
@@ -136,7 +134,8 @@ const TeamForm = ({ onAdd }) => {
       setGithub("");
       setTwitter("");
     } catch (err) {
-      console.error(err);
+      console.error("Add Team Member Error:", err?.response?.data || err);
+      alert(err?.response?.data?.message || "Failed to add team member");
     }
   };
 
@@ -151,6 +150,7 @@ const TeamForm = ({ onAdd }) => {
         value={name}
         onChange={(e) => setName(e.target.value)}
         className="w-full border p-2 rounded"
+        required
       />
       <input
         type="text"
@@ -158,6 +158,7 @@ const TeamForm = ({ onAdd }) => {
         value={role}
         onChange={(e) => setRole(e.target.value)}
         className="w-full border p-2 rounded"
+        required
       />
       <textarea
         placeholder="Bio"
