@@ -1,5 +1,5 @@
 // controllers/skillsController.js
-const Home = require("../models/home");
+const Home = require("../models/Home");
 
 // small helper
 const isValidDate = (d) => !Number.isNaN(new Date(d).getTime());
