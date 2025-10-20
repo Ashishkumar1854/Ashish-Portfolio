@@ -447,26 +447,32 @@ exports.registerUser = async (req, res) => {
 
     console.log("🔹 User created:", user.email);
 
-    await sendEmail(
-      user.email,
-      "🎉 Welcome to Ashish Community!",
-      `
-        <p>Hey <strong>${user.name}</strong>,</p>
-        <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
-        <hr/>
-        <h3>🚀 Here's what you get access to:</h3>
-        <ul>
-          <li>💼 Latest Internship & Job Alerts</li>
-          <li>📘 Exclusive Tech Blogs</li>
-          <li>💻 Freelancing Gigs & Projects</li>
-          <li>💻 Hire a Freelancer</li>
-          <li>💰 Client Referral Bonus</li>
-          <li>🔍 Direct Links to Company Careers</li>
-        </ul>
-        <p>Check dashboard daily for updates!</p>
-        <a href="${process.env.CLIENT_URL}" style="padding:10px;background:#10b981;color:#fff;">Explore Dashboard</a>
-      `
-    );
+    // 📨 Welcome Email
+    try {
+      await sendEmail(
+        user.email,
+        "🎉 Welcome to Ashish Community!",
+        `
+          <p>Hey <strong>${user.name}</strong>,</p>
+          <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
+          <hr/>
+          <h3>🚀 Here's what you get access to:</h3>
+          <ul>
+            <li>💼 Latest Internship & Job Alerts</li>
+            <li>📘 Exclusive Tech Blogs</li>
+            <li>💻 Freelancing Gigs & Projects</li>
+            <li>💻 Hire a Freelancer</li>
+            <li>💰 Client Referral Bonus</li>
+            <li>🔍 Direct Links to Company Careers</li>
+          </ul>
+          <p>Check dashboard daily for updates!</p>
+          <a href="${process.env.CLIENT_URL}" style="padding:10px;background:#10b981;color:#fff;">Explore Dashboard</a>
+        `
+      );
+      console.log("📧 Welcome email sent");
+    } catch (emailErr) {
+      console.error("⚠️ Welcome email failed:", emailErr.message);
+    }
 
     res.status(201).json({
       message: "✅ Registered successfully. Confirmation email sent.",
@@ -480,7 +486,7 @@ exports.registerUser = async (req, res) => {
 };
 
 // =========================
-// ✅ Login User (🔑 FIXED COOKIE CONFIG)
+// ✅ Login User (Safe Email + Cookie Config)
 // =========================
 exports.loginUser = async (req, res) => {
   try {
@@ -501,26 +507,34 @@ exports.loginUser = async (req, res) => {
     const token = generateToken(user._id, user.role);
     console.log("🔹 Token generated:", token);
 
-    // 🚨 Temporarily disabled login alert email to fix Render timeout issue
-    // await sendEmail(
-    //   user.email,
-    //   "✅ Login Alert - StoneByte Platform",
-    //   `
-    //     <p>Hey ${user.name},</p>
-    //     <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
-    //     <p>If this wasn't you, please reset your password immediately.</p>
-    //     <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
-    //   `
-    // );
+    // 📨 Optional Login Alert Email (safe try-catch)
+    try {
+      // await sendEmail(
+      //   user.email,
+      //   "✅ Login Alert - StoneByte Platform",
+      //   `
+      //     <p>Hey ${user.name},</p>
+      //     <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
+      //     <p>If this wasn't you, please reset your password immediately.</p>
+      //     <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
+      //   `
+      // );
+      console.log("📧 Login alert email skipped / disabled to prevent timeout");
+    } catch (emailErr) {
+      console.error("⚠️ Login alert email failed:", emailErr.message);
+    }
 
     res
       .cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // ✅ important for Render
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // ✅ cross-site allowed
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({ user: { name: user.name, email: user.email, role: user.role } });
+      .json({
+        message: "✅ Login successful",
+        user: { name: user.name, email: user.email, role: user.role },
+      });
 
     console.log("🔹 Login response sent");
   } catch (error) {
@@ -529,9 +543,41 @@ exports.loginUser = async (req, res) => {
   }
 };
 
-// ✅ The rest of your controllers (Logout, Profile, Forgot Password, Reset, OTP, VerifyEmail)
-// remain EXACTLY the same — no changes needed 👇
+// =========================
+// ❌ Optional controllers (commented to prevent handler errors)
+// =========================
 
+// exports.logoutUser = async (req, res) => {
+//   // TODO: Implement logout (clear cookie)
+// };
+
+// exports.getProfile = async (req, res) => {
+//   // TODO: Implement protected profile route
+// };
+
+// exports.forgotPassword = async (req, res) => {
+//   // TODO: Implement forgot password
+// };
+
+// exports.resetPassword = async (req, res) => {
+//   // TODO: Implement reset password
+// };
+
+// exports.sendOTP = async (req, res) => {
+//   // TODO: Implement OTP
+// };
+
+// exports.verifyOTP = async (req, res) => {
+//   // TODO: Implement OTP verify
+// };
+
+// exports.verifyEmail = async (req, res) => {
+//   // TODO: Implement Email verify
+// };
+
+// =========================
+// ✅ Debug Export Check
+// =========================
 console.log("Auth Controller Exports Check:", {
   registerUser: typeof exports.registerUser,
   loginUser: typeof exports.loginUser,
