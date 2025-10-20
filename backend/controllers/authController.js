@@ -281,7 +281,138 @@
 //   }
 // };
 
-// 📦 Importing dependencies
+// // 📦 Importing dependencies
+// const User = require("../models/User");
+// const generateToken = require("../utils/generateToken");
+// const sendEmail = require("../utils/sendEmail");
+// const crypto = require("crypto");
+// require("dotenv").config();
+// const otpStore = new Map();
+
+// // =========================
+// // ✅ Register New User
+// // =========================
+// exports.registerUser = async (req, res) => {
+//   try {
+//     let { name, email, password, role } = req.body;
+//     console.log("🔹 Register request received for:", email);
+
+//     const allowedAdmins = ["stonebytetech@gmail.com", "kashish84396@gmail.com"];
+//     const isAdmin = allowedAdmins.includes(email.toLowerCase());
+
+//     if (role === "admin" && !isAdmin) {
+//       return res
+//         .status(403)
+//         .json({ message: "❌ Not allowed to register as admin" });
+//     }
+
+//     if (isAdmin && password !== "Ashish@1854") {
+//       return res.status(403).json({ message: "❌ Admin password incorrect" });
+//     }
+
+//     const userExists = await User.findOne({ email });
+//     if (userExists)
+//       return res.status(400).json({ message: "Email already exists" });
+
+//     role = isAdmin ? "admin" : "user";
+
+//     const user = await User.create({
+//       name,
+//       email,
+//       password,
+//       role,
+//       isVerified: true,
+//     });
+
+//     console.log("🔹 User created:", user.email);
+
+//     await sendEmail(
+//       user.email,
+//       "🎉 Welcome to Ashish Community!",
+//       `
+//         <p>Hey <strong>${user.name}</strong>,</p>
+//         <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
+//         <hr/>
+//         <h3>🚀 Here's what you get access to:</h3>
+//         <ul>
+//           <li>💼 Latest Internship & Job Alerts</li>
+//           <li>📘 Exclusive Tech Blogs</li>
+//           <li>💻 Freelancing Gigs & Projects</li>
+//           <li>💻 Hire a Freelancer</li>
+//           <li>💰 Client Referral Bonus</li>
+//           <li>🔍 Direct Links to Company Careers</li>
+//         </ul>
+//         <p>Check dashboard daily for updates!</p>
+//         <a href="${process.env.CLIENT_URL}" style="padding:10px;background:#10b981;color:#fff;">Explore Dashboard</a>
+//       `
+//     );
+
+//     res
+//       .status(201)
+//       .json({
+//         message: "✅ Registered successfully. Confirmation email sent.",
+//       });
+//   } catch (error) {
+//     console.error("❌ Register Error:", error.message);
+//     res
+//       .status(500)
+//       .json({ message: "Registration failed", error: error.message });
+//   }
+// };
+
+// // =========================
+// // ✅ Login User (🔑 FIXED COOKIE CONFIG)
+// // =========================
+// exports.loginUser = async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     console.log("🔹 Login started for:", email);
+
+//     const user = await User.findOne({ email: email.toLowerCase() });
+//     console.log("🔹 User fetched from DB:", user);
+
+//     if (!user) return res.status(400).json({ message: "User not found" });
+
+//     const isMatch = await user.comparePassword(password);
+//     console.log("🔹 Password match:", isMatch);
+
+//     if (!isMatch)
+//       return res.status(401).json({ message: "Invalid credentials" });
+
+//     const token = generateToken(user._id, user.role);
+//     console.log("🔹 Token generated:", token);
+
+//     await sendEmail(
+//       user.email,
+//       "✅ Login Alert - StoneByte Platform",
+//       `
+//         <p>Hey ${user.name},</p>
+//         <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
+//         <p>If this wasn't you, please reset your password immediately.</p>
+//         <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
+//       `
+//     );
+
+//     res
+//       .cookie("token", token, {
+//         httpOnly: true,
+//         secure: process.env.NODE_ENV === "production", // ✅ important for Render
+//         sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // ✅ cross-site allowed
+//         maxAge: 7 * 24 * 60 * 60 * 1000,
+//       })
+//       .json({ user: { name: user.name, email: user.email, role: user.role } });
+
+//     console.log("🔹 Login response sent");
+//   } catch (error) {
+//     console.error("❌ Login Error:", error.message);
+//     res.status(500).json({ message: "Login failed", error: error.message });
+//   }
+// };
+
+// // ✅ The rest of your controllers (Logout, Profile, Forgot Password, Reset, OTP, VerifyEmail)
+// // remain EXACTLY the same — no changes needed 👇
+
+/// login alert comment out for reolve stucking issue // 📦 Importing dependencies
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 const sendEmail = require("../utils/sendEmail");
@@ -347,11 +478,9 @@ exports.registerUser = async (req, res) => {
       `
     );
 
-    res
-      .status(201)
-      .json({
-        message: "✅ Registered successfully. Confirmation email sent.",
-      });
+    res.status(201).json({
+      message: "✅ Registered successfully. Confirmation email sent.",
+    });
   } catch (error) {
     console.error("❌ Register Error:", error.message);
     res
@@ -382,16 +511,17 @@ exports.loginUser = async (req, res) => {
     const token = generateToken(user._id, user.role);
     console.log("🔹 Token generated:", token);
 
-    await sendEmail(
-      user.email,
-      "✅ Login Alert - StoneByte Platform",
-      `
-        <p>Hey ${user.name},</p>
-        <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
-        <p>If this wasn't you, please reset your password immediately.</p>
-        <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
-      `
-    );
+    // 🚨 Temporarily disabled login alert email to fix Render timeout issue
+    // await sendEmail(
+    //   user.email,
+    //   "✅ Login Alert - StoneByte Platform",
+    //   `
+    //     <p>Hey ${user.name},</p>
+    //     <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
+    //     <p>If this wasn't you, please reset your password immediately.</p>
+    //     <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
+    //   `
+    // );
 
     res
       .cookie("token", token, {
