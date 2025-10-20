@@ -281,130 +281,9 @@
 //   }
 // };
 
-// // 📦 Importing dependencies
-// const User = require("../models/User");
-// const generateToken = require("../utils/generateToken");
-// const sendEmail = require("../utils/sendEmail");
-// const crypto = require("crypto");
-// require("dotenv").config();
-// const otpStore = new Map();
-
-// // =========================
-// // ✅ Register New User
-// // =========================
-// exports.registerUser = async (req, res) => {
-//   try {
-//     let { name, email, password, role } = req.body;
-//     console.log("🔹 Register request received for:", email);
-
-//     const allowedAdmins = ["stonebytetech@gmail.com", "kashish84396@gmail.com"];
-//     const isAdmin = allowedAdmins.includes(email.toLowerCase());
-
-//     if (role === "admin" && !isAdmin) {
-//       return res.status(403).json({ message: "❌ Not allowed to register as admin" });
-//     }
-
-//     if (isAdmin && password !== "Ashish@1854") {
-//       return res.status(403).json({ message: "❌ Admin password incorrect" });
-//     }
-
-//     const userExists = await User.findOne({ email });
-//     if (userExists) return res.status(400).json({ message: "Email already exists" });
-
-//     role = isAdmin ? "admin" : "user";
-
-//     const user = await User.create({
-//       name,
-//       email,
-//       password,
-//       role,
-//       isVerified: true,
-//     });
-
-//     console.log("🔹 User created:", user.email);
-
-//     await sendEmail(
-//       user.email,
-//       "🎉 Welcome to Ashish Community!",
-//       `
-//         <p>Hey <strong>${user.name}</strong>,</p>
-//         <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
-//         <hr/>
-//         <h3>🚀 Here's what you get access to:</h3>
-//         <ul>
-//           <li>💼 Latest Internship & Job Alerts</li>
-//           <li>📘 Exclusive Tech Blogs</li>
-//           <li>💻 Freelancing Gigs & Projects</li>
-//           <li>💻 Hire a Freelancer</li>
-//           <li>💰 Client Referral Bonus</li>
-//           <li>🔍 Direct Links to Company Careers</li>
-//         </ul>
-//         <p>Check dashboard daily for updates!</p>
-//         <a href="${process.env.CLIENT_URL}" style="padding:10px;background:#10b981;color:#fff;">Explore Dashboard</a>
-//       `
-//     );
-
-//     res.status(201).json({ message: "✅ Registered successfully. Confirmation email sent." });
-//   } catch (error) {
-//     console.error("❌ Register Error:", error.message);
-//     res.status(500).json({ message: "Registration failed", error: error.message });
-//   }
-// };
-
-// // =========================
-// // ✅ Login User (🔑 FIXED COOKIE CONFIG)
-// // =========================
-// exports.loginUser = async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
-//     console.log("🔹 Login started for:", email);
-
-//     const user = await User.findOne({ email: email.toLowerCase() });
-//     console.log("🔹 User fetched from DB:", user);
-
-//     if (!user) return res.status(400).json({ message: "User not found" });
-
-//     const isMatch = await user.comparePassword(password);
-//     console.log("🔹 Password match:", isMatch);
-
-//     if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
-
-//     const token = generateToken(user._id, user.role);
-//     console.log("🔹 Token generated:", token);
-
-//     await sendEmail(
-//       user.email,
-//       "✅ Login Alert - StoneByte Platform",
-//       `
-//         <p>Hey ${user.name},</p>
-//         <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
-//         <p>If this wasn't you, please reset your password immediately.</p>
-//         <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
-//       `
-//     );
-
-//     res.cookie("token", token, {
-//       httpOnly: true,
-//       secure: process.env.NODE_ENV === "production",  // ✅ important for Render
-//       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",  // ✅ cross-site allowed
-//       maxAge: 7 * 24 * 60 * 60 * 1000,
-//     }).json({ user: { name: user.name, email: user.email, role: user.role } });
-
-//     console.log("🔹 Login response sent");
-//   } catch (error) {
-//     console.error("❌ Login Error:", error.message);
-//     res.status(500).json({ message: "Login failed", error: error.message });
-//   }
-// };
-
-// // ✅ The rest of your controllers (Logout, Profile, Forgot Password, Reset, OTP, VerifyEmail)
-// // remain EXACTLY the same — no changes needed 👇
-
-//..................................
-
-// 📦 Importing dependencies
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
+const bcrypt = require("bcrypt");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 require("dotenv").config();
@@ -416,7 +295,6 @@ const otpStore = new Map();
 exports.registerUser = async (req, res) => {
   try {
     let { name, email, password, role } = req.body;
-    console.log("🔹 Register request received for:", email);
 
     const allowedAdmins = ["stonebytetech@gmail.com", "kashish84396@gmail.com"];
     const isAdmin = allowedAdmins.includes(email.toLowerCase());
@@ -424,11 +302,13 @@ exports.registerUser = async (req, res) => {
     if (role === "admin" && !isAdmin) {
       return res
         .status(403)
-        .json({ message: "❌ Not allowed to register as admin" });
+        .json({ message: "❌ You are not allowed to register as admin" });
     }
 
     if (isAdmin && password !== "Ashish@1854") {
-      return res.status(403).json({ message: "❌ Admin password incorrect" });
+      return res
+        .status(403)
+        .json({ message: "❌ Admin password is incorrect" });
     }
 
     const userExists = await User.findOne({ email });
@@ -445,39 +325,38 @@ exports.registerUser = async (req, res) => {
       isVerified: true,
     });
 
-    console.log("🔹 User created:", user.email);
+    // 🔹 Non-blocking confirmation email
+    sendEmail(
+      user.email,
+      "🎉 Welcome to Ashish Community!",
+      `
+        <p>Hey <strong>${user.name}</strong>,</p>
+        <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
+        <hr style="margin: 16px 0;"/>
+        <h3>🚀 Here's what you get access to:</h3>
+        <ul style="line-height: 1.6; font-size: 15px;">
+          <li>💼 <strong>Latest Internship & Job Alerts</strong> directly from top companies</li>
+          <li>📘 <strong>Exclusive Tech Blogs (Hottest interview questions)</strong> to boost your skills</li>
+          <li>💻 <strong>Freelancing Gigs & Projects</strong> - Start earning right now</li>
+          <li>💻 <strong>Hire a Freelancer</strong> - Check rating & hire services</li>
+          <li>💰 <strong>Client Referral Bonus</strong> - Get 20% for client referrals</li>
+          <li>🔍 <strong>Direct Links to Company Careers</strong></li>
+        </ul>
+        <p style="margin-top: 20px;">🔔 Check our dashboard daily for updates!</p>
+        <a href="${process.env.CLIENT_URL}"
+          style="display: inline-block; margin-top: 20px; padding: 10px 16px; background-color: #10b981; color: #fff; border-radius: 6px; text-decoration: none;">
+          Explore Dashboard 🚀
+        </a>
+        <p style="margin-top: 30px;">Cheers,<br/>💚 <strong>Team Ashish</strong></p>
+      `
+    );
 
-    // ✅ Register email - safe to keep
-    try {
-      await sendEmail(
-        user.email,
-        "🎉 Welcome to Ashish Community!",
-        `
-          <p>Hey <strong>${user.name}</strong>,</p>
-          <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
-          <hr/>
-          <h3>🚀 Here's what you get access to:</h3>
-          <ul>
-            <li>💼 Latest Internship & Job Alerts</li>
-            <li>📘 Exclusive Tech Blogs</li>
-            <li>💻 Freelancing Gigs & Projects</li>
-            <li>💻 Hire a Freelancer</li>
-            <li>💰 Client Referral Bonus</li>
-            <li>🔍 Direct Links to Company Careers</li>
-          </ul>
-          <p>Check dashboard daily for updates!</p>
-          <a href="${process.env.CLIENT_URL}" style="padding:10px;background:#10b981;color:#fff;">Explore Dashboard</a>
-        `
-      );
-    } catch (emailErr) {
-      console.error("⚠️ Register email failed:", emailErr.message);
-    }
-
-    res.status(201).json({
-      message: "✅ Registered successfully. Confirmation email sent.",
-    });
+    res
+      .status(201)
+      .json({
+        message: "✅ Registered successfully. Confirmation email sent.",
+      });
   } catch (error) {
-    console.error("❌ Register Error:", error.message);
     res
       .status(500)
       .json({ message: "Registration failed", error: error.message });
@@ -485,99 +364,206 @@ exports.registerUser = async (req, res) => {
 };
 
 // =========================
-// ✅ Login User (with safe email sending)
+// ✅ Login User
 // =========================
 exports.loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("🔹 Login started for:", email);
 
     const user = await User.findOne({ email: email.toLowerCase() });
-    console.log("🔹 User fetched from DB:", user);
-
     if (!user) return res.status(400).json({ message: "User not found" });
 
     const isMatch = await user.comparePassword(password);
-    console.log("🔹 Password match:", isMatch);
-
     if (!isMatch)
       return res.status(401).json({ message: "Invalid credentials" });
 
     const token = generateToken(user._id, user.role);
-    console.log("🔹 Token generated:", token);
 
-    // ✅ Wrap email in try-catch so timeout doesn't break login
-    try {
-      // await sendEmail(
-      //   user.email,
-      //   "✅ Login Alert - StoneByte Platform",
-      //   `
-      //     <p>Hey ${user.name},</p>
-      //     <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
-      //     <p>If this wasn't you, please reset your password immediately.</p>
-      //     <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
-      //   `
-      // );
-      console.log("📧 Login alert email (disabled to avoid Render timeout)");
-    } catch (emailErr) {
-      console.error("⚠️ Login email failed:", emailErr.message);
-    }
+    // 🔹 Non-blocking login alert email
+    sendEmail(
+      user.email,
+      "✅ Login Alert - StoneByte Platform",
+      `
+      <p>Hey ${user.name},</p>
+      <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
+      <p>If this wasn't you, reset your password immediately.</p>
+      <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
+      `
+    );
 
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production", // ✅ important for Render
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // ✅ cross-site allowed
+        secure: false,
+        sameSite: "Lax",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({ user: { name: user.name, email: user.email, role: user.role } });
-
-    console.log("🔹 Login response sent");
+      .json({
+        user: { name: user.name, email: user.email, role: user.role },
+      });
   } catch (error) {
-    console.error("❌ Login Error:", error.message);
     res.status(500).json({ message: "Login failed", error: error.message });
   }
 };
 
 // =========================
-// ⚠️ Placeholder exports (to avoid "undefined handler" error)
+// ✅ Logout User
 // =========================
-// Commented-out stubs — so routes exist but won’t break
 exports.logoutUser = async (req, res) => {
   try {
-    res.clearCookie("token");
-    res.json({ message: "✅ Logged out successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Logout failed" });
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: false,
+      sameSite: "Lax",
+    });
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    res.status(500).json({ message: "Logout failed", error: error.message });
   }
 };
 
+// =========================
+// ✅ Get Profile
+// =========================
 exports.getProfile = async (req, res) => {
   try {
-    res.json({ user: req.user || null });
-  } catch (err) {
-    res.status(500).json({ message: "Profile fetch failed" });
+    const user = await User.findById(req.user._id).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to fetch profile", error: error.message });
   }
 };
 
-// ✅ Comment out rest to stop deploy crash
-// exports.forgotPassword = async () => {};
-// exports.resetPassword = async () => {};
-// exports.sendOTP = async () => {};
-// exports.verifyOTP = async () => {};
-// exports.verifyEmail = async () => {};
+// =========================
+// ✅ Forgot Password
+// =========================
+exports.forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (!user)
+      return res.status(404).json({ message: "User with email not found" });
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    user.resetToken = resetToken;
+    user.resetTokenExpires = Date.now() + 3600000;
+    await user.save();
+
+    const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+
+    sendEmail(
+      email,
+      "🔑 Reset Your Password - Ashish ",
+      `<p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`
+    );
+
+    res.json({ message: "Password reset link sent to your email" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to send reset link", error: error.message });
+  }
+};
 
 // =========================
-// 🔍 Debug Exports
+// ✅ Reset Password
 // =========================
-console.log("Auth Controller Exports Check:", {
-  registerUser: typeof exports.registerUser,
-  loginUser: typeof exports.loginUser,
-  logoutUser: typeof exports.logoutUser,
-  getProfile: typeof exports.getProfile,
-  forgotPassword: typeof exports.forgotPassword,
-  resetPassword: typeof exports.resetPassword,
-  sendOTP: typeof exports.sendOTP,
-  verifyOTP: typeof exports.verifyOTP,
-  verifyEmail: typeof exports.verifyEmail,
-});
+exports.resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpires: { $gt: Date.now() },
+    });
+    if (!user)
+      return res.status(400).json({ message: "Invalid or expired token" });
+
+    user.password = password;
+    user.resetToken = undefined;
+    user.resetTokenExpires = undefined;
+    await user.save();
+
+    res.json({ message: "Password reset successful" });
+  } catch (error) {
+    res.status(500).json({ message: "Reset failed", error: error.message });
+  }
+};
+
+// =========================
+// ✅ Send OTP
+// =========================
+exports.sendOTP = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    otpStore.set(email, otp);
+
+    sendEmail(
+      email,
+      "🔢 Your OTP - Ashish",
+      `<p>Your OTP is: <strong>${otp}</strong></p>`
+    );
+
+    res.json({ message: "OTP sent to email" });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to send OTP", error: error.message });
+  }
+};
+
+// =========================
+// ✅ Verify OTP
+// =========================
+exports.verifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const storedOtp = otpStore.get(email);
+
+    if (!storedOtp || storedOtp !== otp)
+      return res.status(401).json({ message: "Invalid or expired OTP" });
+
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const token = generateToken(user._id, user.role);
+
+    res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "Lax",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .json({ user: { name: user.name, email: user.email, role: user.role } });
+
+    otpStore.delete(email);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "OTP verification failed", error: error.message });
+  }
+};
+
+// =========================
+// ✅ Verify Email
+// =========================
+exports.verifyEmail = async (req, res) => {
+  try {
+    const user = await User.findOne({ emailToken: req.params.token });
+    if (!user) return res.status(400).send("Invalid or expired token");
+
+    user.isVerified = true;
+    user.emailToken = null;
+    await user.save();
+
+    res.redirect(`${process.env.CLIENT_URL}/login`);
+  } catch (error) {
+    res.status(500).send("Something went wrong");
+  }
+};
