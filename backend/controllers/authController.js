@@ -301,9 +301,7 @@
 //     const isAdmin = allowedAdmins.includes(email.toLowerCase());
 
 //     if (role === "admin" && !isAdmin) {
-//       return res
-//         .status(403)
-//         .json({ message: "❌ Not allowed to register as admin" });
+//       return res.status(403).json({ message: "❌ Not allowed to register as admin" });
 //     }
 
 //     if (isAdmin && password !== "Ashish@1854") {
@@ -311,8 +309,7 @@
 //     }
 
 //     const userExists = await User.findOne({ email });
-//     if (userExists)
-//       return res.status(400).json({ message: "Email already exists" });
+//     if (userExists) return res.status(400).json({ message: "Email already exists" });
 
 //     role = isAdmin ? "admin" : "user";
 
@@ -347,16 +344,10 @@
 //       `
 //     );
 
-//     res
-//       .status(201)
-//       .json({
-//         message: "✅ Registered successfully. Confirmation email sent.",
-//       });
+//     res.status(201).json({ message: "✅ Registered successfully. Confirmation email sent." });
 //   } catch (error) {
 //     console.error("❌ Register Error:", error.message);
-//     res
-//       .status(500)
-//       .json({ message: "Registration failed", error: error.message });
+//     res.status(500).json({ message: "Registration failed", error: error.message });
 //   }
 // };
 
@@ -376,8 +367,7 @@
 //     const isMatch = await user.comparePassword(password);
 //     console.log("🔹 Password match:", isMatch);
 
-//     if (!isMatch)
-//       return res.status(401).json({ message: "Invalid credentials" });
+//     if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
 //     const token = generateToken(user._id, user.role);
 //     console.log("🔹 Token generated:", token);
@@ -393,14 +383,12 @@
 //       `
 //     );
 
-//     res
-//       .cookie("token", token, {
-//         httpOnly: true,
-//         secure: process.env.NODE_ENV === "production", // ✅ important for Render
-//         sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // ✅ cross-site allowed
-//         maxAge: 7 * 24 * 60 * 60 * 1000,
-//       })
-//       .json({ user: { name: user.name, email: user.email, role: user.role } });
+//     res.cookie("token", token, {
+//       httpOnly: true,
+//       secure: process.env.NODE_ENV === "production",  // ✅ important for Render
+//       sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",  // ✅ cross-site allowed
+//       maxAge: 7 * 24 * 60 * 60 * 1000,
+//     }).json({ user: { name: user.name, email: user.email, role: user.role } });
 
 //     console.log("🔹 Login response sent");
 //   } catch (error) {
@@ -412,7 +400,9 @@
 // // ✅ The rest of your controllers (Logout, Profile, Forgot Password, Reset, OTP, VerifyEmail)
 // // remain EXACTLY the same — no changes needed 👇
 
-/// login alert comment out for reolve stucking issue // 📦 Importing dependencies
+//..................................
+
+// 📦 Importing dependencies
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 const sendEmail = require("../utils/sendEmail");
@@ -541,3 +531,15 @@ exports.loginUser = async (req, res) => {
 
 // ✅ The rest of your controllers (Logout, Profile, Forgot Password, Reset, OTP, VerifyEmail)
 // remain EXACTLY the same — no changes needed 👇
+
+console.log("Auth Controller Exports Check:", {
+  registerUser: typeof exports.registerUser,
+  loginUser: typeof exports.loginUser,
+  logoutUser: typeof exports.logoutUser,
+  getProfile: typeof exports.getProfile,
+  forgotPassword: typeof exports.forgotPassword,
+  resetPassword: typeof exports.resetPassword,
+  sendOTP: typeof exports.sendOTP,
+  verifyOTP: typeof exports.verifyOTP,
+  verifyEmail: typeof exports.verifyEmail,
+});
