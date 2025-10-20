@@ -447,7 +447,7 @@ exports.registerUser = async (req, res) => {
 
     console.log("🔹 User created:", user.email);
 
-    // 📨 Welcome Email
+    // ✅ Register email - safe to keep
     try {
       await sendEmail(
         user.email,
@@ -469,9 +469,8 @@ exports.registerUser = async (req, res) => {
           <a href="${process.env.CLIENT_URL}" style="padding:10px;background:#10b981;color:#fff;">Explore Dashboard</a>
         `
       );
-      console.log("📧 Welcome email sent");
     } catch (emailErr) {
-      console.error("⚠️ Welcome email failed:", emailErr.message);
+      console.error("⚠️ Register email failed:", emailErr.message);
     }
 
     res.status(201).json({
@@ -486,7 +485,7 @@ exports.registerUser = async (req, res) => {
 };
 
 // =========================
-// ✅ Login User (Safe Email + Cookie Config)
+// ✅ Login User (with safe email sending)
 // =========================
 exports.loginUser = async (req, res) => {
   try {
@@ -507,7 +506,7 @@ exports.loginUser = async (req, res) => {
     const token = generateToken(user._id, user.role);
     console.log("🔹 Token generated:", token);
 
-    // 📨 Optional Login Alert Email (safe try-catch)
+    // ✅ Wrap email in try-catch so timeout doesn't break login
     try {
       // await sendEmail(
       //   user.email,
@@ -519,22 +518,19 @@ exports.loginUser = async (req, res) => {
       //     <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
       //   `
       // );
-      console.log("📧 Login alert email skipped / disabled to prevent timeout");
+      console.log("📧 Login alert email (disabled to avoid Render timeout)");
     } catch (emailErr) {
-      console.error("⚠️ Login alert email failed:", emailErr.message);
+      console.error("⚠️ Login email failed:", emailErr.message);
     }
 
     res
       .cookie("token", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production", // ✅ important for Render
-        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", // ✅ cross-site allowed
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({
-        message: "✅ Login successful",
-        user: { name: user.name, email: user.email, role: user.role },
-      });
+      .json({ user: { name: user.name, email: user.email, role: user.role } });
 
     console.log("🔹 Login response sent");
   } catch (error) {
@@ -544,39 +540,35 @@ exports.loginUser = async (req, res) => {
 };
 
 // =========================
-// ❌ Optional controllers (commented to prevent handler errors)
+// ⚠️ Placeholder exports (to avoid "undefined handler" error)
 // =========================
+// Commented-out stubs — so routes exist but won’t break
+exports.logoutUser = async (req, res) => {
+  try {
+    res.clearCookie("token");
+    res.json({ message: "✅ Logged out successfully" });
+  } catch (err) {
+    res.status(500).json({ message: "Logout failed" });
+  }
+};
 
-// exports.logoutUser = async (req, res) => {
-//   // TODO: Implement logout (clear cookie)
-// };
+exports.getProfile = async (req, res) => {
+  try {
+    res.json({ user: req.user || null });
+  } catch (err) {
+    res.status(500).json({ message: "Profile fetch failed" });
+  }
+};
 
-// exports.getProfile = async (req, res) => {
-//   // TODO: Implement protected profile route
-// };
-
-// exports.forgotPassword = async (req, res) => {
-//   // TODO: Implement forgot password
-// };
-
-// exports.resetPassword = async (req, res) => {
-//   // TODO: Implement reset password
-// };
-
-// exports.sendOTP = async (req, res) => {
-//   // TODO: Implement OTP
-// };
-
-// exports.verifyOTP = async (req, res) => {
-//   // TODO: Implement OTP verify
-// };
-
-// exports.verifyEmail = async (req, res) => {
-//   // TODO: Implement Email verify
-// };
+// ✅ Comment out rest to stop deploy crash
+// exports.forgotPassword = async () => {};
+// exports.resetPassword = async () => {};
+// exports.sendOTP = async () => {};
+// exports.verifyOTP = async () => {};
+// exports.verifyEmail = async () => {};
 
 // =========================
-// ✅ Debug Export Check
+// 🔍 Debug Exports
 // =========================
 console.log("Auth Controller Exports Check:", {
   registerUser: typeof exports.registerUser,
