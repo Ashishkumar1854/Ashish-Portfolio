@@ -184,14 +184,16 @@
 // export default AdminDashboard;
 
 // src/pages/Admin/AdminDashboard.jsx
+//30/10
+
 import React, { useEffect, useState } from "react";
-import API from "../../utils/api"; // ✅ centralized API
-import HireAdmin from "../HireAdmin"; // Existing pending hire logic
-import { Bar } from "react-chartjs-2"; // Metrics Chart
+import API from "../../utils/api"; // ✅ centralized API instance
+import HireAdmin from "../HireAdmin";
+import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 
 const AdminDashboard = () => {
-  // 🧾 Metrics state
+  // 🧾 Metrics
   const [metrics, setMetrics] = useState({
     totalUsers: 0,
     totalAdmins: 0,
@@ -203,17 +205,20 @@ const AdminDashboard = () => {
     pendingHires: 0,
   });
 
-  // 📄 Recent data state
+  // 📄 Recent lists
   const [recentUsers, setRecentUsers] = useState([]);
   const [recentBlogs, setRecentBlogs] = useState([]);
   const [recentHires, setRecentHires] = useState([]);
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const res = await API.get("/api/admin/dashboard"); // ✅ centralized API
-        const data = res.data;
+  // 🧠 Fetch dashboard data
+  const fetchDashboard = async () => {
+    try {
+      const res = await API.get("/api/admin/dashboard", {
+        withCredentials: true,
+      });
+      const data = res.data;
 
+      if (data && data.metrics) {
         setMetrics({
           totalUsers: data.metrics.totalUsers || 0,
           totalAdmins: data.metrics.totalAdmins || 0,
@@ -224,18 +229,21 @@ const AdminDashboard = () => {
           confirmedHires: data.metrics.confirmedHires || 0,
           pendingHires: data.metrics.pendingHires || 0,
         });
-
-        setRecentUsers(data.recentUsers || []);
-        setRecentBlogs(data.recentBlogs || []);
-        setRecentHires(data.recentHires || []);
-      } catch (err) {
-        console.error("Error fetching dashboard data:", err);
       }
-    };
 
+      setRecentUsers(data.recentUsers || []);
+      setRecentBlogs(data.recentBlogs || []);
+      setRecentHires(data.recentHires || []);
+    } catch (err) {
+      console.error("❌ Dashboard fetch failed:", err);
+    }
+  };
+
+  useEffect(() => {
     fetchDashboard();
   }, []);
 
+  // 📈 Chart Data
   const chartData = {
     labels: ["Total Hires", "Confirmed", "Pending"],
     datasets: [
@@ -252,11 +260,27 @@ const AdminDashboard = () => {
     ],
   };
 
+  // ✅ Verify hire (for pending)
+  const handleVerifyHire = async (hireId) => {
+    try {
+      const res = await API.put(`/api/admin/hire/${hireId}/verify`, null, {
+        withCredentials: true,
+      });
+      if (res.data.success) {
+        alert("Hire verified successfully ✅");
+        fetchDashboard(); // refresh data
+      }
+    } catch (err) {
+      console.error("❌ Error verifying hire:", err);
+      alert("Failed to verify hire ❌");
+    }
+  };
+
   return (
     <div className="p-6 bg-gray-50 min-h-screen space-y-8">
       <h1 className="text-3xl font-bold mb-6">🧠 Admin Dashboard</h1>
 
-      {/* 🔹 Metrics Cards */}
+      {/* 🔹 Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
         {[
           { label: "Users", value: metrics.totalUsers, color: "bg-indigo-100" },
@@ -299,10 +323,32 @@ const AdminDashboard = () => {
         {recentHires.length === 0 ? (
           <p className="text-gray-400">No recent hires found.</p>
         ) : (
-          <ul className="list-disc list-inside">
-            {recentHires.map((hire, idx) => (
-              <li key={idx}>
-                {hire.name} — {hire.projectType} — {hire.status}
+          <ul className="space-y-2">
+            {recentHires.map((hire) => (
+              <li
+                key={hire._id}
+                className="flex justify-between items-center py-2 border-b last:border-none text-gray-600"
+              >
+                <span>
+                  {hire.name} — {hire.projectType} —{" "}
+                  <span
+                    className={`${
+                      hire.status === "pending"
+                        ? "text-orange-500"
+                        : "text-green-600"
+                    } font-semibold`}
+                  >
+                    {hire.status}
+                  </span>
+                </span>
+                {hire.status === "pending" && (
+                  <button
+                    onClick={() => handleVerifyHire(hire._id)}
+                    className="px-3 py-1 text-sm bg-green-500 text-white rounded-md hover:bg-green-600 transition"
+                  >
+                    Verify
+                  </button>
+                )}
               </li>
             ))}
           </ul>
@@ -351,7 +397,7 @@ const AdminDashboard = () => {
         )}
       </div>
 
-      {/* 🔹 Pending Freelancer Hire Requests */}
+      {/* 🔹 Pending Hire Requests Section */}
       <div className="bg-gray-50 p-4 rounded-xl shadow-inner mt-6">
         <h2 className="text-xl font-semibold mb-2">Pending Hire Requests</h2>
         <HireAdmin /> {/* ✅ Existing pending logic */}
