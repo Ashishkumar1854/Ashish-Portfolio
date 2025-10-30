@@ -202,11 +202,13 @@
 
 // export default PageBSection;
 
+//30/10\
+
 import React, { useEffect, useState } from "react";
+import API from "../utils/api";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { toast } from "react-toastify";
-import API from "../utils/api"; // ✅ centralized axios instance
 
 const PageBSection = () => {
   const { user } = useAuth();
@@ -217,6 +219,7 @@ const PageBSection = () => {
     link: "",
   });
 
+  // ✅ Fetch PageB data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -240,39 +243,61 @@ const PageBSection = () => {
     fetchData();
   }, []);
 
+  // ✅ Handle input change
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  // ✅ Handle add/update
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const res = await API.post("/api/home/pageB", form);
+      const newItem = {
+        title: form.title,
+        description: form.description,
+        link: form.link,
+      };
 
-      if (res.data?.data?.content) {
-        const contentArray = Array.isArray(res.data.data.content)
-          ? res.data.data.content
-          : [res.data.data.content];
-        toast.success("✅ Page B updated!");
-        setData(contentArray);
+      const updatedContent = [...data, newItem];
+
+      // ✅ send correct format expected by backend
+      const res = await API.post("/api/home", {
+        section: "pageB",
+        content: updatedContent,
+      });
+
+      if (res.data?.success) {
+        toast.success("✅ PageB content added!");
+        setData(updatedContent);
         setForm({ title: "", description: "", link: "" });
       } else {
-        toast.warn("⚠️ No content returned after update.");
+        toast.warn("⚠️ No content returned after save.");
       }
     } catch (err) {
       console.error("❌ POST Error", err);
       toast.error(
-        `Update failed: ${err?.response?.data?.message || err.message}`
+        `Save failed: ${err?.response?.data?.message || err.message}`
       );
     }
   };
 
+  // ✅ Handle delete (frontend + DB sync)
   const handleDelete = async (index) => {
     try {
-      await API.delete(`/api/home/pageB/${index}`);
-      setData((prev) => prev.filter((_, i) => i !== index)); // remove locally
-      toast.success("🗑️ Page B content deleted");
+      const updatedContent = data.filter((_, i) => i !== index);
+
+      // ✅ send the new full content array
+      const res = await API.post("/api/home", {
+        section: "pageB",
+        content: updatedContent,
+      });
+
+      if (res.data?.success) {
+        setData(updatedContent);
+        toast.success("🗑️ PageB content deleted");
+      } else {
+        toast.warn("⚠️ Delete request failed to update DB.");
+      }
     } catch (err) {
       console.error("❌ Delete Error", err);
       toast.error(
@@ -302,9 +327,7 @@ const PageBSection = () => {
         <p className="text-xl text-gray-800 italic mt-4">
           “Every great product starts with a problem — and not every attempt
           ends in success. I’m building solutions, one deploy at a time —
-          experimenting, learning, failing, and iterating fast. Download my
-          latest prototype, codebase, or strategy notes. 📉 See what worked,
-          what didn’t — and how I turned failures into features.”
+          experimenting, learning, failing, and iterating fast.”
         </p>
       </motion.div>
 
@@ -343,7 +366,7 @@ const PageBSection = () => {
         ))
       ) : (
         <p className="text-center text-gray-500 font-medium">
-          🚫 No Page B content available.
+          🚫 No PageB content available.
         </p>
       )}
 
