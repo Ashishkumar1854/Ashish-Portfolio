@@ -113,8 +113,98 @@
 //   console.log(`🚀 Server Running at http://localhost:${PORT}`);
 // });
 
-//after deplpyment login issue resolve ke liye
+// //after deplpyment login issue resolve ke liye
 
+// const express = require("express");
+// const cors = require("cors");
+// const connectDB = require("./config/db");
+// const cookieParser = require("cookie-parser");
+// const path = require("path");
+// const dotenv = require("dotenv");
+// const cron = require("node-cron");
+
+// dotenv.config();
+// const app = express();
+// const PORT = process.env.PORT || 5001;
+
+// connectDB();
+
+// // ✅ CORS FIX for Netlify (frontend) → Render (backend)
+// app.use(
+//   cors({
+//     origin: process.env.CLIENT_URL,
+//     credentials: true,
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   })
+// );
+
+// app.use(express.json());
+// app.use(cookieParser());
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+// // 🧠 Debug log middleware
+// app.use((req, res, next) => {
+//   console.log("---- Incoming Request ----");
+//   console.log("Path:", req.path);
+//   console.log("Method:", req.method);
+//   console.log("Body:", req.body);
+//   console.log("Cookies:", req.cookies);
+//   console.log("--------------------------");
+//   next();
+// });
+
+// // Routes
+// app.use("/api/auth", require("./routes/authRoutes"));
+// app.use("/api/home", require("./routes/homeRoutes"));
+// app.use("/api/home/skills", require("./routes/skillsRoutes"));
+// app.use("/api/vision", require("./routes/visionRoutes"));
+// app.use("/api/home/pageA", require("./routes/pageARoutes"));
+// app.use("/api/home/pageB", require("./routes/pageBRoutes"));
+// app.use("/api/home/pageC", require("./routes/pageCRoutes"));
+// app.use("/api/home/pageD", require("./routes/pageDRoutes"));
+// app.use("/api/about", require("./routes/aboutRoutes"));
+// app.use("/api/projects", require("./routes/projectRoutes"));
+// app.use(
+//   "/api/fresher-opportunities",
+//   require("./routes/fresherOpportunityRoutes")
+// );
+// app.use("/api/feedback", require("./routes/feedbackRoutes"));
+// app.use("/api/blogs", require("./routes/blogRoutes"));
+// app.use("/api/journey", require("./routes/journeyRoutes"));
+// app.use("/api/assistant", require("./routes/assistantRoutes"));
+// app.use("/api", require("./routes/hireRoutes"));
+// app.use("/api/admin", require("./routes/adminHireRoutes"));
+// app.use("/api/admin", require("./routes/adminRoutes"));
+
+// app.get("/", (req, res) => {
+//   res.send("API Working ✅");
+// });
+
+// // Weekly cron job (same)
+// cron.schedule("0 9 * * 1", async () => {
+//   console.log("Running weekly fresher opportunities email job...");
+//   const FresherOpportunity = require("./models/FresherOpportunity");
+//   const oneWeekAgo = new Date();
+//   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+//   const recentOpportunities = await FresherOpportunity.find({
+//     createdAt: { $gte: oneWeekAgo },
+//   });
+
+//   const {
+//     sendEmailToUsers,
+//   } = require("./controllers/fresherOpportunityController");
+//   for (const opp of recentOpportunities) {
+//     await sendEmailToUsers(opp);
+//   }
+// });
+
+// app.listen(PORT, () => {
+//   console.log(`🚀 Server Running at http://localhost:${PORT}`);
+// });
+
+// 03/11/2025
 const express = require("express");
 const cors = require("cors");
 const connectDB = require("./config/db");
@@ -132,7 +222,10 @@ connectDB();
 // ✅ CORS FIX for Netlify (frontend) → Render (backend)
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: [
+      process.env.CLIENT_URL, // e.g. https://ashish-portfolio.netlify.app
+      "http://localhost:5173", // optional for local
+    ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -154,7 +247,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
+// 🧩 Force HTTPS cookie (important for Render)
+app.set("trust proxy", 1); // 👈 add this line
+
+// ✅ Routes
 app.use("/api/auth", require("./routes/authRoutes"));
 app.use("/api/home", require("./routes/homeRoutes"));
 app.use("/api/home/skills", require("./routes/skillsRoutes"));
@@ -181,7 +277,7 @@ app.get("/", (req, res) => {
   res.send("API Working ✅");
 });
 
-// Weekly cron job (same)
+// 🕒 Weekly cron job (same)
 cron.schedule("0 9 * * 1", async () => {
   console.log("Running weekly fresher opportunities email job...");
   const FresherOpportunity = require("./models/FresherOpportunity");
