@@ -1,6 +1,3 @@
-// // .........with confirmation + sms  emial notification..........
-
-// // 📦 Importing dependencies
 // const User = require("../models/User");
 // const generateToken = require("../utils/generateToken");
 // const bcrypt = require("bcrypt");
@@ -9,7 +6,9 @@
 // require("dotenv").config();
 // const otpStore = new Map();
 
+// // =========================
 // // ✅ Register New User
+// // =========================
 // exports.registerUser = async (req, res) => {
 //   try {
 //     let { name, email, password, role } = req.body;
@@ -43,10 +42,10 @@
 //       isVerified: true,
 //     });
 
-//     // ✅ Send confirmation email
-//     await sendEmail(
+//     // 🔹 Non-blocking confirmation email
+//     sendEmail(
 //       user.email,
-//       "🎉 Welcome to Ashish  Community!",
+//       "🎉 Welcome to Ashish Community!",
 //       `
 //         <p>Hey <strong>${user.name}</strong>,</p>
 //         <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
@@ -56,24 +55,24 @@
 //           <li>💼 <strong>Latest Internship & Job Alerts</strong> directly from top companies</li>
 //           <li>📘 <strong>Exclusive Tech Blogs (Hottest interview questions)</strong> to boost your skills</li>
 //           <li>💻 <strong>Freelancing Gigs & Projects</strong> - Start earning right now</li>
-//           <li>💻 <strong>Hire a Freelancer</strong> - If you want to hire a freelancer, you can hire my services and also check my rating.</li>
-//           <li>💰 <strong>Client Referral Bonus</strong> - If you provide a client for freelancing, you will get 20% of the earnings.</li>
-//           <li>🔍 <strong>Direct Links to Company Careers</strong> - No more searching around</li>
+//           <li>💻 <strong>Hire a Freelancer</strong> - Check rating & hire services</li>
+//           <li>💰 <strong>Client Referral Bonus</strong> - Get 20% for client referrals</li>
+//           <li>🔍 <strong>Direct Links to Company Careers</strong></li>
 //         </ul>
-//         <p style="margin-top: 20px;">
-//           🔔 Make sure to check our dashboard daily for new updates and hidden opportunities!
-//         </p>
+//         <p style="margin-top: 20px;">🔔 Check our dashboard daily for updates!</p>
 //         <a href="${process.env.CLIENT_URL}"
 //           style="display: inline-block; margin-top: 20px; padding: 10px 16px; background-color: #10b981; color: #fff; border-radius: 6px; text-decoration: none;">
-//           Explore Dashboard Now 🚀
+//           Explore Dashboard 🚀
 //         </a>
-//         <p style="margin-top: 30px;">Cheers,<br/>💚 <strong>Team Ashish </strong></p>
+//         <p style="margin-top: 30px;">Cheers,<br/>💚 <strong>Team Ashish</strong></p>
 //       `
 //     );
 
-//     res.status(201).json({
-//       message: "✅ Registered successfully. Confirmation email sent.",
-//     });
+//     res
+//       .status(201)
+//       .json({
+//         message: "✅ Registered successfully. Confirmation email sent.",
+//       });
 //   } catch (error) {
 //     res
 //       .status(500)
@@ -81,7 +80,9 @@
 //   }
 // };
 
+// // =========================
 // // ✅ Login User
+// // =========================
 // exports.loginUser = async (req, res) => {
 //   try {
 //     const { email, password } = req.body;
@@ -95,13 +96,14 @@
 
 //     const token = generateToken(user._id, user.role);
 
-//     await sendEmail(
+//     // 🔹 Non-blocking login alert email
+//     sendEmail(
 //       user.email,
 //       "✅ Login Alert - StoneByte Platform",
 //       `
 //       <p>Hey ${user.name},</p>
 //       <p>You just logged in successfully to <strong>Ashish Bhai</strong> platform.</p>
-//       <p>If this wasn't you, please reset your password immediately.</p>
+//       <p>If this wasn't you, reset your password immediately.</p>
 //       <p><a href="${process.env.CLIENT_URL}/reset-password">Reset Password</a></p>
 //       `
 //     );
@@ -114,18 +116,16 @@
 //         maxAge: 7 * 24 * 60 * 60 * 1000,
 //       })
 //       .json({
-//         user: {
-//           name: user.name,
-//           email: user.email,
-//           role: user.role,
-//         },
+//         user: { name: user.name, email: user.email, role: user.role },
 //       });
 //   } catch (error) {
 //     res.status(500).json({ message: "Login failed", error: error.message });
 //   }
 // };
 
+// // =========================
 // // ✅ Logout User
+// // =========================
 // exports.logoutUser = async (req, res) => {
 //   try {
 //     res.clearCookie("token", {
@@ -139,7 +139,9 @@
 //   }
 // };
 
+// // =========================
 // // ✅ Get Profile
+// // =========================
 // exports.getProfile = async (req, res) => {
 //   try {
 //     const user = await User.findById(req.user._id).select("-password");
@@ -152,7 +154,9 @@
 //   }
 // };
 
+// // =========================
 // // ✅ Forgot Password
+// // =========================
 // exports.forgotPassword = async (req, res) => {
 //   try {
 //     const { email } = req.body;
@@ -167,7 +171,7 @@
 
 //     const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
-//     await sendEmail(
+//     sendEmail(
 //       email,
 //       "🔑 Reset Your Password - Ashish ",
 //       `<p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`
@@ -181,7 +185,9 @@
 //   }
 // };
 
+// // =========================
 // // ✅ Reset Password
+// // =========================
 // exports.resetPassword = async (req, res) => {
 //   try {
 //     const { token } = req.params;
@@ -191,7 +197,6 @@
 //       resetToken: token,
 //       resetTokenExpires: { $gt: Date.now() },
 //     });
-
 //     if (!user)
 //       return res.status(400).json({ message: "Invalid or expired token" });
 
@@ -206,16 +211,18 @@
 //   }
 // };
 
+// // =========================
 // // ✅ Send OTP
+// // =========================
 // exports.sendOTP = async (req, res) => {
 //   try {
 //     const { email } = req.body;
 //     const otp = Math.floor(100000 + Math.random() * 900000).toString();
 //     otpStore.set(email, otp);
 
-//     await sendEmail(
+//     sendEmail(
 //       email,
-//       "🔢 Your OTP - Ashish ",
+//       "🔢 Your OTP - Ashish",
 //       `<p>Your OTP is: <strong>${otp}</strong></p>`
 //     );
 
@@ -227,15 +234,16 @@
 //   }
 // };
 
+// // =========================
 // // ✅ Verify OTP
+// // =========================
 // exports.verifyOTP = async (req, res) => {
 //   try {
 //     const { email, otp } = req.body;
 //     const storedOtp = otpStore.get(email);
 
-//     if (!storedOtp || storedOtp !== otp) {
+//     if (!storedOtp || storedOtp !== otp)
 //       return res.status(401).json({ message: "Invalid or expired OTP" });
-//     }
 
 //     const user = await User.findOne({ email });
 //     if (!user) return res.status(404).json({ message: "User not found" });
@@ -249,13 +257,7 @@
 //         sameSite: "Lax",
 //         maxAge: 7 * 24 * 60 * 60 * 1000,
 //       })
-//       .json({
-//         user: {
-//           name: user.name,
-//           email: user.email,
-//           role: user.role,
-//         },
-//       });
+//       .json({ user: { name: user.name, email: user.email, role: user.role } });
 
 //     otpStore.delete(email);
 //   } catch (error) {
@@ -265,7 +267,9 @@
 //   }
 // };
 
+// // =========================
 // // ✅ Verify Email
+// // =========================
 // exports.verifyEmail = async (req, res) => {
 //   try {
 //     const user = await User.findOne({ emailToken: req.params.token });
@@ -281,12 +285,18 @@
 //   }
 // };
 
+//02 december
+
+// // .........with confirmation + sms  emial notification..........
+
+// 📦 Importing dependencies
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
 const bcrypt = require("bcrypt");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
 require("dotenv").config();
+
 const otpStore = new Map();
 
 // =========================
@@ -328,7 +338,7 @@ exports.registerUser = async (req, res) => {
     // 🔹 Non-blocking confirmation email
     sendEmail(
       user.email,
-      "🎉 Welcome to Ashish Community!",
+      "🎉 Welcome to Ashish Bhai Community!",
       `
         <p>Hey <strong>${user.name}</strong>,</p>
         <p>✅ You're now officially part of the <strong>StoneByte</strong> tech family! 🔥</p>
@@ -338,24 +348,24 @@ exports.registerUser = async (req, res) => {
           <li>💼 <strong>Latest Internship & Job Alerts</strong> directly from top companies</li>
           <li>📘 <strong>Exclusive Tech Blogs (Hottest interview questions)</strong> to boost your skills</li>
           <li>💻 <strong>Freelancing Gigs & Projects</strong> - Start earning right now</li>
-          <li>💻 <strong>Hire a Freelancer</strong> - Check rating & hire services</li>
-          <li>💰 <strong>Client Referral Bonus</strong> - Get 20% for client referrals</li>
-          <li>🔍 <strong>Direct Links to Company Careers</strong></li>
+          <li>💻 <strong>Hire a Freelancer</strong> - If you want to hire a freelancer, you can hire my services and also check my rating.</li>
+          <li>💰 <strong>Client Referral Bonus</strong> - If you provide a client for freelancing, you will get 20% of the earnings.</li>
+          <li>🔍 <strong>Direct Links to Company Careers</strong> - No more searching around</li>
         </ul>
-        <p style="margin-top: 20px;">🔔 Check our dashboard daily for updates!</p>
+        <p style="margin-top: 20px;">
+          🔔 Make sure to check our dashboard daily for new updates and hidden opportunities!
+        </p>
         <a href="${process.env.CLIENT_URL}"
           style="display: inline-block; margin-top: 20px; padding: 10px 16px; background-color: #10b981; color: #fff; border-radius: 6px; text-decoration: none;">
           Explore Dashboard 🚀
         </a>
-        <p style="margin-top: 30px;">Cheers,<br/>💚 <strong>Team Ashish</strong></p>
+        <p style="margin-top: 30px;">Cheers,<br/>💚 <strong>Team Ashish Bhai</strong></p>
       `
     );
 
-    res
-      .status(201)
-      .json({
-        message: "✅ Registered successfully. Confirmation email sent.",
-      });
+    res.status(201).json({
+      message: "✅ Registered successfully. Confirmation email sent.",
+    });
   } catch (error) {
     res
       .status(500)
@@ -379,8 +389,7 @@ exports.loginUser = async (req, res) => {
 
     const token = generateToken(user._id, user.role);
 
-    // 🔹 Non-blocking login alert email
-    sendEmail(
+    await sendEmail(
       user.email,
       "✅ Login Alert - StoneByte Platform",
       `
@@ -394,8 +403,8 @@ exports.loginUser = async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "Lax",
+        secure: true, // ✅ required for HTTPS (Render uses HTTPS)
+        sameSite: "none", // ✅ required for cross-domain frontend/backend
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({
@@ -413,8 +422,8 @@ exports.logoutUser = async (req, res) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
-      secure: false,
-      sameSite: "Lax",
+      secure: true,
+      sameSite: "none",
     });
     res.status(200).json({ message: "Logout successful" });
   } catch (error) {
@@ -444,8 +453,7 @@ exports.forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
-    if (!user)
-      return res.status(404).json({ message: "User with email not found" });
+    if (!user) return res.status(404).json({ message: "User not found" });
 
     const resetToken = crypto.randomBytes(32).toString("hex");
     user.resetToken = resetToken;
@@ -494,9 +502,7 @@ exports.resetPassword = async (req, res) => {
   }
 };
 
-// =========================
 // ✅ Send OTP
-// =========================
 exports.sendOTP = async (req, res) => {
   try {
     const { email } = req.body;
@@ -525,8 +531,9 @@ exports.verifyOTP = async (req, res) => {
     const { email, otp } = req.body;
     const storedOtp = otpStore.get(email);
 
-    if (!storedOtp || storedOtp !== otp)
+    if (!storedOtp || storedOtp !== otp) {
       return res.status(401).json({ message: "Invalid or expired OTP" });
+    }
 
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
@@ -536,8 +543,8 @@ exports.verifyOTP = async (req, res) => {
     res
       .cookie("token", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "Lax",
+        secure: true,
+        sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({ user: { name: user.name, email: user.email, role: user.role } });

@@ -1,4 +1,4 @@
-// //30/10\
+// //02 december
 
 // import React, { useEffect, useState } from "react";
 // import API from "../utils/api";
@@ -103,28 +103,42 @@
 //   };
 
 //   return (
-//     <section
-//       id="pageB"
-//       className="relative bg-gradient-to-r from-green-50 via-white to-purple-50 py-20 px-8 rounded-xl shadow-xl space-y-20"
-//     >
-//       {/* 🎖️ Heading */}
+//     <section id="pageB" className="relative bg-white py-20 px-6 space-y-16">
+//       {/* --- Section Heading (Modern, Clean, Professional) --- */}
 //       <motion.div
-//         initial={{ opacity: 0, y: 40 }}
+//         initial={{ opacity: 0, y: 32 }}
 //         animate={{ opacity: 1, y: 0 }}
-//         transition={{ duration: 0.8 }}
-//         className="text-center"
+//         transition={{ duration: 0.7 }}
+//         className="max-w-4xl mx-auto text-center"
 //       >
-//         <h2 className="text-5xl font-extrabold text-green-700 flex justify-center items-center gap-3">
-//           🌱 From Idea to Impact: My Startup Journey in Code.
+//         {/* Top Accent Line */}
+//         <div className="flex items-center justify-center mb-6">
+//           <span className="h-1 w-20 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full"></span>
+//         </div>
+
+//         {/* Main Heading */}
+//         <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
+//           From Concept to Execution — a Transparent Build Journey
 //         </h2>
-//         <h3 className="text-xl text-gray-800 italic mt-4">
-//           🚀 "See My Startup Blueprint – Code, Failures & Fixes in Progress."
-//         </h3>
-//         <p className="text-xl text-gray-800 italic mt-4">
-//           “Every great product starts with a problem — and not every attempt
-//           ends in success. I’m building solutions, one deploy at a time —
-//           experimenting, learning, failing, and iterating fast.”
+
+//         {/* Subtext Line 1 */}
+//         <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">
+//           A behind-the-scenes look into how I take raw ideas, break them down,
+//           validate assumptions, and turn experiments into working product
+//           features.
 //         </p>
+
+//         {/* Subtext Line 2 */}
+//         <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">
+//           I share prototypes, failures, iterations, and decisions — exactly how
+//           real startup product teams work. Each post documents my reasoning,
+//           mistakes, and the engineering choices that shaped the final outcome.
+//         </p>
+
+//         {/* Decorative bottom fade divider */}
+//         <div className="mt-8 flex justify-center">
+//           <span className="h-[1.5px] w-32 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full"></span>
+//         </div>
 //       </motion.div>
 
 //       {/* Content Cards */}
@@ -216,8 +230,9 @@
 
 // export default PageBSection;
 
-//02 december
-
+////////////////////////////////
+//30 december ..with bg image ........
+// src/components/PageBSection.jsx
 import React, { useEffect, useState } from "react";
 import API from "../utils/api";
 import { motion } from "framer-motion";
@@ -233,12 +248,10 @@ const PageBSection = () => {
     link: "",
   });
 
-  // ✅ Fetch PageB data
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await API.get("/api/home/pageB");
-
         if (res.data?.data?.content) {
           const contentArray = Array.isArray(res.data.data.content)
             ? res.data.data.content
@@ -257,12 +270,10 @@ const PageBSection = () => {
     fetchData();
   }, []);
 
-  // ✅ Handle input change
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // ✅ Handle add/update
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -274,7 +285,6 @@ const PageBSection = () => {
 
       const updatedContent = [...data, newItem];
 
-      // ✅ send correct format expected by backend
       const res = await API.post("/api/home", {
         section: "pageB",
         content: updatedContent,
@@ -295,12 +305,10 @@ const PageBSection = () => {
     }
   };
 
-  // ✅ Handle delete (frontend + DB sync)
   const handleDelete = async (index) => {
     try {
       const updatedContent = data.filter((_, i) => i !== index);
 
-      // ✅ send the new full content array
       const res = await API.post("/api/home", {
         section: "pageB",
         content: updatedContent,
@@ -320,85 +328,110 @@ const PageBSection = () => {
     }
   };
 
+  // Put your image at public/pageb-bg.jpg
+  const bgImagePath = "/pageb-bg.jpg";
+
   return (
-    <section id="pageB" className="relative bg-white py-20 px-6 space-y-16">
-      {/* --- Section Heading (Modern, Clean, Professional) --- */}
-      <motion.div
-        initial={{ opacity: 0, y: 32 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7 }}
-        className="max-w-4xl mx-auto text-center"
-      >
-        {/* Top Accent Line */}
-        <div className="flex items-center justify-center mb-6">
-          <span className="h-1 w-20 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full"></span>
-        </div>
+    <section id="pageB" className="relative bg-white py-20 px-6">
+      {/* ===== HERO: full image (no cropping) with overlay + centered text ===== */}
+      <div className="mx-auto w-full rounded-2xl overflow-hidden shadow-inner">
+        {/* actual image element ensures the whole photo is visible */}
+        <div className="relative">
+          <img
+            src={bgImagePath}
+            alt="From concept to execution"
+            className="w-full h-auto block"
+            style={{ display: "block", maxWidth: "100%" }}
+          />
 
-        {/* Main Heading */}
-        <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
-          From Concept to Execution — a Transparent Build Journey
-        </h2>
+          {/* overlay for readability */}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{ background: "rgba(0,0,0,0.36)" }}
+          />
 
-        {/* Subtext Line 1 */}
-        <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">
-          A behind-the-scenes look into how I take raw ideas, break them down,
-          validate assumptions, and turn experiments into working product
-          features.
-        </p>
-
-        {/* Subtext Line 2 */}
-        <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">
-          I share prototypes, failures, iterations, and decisions — exactly how
-          real startup product teams work. Each post documents my reasoning,
-          mistakes, and the engineering choices that shaped the final outcome.
-        </p>
-
-        {/* Decorative bottom fade divider */}
-        <div className="mt-8 flex justify-center">
-          <span className="h-[1.5px] w-32 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full"></span>
-        </div>
-      </motion.div>
-
-      {/* Content Cards */}
-      {data && data.length > 0 ? (
-        data.map((item, idx) => (
+          {/* centered content over the image */}
           <motion.div
-            key={idx}
-            className="bg-white p-6 max-w-3xl mx-auto rounded-xl shadow-lg space-y-4"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="absolute inset-0 flex items-center justify-center px-6 py-12"
           >
-            <h3 className="text-3xl font-bold text-green-700">{item.title}</h3>
-            <p className="text-gray-700">{item.description}</p>
+            <div className="max-w-4xl text-center">
+              <div className="flex items-center justify-center mb-6">
+                <span className="h-1 w-20 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full" />
+              </div>
 
-            {item.link && (
-              <a
-                href={item.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition"
-              >
-                📎 View Document
-              </a>
-            )}
+              <h2 className="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg">
+                From Concept to Execution — a Transparent Build Journey
+              </h2>
 
-            {user?.role === "admin" && (
-              <button
-                onClick={() => handleDelete(idx)}
-                className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
-              >
-                🗑️ Delete Content
-              </button>
-            )}
+              <p className="mt-4 text-lg text-white/90 max-w-3xl mx-auto leading-relaxed">
+                A behind-the-scenes look into how I take raw ideas, break them
+                down, validate assumptions, and turn experiments into working
+                product features.
+              </p>
+
+              <p className="mt-4 text-lg text-white/90 max-w-3xl mx-auto leading-relaxed">
+                I share prototypes, failures, iterations, and decisions —
+                exactly how real startup product teams work. Each post documents
+                my reasoning, mistakes, and the engineering choices that shaped
+                the final outcome.
+              </p>
+
+              <div className="mt-8 flex justify-center">
+                <span className="h-[1.5px] w-32 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full opacity-80" />
+              </div>
+            </div>
           </motion.div>
-        ))
-      ) : (
-        <p className="text-center text-gray-500 font-medium">
-          🚫 No PageB content available.
-        </p>
-      )}
+        </div>
+      </div>
 
-      {/* Admin Form */}
+      {/* ===== CONTENT CARDS (unchanged) ===== */}
+      <div className="space-y-8 mt-12">
+        {data && data.length > 0 ? (
+          data.map((item, idx) => (
+            <motion.div
+              key={idx}
+              className="bg-white p-6 max-w-3xl mx-auto rounded-xl shadow-lg space-y-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <h3 className="text-3xl font-bold text-green-700">
+                {item.title}
+              </h3>
+              <p className="text-gray-700">{item.description}</p>
+
+              {item.link && (
+                <a
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition"
+                >
+                  📎 View Document
+                </a>
+              )}
+
+              {user?.role === "admin" && (
+                <button
+                  onClick={() => handleDelete(idx)}
+                  className="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition"
+                >
+                  🗑️ Delete Content
+                </button>
+              )}
+            </motion.div>
+          ))
+        ) : (
+          <p className="text-center text-gray-500 font-medium">
+            🚫 No PageB content available.
+          </p>
+        )}
+      </div>
+
+      {/* ===== ADMIN FORM (unchanged) ===== */}
       {user?.role === "admin" && (
         <div className="mt-16 max-w-2xl mx-auto bg-white p-6 rounded-xl shadow-md border space-y-4">
           <h3 className="text-lg font-bold text-gray-800">
