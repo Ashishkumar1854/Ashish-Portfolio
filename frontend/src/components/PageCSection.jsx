@@ -1,11 +1,11 @@
 // // src/pages/PageCSection.jsx
 
 // import React, { useEffect, useState } from "react";
-// import axios from "axios";
 // import { motion } from "framer-motion";
 // import { useAuth } from "../context/AuthContext";
 // import { toast } from "react-toastify";
 // import { Star } from "lucide-react";
+// import API from "../utils/api"; // ✅ Use unified API instance
 
 // const PageCSection = () => {
 //   const { user } = useAuth();
@@ -19,9 +19,7 @@
 
 //   const fetchTestimonials = async () => {
 //     try {
-//       const res = await axios.get(
-//         `${process.env.REACT_APP_BACKEND_URL}/api/home/pageC`
-//       );
+//       const res = await API.get("/api/home/pageC"); // ✅ replaced axios
 //       const content = res.data?.data?.content || [];
 //       setData(Array.isArray(content) ? content : [content]);
 //     } catch (err) {
@@ -48,10 +46,7 @@
 //     }
 
 //     try {
-//       const res = await axios.post(
-//         `${process.env.REACT_APP_BACKEND_URL}/api/home/pageC`,
-//         form
-//       );
+//       const res = await API.post("/api/home/pageC", form); // ✅ replaced axios
 //       const content = res.data?.data?.content || [];
 //       setData(Array.isArray(content) ? content : [content]);
 //       toast.success("✅ Testimonial added!");
@@ -64,9 +59,7 @@
 
 //   const handleDelete = async (index) => {
 //     try {
-//       await axios.delete(
-//         `${process.env.REACT_APP_BACKEND_URL}/api/home/pageC/${index}`
-//       );
+//       await API.delete(`/api/home/pageC/${index}`); // ✅ replaced axios
 //       setData((prev) => prev.filter((_, i) => i !== index));
 //       toast.success("🗑️ Testimonial deleted");
 //     } catch (err) {
@@ -105,27 +98,18 @@
 //               transition={{ duration: 0.6 }}
 //               className="relative group bg-white/70 backdrop-blur-lg p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100"
 //             >
-//               {/* Decorative Quote */}
 //               <div className="absolute top-4 right-6 text-5xl text-gray-200 font-serif">
 //                 “
 //               </div>
-
-//               {/* Project Name */}
 //               <h3 className="text-xl font-semibold text-gray-900 mb-2">
 //                 {item.projectName}
 //               </h3>
-
-//               {/* Feedback */}
 //               <p className="text-gray-700 italic leading-relaxed">
 //                 “{item.feedback}”
 //               </p>
-
-//               {/* Description */}
 //               {item.description && (
 //                 <p className="text-gray-500 mt-3 text-sm">{item.description}</p>
 //               )}
-
-//               {/* Rating */}
 //               <div className="flex items-center gap-1 mt-4">
 //                 {Array.from({ length: 5 }).map((_, i) => (
 //                   <Star
@@ -139,8 +123,6 @@
 //                   />
 //                 ))}
 //               </div>
-
-//               {/* Delete Button for Admin Only */}
 //               {user?.role === "admin" && (
 //                 <button
 //                   onClick={() => handleDelete(idx)}
@@ -158,7 +140,7 @@
 //         )}
 //       </div>
 
-//       {/* Add Form - For Any Logged-in User */}
+//       {/* Add Form */}
 //       {user ? (
 //         <form
 //           onSubmit={handleSubmit}
@@ -221,6 +203,8 @@
 // };
 
 // export default PageCSection;
+
+//02 december
 
 // src/pages/PageCSection.jsx
 
@@ -295,7 +279,7 @@ const PageCSection = () => {
   };
 
   return (
-    <section id="pageC" className="py-20 px-8 bg-gray-50 rounded-xl space-y-16">
+    <section id="pageC" className="py-8 px-10 bg-gray-50 rounded-xl space-y-16">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
@@ -303,12 +287,36 @@ const PageCSection = () => {
         transition={{ duration: 0.8 }}
         className="text-center"
       >
-        <h2 className="text-4xl font-bold text-gray-900">
-          🌟 Client Testimonials
-        </h2>
-        <p className="text-gray-600 mt-3 text-lg">
-          Real feedback from projects and collaborations.
-        </p>
+        <div className="mt-20 max-w-4xl mx-auto px-6 text-center">
+          {/* Section Label */}
+          <div className="flex items-center justify-center gap-3">
+            <span className="h-1.5 w-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500"></span>
+            <span className="uppercase tracking-widest text-sm font-semibold text-purple-600">
+              What People Say About Working With Me
+            </span>
+          </div>
+
+          {/* Title */}
+          <h2 className="text-4xl font-extrabold text-gray-900 mt-4 leading-tight">
+            Client Feedback & Experience
+          </h2>
+
+          {/* Subtext */}
+          <p className="text-gray-700 mt-4 text-lg max-w-2xl mx-auto leading-relaxed">
+            Insights shared by founders, team leads, and collaborators I’ve
+            worked with— highlighting how I approach problems, deliver
+            solutions, and adapt to real-world challenges.
+          </p>
+
+          {/* Decorative Line */}
+          <div className="mt-6 h-[2px] max-w-3xl mx-auto bg-gradient-to-r from-gray-200 to-purple-300 rounded-full"></div>
+
+          {/* Small Highlight Text */}
+          <p className="text-sm text-gray-500 mt-3 italic">
+            *(All opinions are from completed projects, sprints, and long-term
+            collaborations.)*
+          </p>
+        </div>
       </motion.div>
 
       {/* Testimonials */}

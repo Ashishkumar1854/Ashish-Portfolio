@@ -1,7 +1,7 @@
-// //06 oct
+// //30/10\
 
 // import React, { useEffect, useState } from "react";
-// import axios from "axios";
+// import API from "../utils/api";
 // import { motion } from "framer-motion";
 // import { useAuth } from "../context/AuthContext";
 // import { toast } from "react-toastify";
@@ -15,12 +15,11 @@
 //     link: "",
 //   });
 
+//   // ✅ Fetch PageB data
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       try {
-//         const res = await axios.get(
-//           `${process.env.REACT_APP_BACKEND_URL}/api/home/pageB`
-//         );
+//         const res = await API.get("/api/home/pageB");
 
 //         if (res.data?.data?.content) {
 //           const contentArray = Array.isArray(res.data.data.content)
@@ -40,44 +39,61 @@
 //     fetchData();
 //   }, []);
 
+//   // ✅ Handle input change
 //   const handleChange = (e) => {
 //     setForm({ ...form, [e.target.name]: e.target.value });
 //   };
 
+//   // ✅ Handle add/update
 //   const handleSubmit = async (e) => {
 //     e.preventDefault();
-
 //     try {
-//       const res = await axios.post(
-//         `${process.env.REACT_APP_BACKEND_URL}/api/home/pageB`,
-//         form
-//       );
+//       const newItem = {
+//         title: form.title,
+//         description: form.description,
+//         link: form.link,
+//       };
 
-//       if (res.data?.data?.content) {
-//         const contentArray = Array.isArray(res.data.data.content)
-//           ? res.data.data.content
-//           : [res.data.data.content];
-//         toast.success("✅ Page B updated!");
-//         setData(contentArray);
+//       const updatedContent = [...data, newItem];
+
+//       // ✅ send correct format expected by backend
+//       const res = await API.post("/api/home", {
+//         section: "pageB",
+//         content: updatedContent,
+//       });
+
+//       if (res.data?.success) {
+//         toast.success("✅ PageB content added!");
+//         setData(updatedContent);
 //         setForm({ title: "", description: "", link: "" });
 //       } else {
-//         toast.warn("⚠️ No content returned after update.");
+//         toast.warn("⚠️ No content returned after save.");
 //       }
 //     } catch (err) {
 //       console.error("❌ POST Error", err);
 //       toast.error(
-//         `Update failed: ${err?.response?.data?.message || err.message}`
+//         `Save failed: ${err?.response?.data?.message || err.message}`
 //       );
 //     }
 //   };
 
+//   // ✅ Handle delete (frontend + DB sync)
 //   const handleDelete = async (index) => {
 //     try {
-//       await axios.delete(
-//         `${process.env.REACT_APP_BACKEND_URL}/api/home/pageB/${index}`
-//       );
-//       setData((prev) => prev.filter((_, i) => i !== index)); // remove locally
-//       toast.success("🗑️ Page B content deleted");
+//       const updatedContent = data.filter((_, i) => i !== index);
+
+//       // ✅ send the new full content array
+//       const res = await API.post("/api/home", {
+//         section: "pageB",
+//         content: updatedContent,
+//       });
+
+//       if (res.data?.success) {
+//         setData(updatedContent);
+//         toast.success("🗑️ PageB content deleted");
+//       } else {
+//         toast.warn("⚠️ Delete request failed to update DB.");
+//       }
 //     } catch (err) {
 //       console.error("❌ Delete Error", err);
 //       toast.error(
@@ -107,9 +123,7 @@
 //         <p className="text-xl text-gray-800 italic mt-4">
 //           “Every great product starts with a problem — and not every attempt
 //           ends in success. I’m building solutions, one deploy at a time —
-//           experimenting, learning, failing, and iterating fast. Download my
-//           latest prototype, codebase, or strategy notes. 📉 See what worked,
-//           what didn’t — and how I turned failures into features.”
+//           experimenting, learning, failing, and iterating fast.”
 //         </p>
 //       </motion.div>
 
@@ -148,7 +162,7 @@
 //         ))
 //       ) : (
 //         <p className="text-center text-gray-500 font-medium">
-//           🚫 No Page B content available.
+//           🚫 No PageB content available.
 //         </p>
 //       )}
 
@@ -202,7 +216,7 @@
 
 // export default PageBSection;
 
-//30/10\
+//02 december
 
 import React, { useEffect, useState } from "react";
 import API from "../utils/api";
@@ -307,28 +321,42 @@ const PageBSection = () => {
   };
 
   return (
-    <section
-      id="pageB"
-      className="relative bg-gradient-to-r from-green-50 via-white to-purple-50 py-20 px-8 rounded-xl shadow-xl space-y-20"
-    >
-      {/* 🎖️ Heading */}
+    <section id="pageB" className="relative bg-white py-20 px-6 space-y-16">
+      {/* --- Section Heading (Modern, Clean, Professional) --- */}
       <motion.div
-        initial={{ opacity: 0, y: 40 }}
+        initial={{ opacity: 0, y: 32 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-center"
+        transition={{ duration: 0.7 }}
+        className="max-w-4xl mx-auto text-center"
       >
-        <h2 className="text-5xl font-extrabold text-green-700 flex justify-center items-center gap-3">
-          🌱 From Idea to Impact: My Startup Journey in Code.
+        {/* Top Accent Line */}
+        <div className="flex items-center justify-center mb-6">
+          <span className="h-1 w-20 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full"></span>
+        </div>
+
+        {/* Main Heading */}
+        <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 leading-tight">
+          From Concept to Execution — a Transparent Build Journey
         </h2>
-        <h3 className="text-xl text-gray-800 italic mt-4">
-          🚀 "See My Startup Blueprint – Code, Failures & Fixes in Progress."
-        </h3>
-        <p className="text-xl text-gray-800 italic mt-4">
-          “Every great product starts with a problem — and not every attempt
-          ends in success. I’m building solutions, one deploy at a time —
-          experimenting, learning, failing, and iterating fast.”
+
+        {/* Subtext Line 1 */}
+        <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">
+          A behind-the-scenes look into how I take raw ideas, break them down,
+          validate assumptions, and turn experiments into working product
+          features.
         </p>
+
+        {/* Subtext Line 2 */}
+        <p className="mt-4 text-lg text-gray-700 max-w-3xl mx-auto">
+          I share prototypes, failures, iterations, and decisions — exactly how
+          real startup product teams work. Each post documents my reasoning,
+          mistakes, and the engineering choices that shaped the final outcome.
+        </p>
+
+        {/* Decorative bottom fade divider */}
+        <div className="mt-8 flex justify-center">
+          <span className="h-[1.5px] w-32 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full"></span>
+        </div>
       </motion.div>
 
       {/* Content Cards */}
