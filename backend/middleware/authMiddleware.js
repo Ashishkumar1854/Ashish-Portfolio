@@ -3,7 +3,11 @@ const User = require("../models/User");
 
 // General user authentication
 exports.protect = async (req, res, next) => {
-  const token = req.cookies.token;
+  const authHeader = req.headers.authorization || "";
+  const bearerToken = authHeader.startsWith("Bearer ")
+    ? authHeader.slice(7)
+    : null;
+  const token = req.cookies.token || bearerToken;
 
   if (!token) {
     return res.status(401).json({ message: "Not authorized, no token" });
@@ -24,7 +28,11 @@ exports.protect = async (req, res, next) => {
 
 // Admin authentication
 exports.adminAuth = async (req, res, next) => {
-  const token = req.cookies.token;
+  const authHeader = req.headers.authorization || "";
+  const bearerToken = authHeader.startsWith("Bearer ")
+    ? authHeader.slice(7)
+    : null;
+  const token = req.cookies.token || bearerToken;
 
   if (!token) {
     return res.status(401).json({ message: "Not authorized, no token" });

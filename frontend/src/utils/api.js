@@ -30,6 +30,12 @@ const API = axios.create({
 });
 
 API.interceptors.request.use((req) => {
+  if (typeof window !== "undefined") {
+    const token = window.localStorage.getItem("auth_token");
+    if (token) {
+      req.headers.Authorization = `Bearer ${token}`;
+    }
+  }
   console.log("➡️ Request:", req.url, req.data);
   return req;
 });

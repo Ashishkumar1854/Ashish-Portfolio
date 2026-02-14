@@ -408,6 +408,7 @@ exports.loginUser = async (req, res) => {
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .json({
+        token,
         user: { name: user.name, email: user.email, role: user.role },
       });
   } catch (error) {
@@ -547,7 +548,10 @@ exports.verifyOTP = async (req, res) => {
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
-      .json({ user: { name: user.name, email: user.email, role: user.role } });
+      .json({
+        token,
+        user: { name: user.name, email: user.email, role: user.role },
+      });
 
     otpStore.delete(email);
   } catch (error) {

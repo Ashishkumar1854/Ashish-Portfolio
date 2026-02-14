@@ -116,6 +116,10 @@ export const AuthProvider = ({ children }) => {
     try {
       const res = await API.post("/api/auth/login", formData);
       const nextUser = res.data?.user || res.data;
+      const token = res.data?.token;
+      if (token && typeof window !== "undefined") {
+        window.localStorage.setItem("auth_token", token);
+      }
       if (nextUser) setUser(nextUser);
       return res.data;
     } catch (err) {
@@ -132,6 +136,9 @@ export const AuthProvider = ({ children }) => {
     try {
       await API.post("/api/auth/logout");
       setUser(null);
+      if (typeof window !== "undefined") {
+        window.localStorage.removeItem("auth_token");
+      }
     } catch (err) {
       console.error(
         "❌ Logout failed:",
