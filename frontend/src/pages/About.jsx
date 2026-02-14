@@ -195,17 +195,35 @@ const About = () => {
       )}
       <TeamSection teams={teams} onDelete={handleDeleteTeam} user={user} />
 
-      <h2 className="text-3xl font-bold my-8 text-center">💼 Our Services</h2>
-      {user?.role === "admin" && (
-        <ServiceForm
-          onAdd={(newService) => setServices((prev) => [...prev, newService])}
-        />
-      )}
-      <ServiceSection
-        services={services}
-        onDelete={handleDeleteService}
-        user={user}
-      />
+      <div className="my-10 rounded-3xl bg-slate-50/60 p-6 sm:p-8">
+        <div className="text-center">
+          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-slate-500">
+            Services
+          </p>
+          <h2 className="mt-2 text-3xl font-bold text-slate-900">
+            💼 Our Services
+          </h2>
+          <p className="mt-2 text-sm text-slate-500">
+            Practical, reliable, and design-first delivery for modern products.
+          </p>
+        </div>
+
+        {user?.role === "admin" && (
+          <div className="mt-6">
+            <ServiceForm
+              onAdd={(newService) => setServices((prev) => [...prev, newService])}
+            />
+          </div>
+        )}
+
+        <div className="mt-6">
+          <ServiceSection
+            services={services}
+            onDelete={handleDeleteService}
+            user={user}
+          />
+        </div>
+      </div>
 
       <h2 className="text-3xl font-bold my-8 text-center">
         📞 Contact Information

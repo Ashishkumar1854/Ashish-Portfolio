@@ -348,11 +348,26 @@ const HeroSection = () => {
     <section id="hero" className="mt-14 space-y-8">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="relative overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white shadow-[0_24px_60px_rgba(2,6,23,0.35)]">
-          <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
-          <div className="absolute -bottom-28 -right-24 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl" />
+          <motion.div
+            aria-hidden
+            className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl"
+            animate={{ x: [0, 18, 0], y: [0, 12, 0] }}
+            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          />
+          <motion.div
+            aria-hidden
+            className="absolute -bottom-28 -right-24 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl"
+            animate={{ x: [0, -16, 0], y: [0, -10, 0] }}
+            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          />
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 p-8 sm:p-10 lg:p-12">
-            <div className="space-y-6">
+            <motion.div
+              className="space-y-6"
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
               <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide">
                 Product Engineer • AI/ML Builder
               </div>
@@ -366,21 +381,6 @@ const HeroSection = () => {
                 features that are clean, scalable, and user-focused.
               </p>
 
-              <div className="flex flex-wrap gap-3">
-                <a
-                  href="#projects"
-                  className="inline-flex items-center justify-center rounded-xl bg-white text-slate-900 px-5 py-2.5 text-sm font-semibold shadow-lg shadow-white/20 hover:bg-slate-100 transition"
-                >
-                  View Projects
-                </a>
-                <a
-                  href="/hire"
-                  className="inline-flex items-center justify-center rounded-xl border border-white/30 px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition"
-                >
-                  Hire Me
-                </a>
-              </div>
-
               <div className="flex flex-wrap gap-2 text-xs text-slate-300">
                 <span className="rounded-full bg-white/10 px-3 py-1">
                   React • Node • MongoDB
@@ -392,46 +392,56 @@ const HeroSection = () => {
                   Remote • India
                 </span>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="grid gap-4">
-              <div className="rounded-2xl bg-white/10 border border-white/10 p-5 backdrop-blur-md">
-                <div className="text-xs uppercase tracking-widest text-white/70">
-                  Recent Focus
-                </div>
-                <div className="mt-2 text-lg font-semibold">
-                  Admin dashboard + GPT assistant + hire workflow
-                </div>
-                <p className="mt-2 text-sm text-white/70">
-                  Built end-to-end UX with secure auth, analytics, and email
-                  automation.
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-white/10 border border-white/10 p-5 backdrop-blur-md">
-                <div className="text-xs uppercase tracking-widest text-white/70">
-                  Open to
-                </div>
-                <div className="mt-2 text-lg font-semibold">
-                  Freelance, product roles, and collaborations
-                </div>
-                <p className="mt-2 text-sm text-white/70">
-                  I love shipping fast, clean builds with strong UX.
-                </p>
-              </div>
-
-              <div className="rounded-2xl bg-gradient-to-r from-cyan-400/20 to-fuchsia-500/20 border border-white/10 p-5">
-                <div className="text-xs uppercase tracking-widest text-white/80">
-                  Value
-                </div>
-                <div className="mt-2 text-lg font-semibold">
-                  Clean UI, clear logic, measurable impact
-                </div>
-                <p className="mt-2 text-sm text-white/75">
-                  Pragmatic engineering with a design-first approach.
-                </p>
-              </div>
-            </div>
+            <motion.div
+              className="grid gap-4"
+              initial="hidden"
+              animate="show"
+              variants={{
+                hidden: {},
+                show: { transition: { staggerChildren: 0.12 } },
+              }}
+            >
+              {[
+                {
+                  label: "Recent Focus",
+                  title: "Admin dashboard + GPT assistant + hire workflow",
+                  body: "Built end-to-end UX with secure auth, analytics, and email automation.",
+                },
+                {
+                  label: "Open to",
+                  title: "Freelance, product roles, and collaborations",
+                  body: "I love shipping fast, clean builds with strong UX.",
+                },
+                {
+                  label: "Value",
+                  title: "Clean UI, clear logic, measurable impact",
+                  body: "Pragmatic engineering with a design-first approach.",
+                },
+              ].map((card, idx) => (
+                <motion.div
+                  key={card.label}
+                  variants={{
+                    hidden: { opacity: 0, y: 14 },
+                    show: { opacity: 1, y: 0 },
+                  }}
+                  transition={{ duration: 0.45, ease: "easeOut" }}
+                  className="group rounded-2xl bg-white/10 border border-white/10 p-5 backdrop-blur-md hover:border-white/30 hover:shadow-[0_12px_32px_rgba(56,189,248,0.18)] transition"
+                >
+                  <div className="text-xs uppercase tracking-widest text-white/70">
+                    {card.label}
+                  </div>
+                  <div className="mt-2 text-lg font-semibold text-white">
+                    {card.title}
+                  </div>
+                  <p className="mt-2 text-sm text-white/70">{card.body}</p>
+                  {idx === 2 && (
+                    <div className="mt-3 h-0.5 w-16 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500 opacity-70" />
+                  )}
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </div>
