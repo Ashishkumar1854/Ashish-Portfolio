@@ -343,205 +343,93 @@ const HeroSection = () => {
 
   // export default HeroSection;
 
-  //with bgr image
+  // redesigned without image
   return (
-    <section id="hero" className="space-y-8 mt-14">
-      <div className="max-w-6xl mx-auto px-17">
-        {/* HERO grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-          {/* LEFT: IMAGE (no badge) */}
-          <div className="relative rounded-2xl overflow-hidden shadow-xl h-[66vh] sm:h-[78vh] md:h-[70vh] lg:h-[78vh]">
-            <img
-              src="/bgr_img.png"
-              alt="Ashish"
-              className="w-full h-full object-cover block"
-            />
-            {/* soft vignette to give depth */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/8 pointer-events-none" />
-          </div>
+    <section id="hero" className="mt-14 space-y-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+        <div className="relative overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white shadow-[0_24px_60px_rgba(2,6,23,0.35)]">
+          <div className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl" />
+          <div className="absolute -bottom-28 -right-24 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl" />
 
-          {/* RIGHT: attractive frosted card */}
-          <div className="flex items-center">
-            <div className="relative z-10 w-full">
-              <div className="mx-auto max-w-xl bg-white/70 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-[0_20px_50px_rgba(16,24,40,0.08)] border border-white/40">
-                {/* header with gradient accent */}
-                <div className="mb-4">
-                  <div className="inline-block px-3 py-2 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white font-semibold text-xs shadow-sm">
-                    Hello, I'm Ashish Kumar
-                  </div>
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 p-8 sm:p-10 lg:p-12">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide">
+                Product Engineer • AI/ML Builder
+              </div>
 
-                  <h1 className="mt-4 text-3xl sm:text-4xl md:text-4xl font-extrabold text-gray-900 leading-tight">
-                    Welcome to my Portfolio
-                  </h1>
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
+                Ashish Kumar builds fast, reliable products that feel premium.
+              </h1>
 
-                  <p className="mt-2 text-sm sm:text-base text-gray-600 font-medium">
-                    Building products, ML prototypes and delightful web
-                    experiences.
-                  </p>
+              <p className="text-sm sm:text-base text-slate-200 max-w-2xl">
+                I design and ship full-stack web apps, dashboards, and AI-driven
+                features that are clean, scalable, and user-focused.
+              </p>
+
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="#projects"
+                  className="inline-flex items-center justify-center rounded-xl bg-white text-slate-900 px-5 py-2.5 text-sm font-semibold shadow-lg shadow-white/20 hover:bg-slate-100 transition"
+                >
+                  View Projects
+                </a>
+                <a
+                  href="/hire"
+                  className="inline-flex items-center justify-center rounded-xl border border-white/30 px-5 py-2.5 text-sm font-semibold text-white/90 hover:bg-white/10 transition"
+                >
+                  Hire Me
+                </a>
+              </div>
+
+              <div className="flex flex-wrap gap-2 text-xs text-slate-300">
+                <span className="rounded-full bg-white/10 px-3 py-1">
+                  React • Node • MongoDB
+                </span>
+                <span className="rounded-full bg-white/10 px-3 py-1">
+                  Python • AI/ML • APIs
+                </span>
+                <span className="rounded-full bg-white/10 px-3 py-1">
+                  Remote • India
+                </span>
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              <div className="rounded-2xl bg-white/10 border border-white/10 p-5 backdrop-blur-md">
+                <div className="text-xs uppercase tracking-widest text-white/70">
+                  Recent Focus
                 </div>
-
-                {/* message-style content: cleaner icons instead of letters */}
-                <div className="space-y-4">
-                  {/* bubble 1 */}
-                  <div className="flex items-start gap-3">
-                    {/* icon chip */}
-                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-indigo-600 text-white shadow-sm">
-                      {/* simple laptop SVG */}
-                      <svg
-                        width="18"
-                        height="18"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden
-                      >
-                        <path
-                          d="M3 5h18v10H3z"
-                          stroke="white"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M7 21h10"
-                          stroke="white"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
-
-                    <div className="bg-white rounded-2xl px-4 py-3 shadow-sm border border-gray-100 text-gray-800">
-                      Hi I build fast, reliable web apps and AI prototypes that
-                      scale.
-                      <div className="text-xs text-gray-400 mt-1">
-                        Full-stack , AI/ML
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* bubble 2 (accent gradient) */}
-                  <div className="flex items-start gap-3 justify-end">
-                    <div className="order-2 bg-gradient-to-r from-purple-600 to-pink-500 text-white rounded-2xl px-4 py-3 shadow-md max-w-[82%]">
-                      Recent — Open-source dashboard + GPT-powered assistant.
-                      <div className="text-xs text-white/80 mt-1">
-                        Open source • GPT
-                      </div>
-                    </div>
-                    <div className="order-1 flex items-center justify-center w-10 h-10 rounded-lg bg-yellow-400 text-gray-900 shadow-sm">
-                      {/* document icon */}
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden
-                      >
-                        <path
-                          d="M7 2h7l5 5v13a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"
-                          stroke="currentColor"
-                          strokeWidth="1.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M14 2v6h6"
-                          stroke="currentColor"
-                          strokeWidth="1.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* bubble 3 */}
-                  <div className="flex items-start gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-emerald-500 text-white shadow-sm">
-                      {/* briefcase icon */}
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        aria-hidden
-                      >
-                        <rect
-                          x="3"
-                          y="7"
-                          width="18"
-                          height="12"
-                          rx="2"
-                          stroke="white"
-                          strokeWidth="1.5"
-                        />
-                        <path
-                          d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"
-                          stroke="white"
-                          strokeWidth="1.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
-
-                    <div className="bg-white rounded-2xl px-4 py-3 shadow-sm border border-gray-100 text-gray-800">
-                      Interested in collaborating? I’m available for freelance &
-                      product roles.
-                      <div className="text-xs text-gray-400 mt-1">
-                        Remote friendly
-                      </div>
-                    </div>
-                  </div>
+                <div className="mt-2 text-lg font-semibold">
+                  Admin dashboard + GPT assistant + hire workflow
                 </div>
+                <p className="mt-2 text-sm text-white/70">
+                  Built end-to-end UX with secure auth, analytics, and email
+                  automation.
+                </p>
+              </div>
 
-                {/* small meta / chips row */}
-                <div className="mt-6 flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gray-100 text-gray-800 text-sm">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden
-                    >
-                      <path
-                        d="M12 2v6"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <circle
-                        cx="12"
-                        cy="14"
-                        r="6"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                      />
-                    </svg>
-                    Remote • India
-                  </span>
-
-                  <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-gradient-to-r from-purple-600 to-pink-500 text-white text-sm">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden
-                    >
-                      <path
-                        d="M3 12h18"
-                        stroke="white"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    React , Node , MongoDB, Python , AI/ML
-                  </span>
+              <div className="rounded-2xl bg-white/10 border border-white/10 p-5 backdrop-blur-md">
+                <div className="text-xs uppercase tracking-widest text-white/70">
+                  Open to
                 </div>
+                <div className="mt-2 text-lg font-semibold">
+                  Freelance, product roles, and collaborations
+                </div>
+                <p className="mt-2 text-sm text-white/70">
+                  I love shipping fast, clean builds with strong UX.
+                </p>
+              </div>
+
+              <div className="rounded-2xl bg-gradient-to-r from-cyan-400/20 to-fuchsia-500/20 border border-white/10 p-5">
+                <div className="text-xs uppercase tracking-widest text-white/80">
+                  Value
+                </div>
+                <div className="mt-2 text-lg font-semibold">
+                  Clean UI, clear logic, measurable impact
+                </div>
+                <p className="mt-2 text-sm text-white/75">
+                  Pragmatic engineering with a design-first approach.
+                </p>
               </div>
             </div>
           </div>
