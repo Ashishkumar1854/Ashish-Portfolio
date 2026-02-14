@@ -222,7 +222,7 @@ const Navbar = () => {
                     onClick={() => setShowAuthModal(true)}
                     className="bg-yellow-400 text-black px-3 py-1.5 rounded-md font-semibold text-sm hover:bg-yellow-300 transition"
                   >
-                    Register
+                    Registers
                   </button>
                 ) : (
                   <ProfileMenu />
