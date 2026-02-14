@@ -61,3 +61,40 @@ exports.confirmHire = async (req, res) => {
       .json({ message: "Failed to confirm hire", error: err.message });
   }
 };
+
+// ✅ Quick verify (no extra details)
+exports.verifyHire = async (req, res) => {
+  try {
+    const hireId = req.params.id;
+
+    const hire = await Hire.findById(hireId);
+    if (!hire) return res.status(404).json({ message: "Hire not found" });
+
+    if (hire.status !== "confirmed") {
+      hire.status = "confirmed";
+      await hire.save();
+
+      await sendEmail(
+        hire.email,
+        "✅ Your Hire Request is Confirmed",
+        `
+        <p>Hi ${hire.name},</p>
+        <p>Your hire request for <strong>${hire.projectType}</strong> has been confirmed.</p>
+        ${
+          hire.documentUrl
+            ? `<p>You can view your uploaded document here: <a href="${hire.documentUrl}" target="_blank">View File</a></p>`
+            : ""
+        }
+        <p>Regards,<br/>Ashish Bhai Team</p>
+        `
+      );
+    }
+
+    res.json({ success: true, hire });
+  } catch (err) {
+    console.error(err);
+    res
+      .status(500)
+      .json({ message: "Failed to verify hire", error: err.message });
+  }
+};

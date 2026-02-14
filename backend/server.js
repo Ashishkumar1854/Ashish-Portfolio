@@ -224,6 +224,7 @@ app.use(
   cors({
     origin: [
       process.env.CLIENT_URL, // e.g. https://ashish-portfolio.netlify.app
+      "http://localhost:3000", // CRA local
       "http://localhost:5173", // optional for local
     ],
     credentials: true,

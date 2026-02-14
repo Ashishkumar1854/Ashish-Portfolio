@@ -83,13 +83,7 @@
 
 // src/context/AuthContext.jsx
 import React, { createContext, useEffect, useState, useContext } from "react";
-import axios from "axios";
-
-// Central API instance
-const API = axios.create({
-  baseURL: process.env.REACT_APP_BACKEND_URL,
-  withCredentials: true, // important for login cookies
-});
+import API from "../utils/api";
 
 export const AuthContext = createContext();
 
@@ -101,7 +95,7 @@ export const AuthProvider = ({ children }) => {
   const fetchProfile = async () => {
     try {
       const res = await API.get("/api/auth/profile");
-      setUser(res.data?.user || null);
+      setUser(res.data || null);
     } catch (err) {
       console.error(
         "❌ Fetch profile failed:",
@@ -121,7 +115,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (formData) => {
     try {
       const res = await API.post("/api/auth/login", formData);
-      if (res.data?.user) setUser(res.data.user);
+      const nextUser = res.data?.user || res.data;
+      if (nextUser) setUser(nextUser);
       return res.data;
     } catch (err) {
       console.error(
