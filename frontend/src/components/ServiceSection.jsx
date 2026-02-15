@@ -1,10 +1,12 @@
 //05/00
 
 // src/components/ServiceSection.jsx
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 
 const ServiceSection = ({ services = [], onDelete, user }) => {
+  const [expanded, setExpanded] = useState({});
+
   if (!services.length) {
     return (
       <p className="text-center text-gray-500 italic">No services available.</p>
@@ -21,7 +23,9 @@ const ServiceSection = ({ services = [], onDelete, user }) => {
 
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {services.map((service, i) => (
+      {services.map((service, i) => {
+        const isExpanded = !!expanded[service._id || i];
+        return (
         <motion.div
           key={service._id || i}
           initial={{ opacity: 0, y: 20 }}
@@ -30,6 +34,10 @@ const ServiceSection = ({ services = [], onDelete, user }) => {
           className="group relative rounded-2xl bg-gradient-to-r from-slate-200/60 via-white to-slate-200/60 p-[1px] shadow-[0_18px_36px_rgba(15,23,42,0.08)] hover:shadow-[0_22px_48px_rgba(15,23,42,0.16)] transition"
         >
           <div className="relative h-full rounded-2xl bg-white p-6">
+            <div
+              aria-hidden
+              className="absolute -top-6 -right-6 h-20 w-20 rounded-full bg-gradient-to-br from-cyan-200 to-fuchsia-200 blur-2xl opacity-70"
+            />
             <div
               className={`inline-flex items-center justify-center h-10 w-10 rounded-xl ${iconClasses[i % iconClasses.length]}`}
             >
@@ -53,14 +61,36 @@ const ServiceSection = ({ services = [], onDelete, user }) => {
               {service.title || "Untitled Service"}
             </h4>
 
-            <div
-              className="mt-3 prose prose-sm prose-slate max-w-full"
-              dangerouslySetInnerHTML={{
-                __html:
-                  service.description ||
-                  "<p class='text-gray-500 italic'>No description provided.</p>",
-              }}
-            />
+            <div className="relative mt-3">
+              <div
+                className={`prose prose-sm prose-slate max-w-full transition-all duration-300 ${
+                  isExpanded ? "max-h-[600px]" : "max-h-32 overflow-hidden"
+                }`}
+                dangerouslySetInnerHTML={{
+                  __html:
+                    service.description ||
+                    "<p class='text-gray-500 italic'>No description provided.</p>",
+                }}
+              />
+              {!isExpanded && (
+                <div
+                  aria-hidden
+                  className="pointer-events-none absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-white to-transparent"
+                />
+              )}
+            </div>
+
+            <button
+              onClick={() =>
+                setExpanded((prev) => ({
+                  ...prev,
+                  [service._id || i]: !isExpanded,
+                }))
+              }
+              className="mt-3 text-xs font-semibold text-slate-600 hover:text-slate-900 transition"
+            >
+              {isExpanded ? "Show less" : "Read more"}
+            </button>
 
             <div className="mt-5 h-0.5 w-14 rounded-full bg-gradient-to-r from-cyan-500 to-fuchsia-500 opacity-70" />
 
@@ -74,7 +104,8 @@ const ServiceSection = ({ services = [], onDelete, user }) => {
             )}
           </div>
         </motion.div>
-      ))}
+        );
+      })}
     </div>
   );
 };

@@ -360,6 +360,51 @@ const HeroSection = () => {
             animate={{ x: [0, -16, 0], y: [0, -10, 0] }}
             transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
           />
+          <div
+            aria-hidden
+            className="absolute bottom-8 left-10 hidden lg:block opacity-60"
+          >
+            <svg
+              width="160"
+              height="160"
+              viewBox="0 0 200 200"
+              fill="none"
+            >
+              <g filter="url(#blur)">
+                <path
+                  d="M100 35c12 0 22 10 22 22s-10 22-22 22-22-10-22-22 10-22 22-22Z"
+                  fill="url(#petal)"
+                  opacity="0.9"
+                />
+                <path
+                  d="M100 121c12 0 22 10 22 22s-10 22-22 22-22-10-22-22 10-22 22-22Z"
+                  fill="url(#petal)"
+                  opacity="0.7"
+                />
+                <path
+                  d="M35 100c0-12 10-22 22-22s22 10 22 22-10 22-22 22-22-10-22-22Z"
+                  fill="url(#petal)"
+                  opacity="0.7"
+                />
+                <path
+                  d="M121 100c0-12 10-22 22-22s22 10 22 22-10 22-22 22-22-10-22-22Z"
+                  fill="url(#petal)"
+                  opacity="0.6"
+                />
+                <circle cx="100" cy="100" r="18" fill="#0f172a" />
+                <circle cx="100" cy="100" r="10" fill="#38bdf8" />
+              </g>
+              <defs>
+                <linearGradient id="petal" x1="60" y1="40" x2="140" y2="160">
+                  <stop offset="0" stopColor="#38bdf8" />
+                  <stop offset="1" stopColor="#a855f7" />
+                </linearGradient>
+                <filter id="blur" x="-10" y="-10" width="220" height="220">
+                  <feGaussianBlur stdDeviation="0.6" />
+                </filter>
+              </defs>
+            </svg>
+          </div>
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 p-8 sm:p-10 lg:p-12">
             <motion.div
