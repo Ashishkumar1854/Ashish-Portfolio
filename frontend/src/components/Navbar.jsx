@@ -152,7 +152,7 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full bg-white shadow-sm z-60">
+      <header className="fixed top-0 left-0 right-0 w-full bg-white shadow-sm z-50">
         <div className="max-w-10xl mx-auto px-6 sm:px-6 lg:px-10">
           <div className="flex items-center justify-between h-14">
             {/* Left: Logo (image) */}
