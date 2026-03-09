@@ -364,12 +364,7 @@ const HeroSection = () => {
             aria-hidden
             className="absolute bottom-8 left-10 hidden lg:block opacity-60"
           >
-            <svg
-              width="160"
-              height="160"
-              viewBox="0 0 200 200"
-              fill="none"
-            >
+            <svg width="160" height="160" viewBox="0 0 200 200" fill="none">
               <g filter="url(#blur)">
                 <path
                   d="M100 35c12 0 22 10 22 22s-10 22-22 22-22-10-22-22 10-22 22-22Z"
@@ -422,8 +417,9 @@ const HeroSection = () => {
               </h1>
 
               <p className="text-sm sm:text-base text-slate-200 max-w-2xl">
-                I design and ship full-stack web apps, dashboards, and AI-driven
-                features that are clean, scalable, and user-focused.
+                AI Automation & Full Stack Developer
+                <br></br>I build AI chatbots, automation systems, and scalable
+                web apps that help startups save time and grow faster.
               </p>
 
               <div className="flex flex-wrap gap-2 text-xs text-slate-300">
