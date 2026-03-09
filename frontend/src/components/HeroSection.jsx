@@ -417,7 +417,7 @@ const HeroSection = () => {
               </h1>
 
               <p className="text-sm sm:text-base text-slate-200 max-w-2xl">
-                AI Automation & Full Stack Developer
+                <h4>AI Automation & Full Stack Developer</h4>
                 <br></br>I build AI chatbots, automation systems, and scalable
                 web apps that help startups save time and grow faster.
               </p>
