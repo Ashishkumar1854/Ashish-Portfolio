@@ -287,22 +287,22 @@ const PageCSection = () => {
         transition={{ duration: 0.8 }}
         className="text-center"
       >
-        <div className="mt-20 max-w-4xl mx-auto px-6 text-center">
+        <div className="mt-20 max-w-4xl mx-auto px-4 sm:px-6 text-center">
           {/* Section Label */}
           <div className="flex items-center justify-center gap-3">
             <span className="h-1.5 w-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500"></span>
-            <span className="uppercase tracking-widest text-sm font-semibold text-purple-600">
+            <span className="uppercase tracking-widest text-[11px] sm:text-sm font-semibold text-purple-600">
               What People Say About Working With Me
             </span>
           </div>
 
           {/* Title */}
-          <h2 className="text-4xl font-extrabold text-gray-900 mt-4 leading-tight">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mt-4 leading-tight">
             Client Feedback & Experience
           </h2>
 
           {/* Subtext */}
-          <p className="text-gray-700 mt-4 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-gray-700 mt-4 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
             Insights shared by founders, team leads, and collaborators I’ve
             worked with— highlighting how I approach problems, deliver
             solutions, and adapt to real-world challenges.
@@ -312,7 +312,7 @@ const PageCSection = () => {
           <div className="mt-6 h-[2px] max-w-3xl mx-auto bg-gradient-to-r from-gray-200 to-purple-300 rounded-full"></div>
 
           {/* Small Highlight Text */}
-          <p className="text-sm text-gray-500 mt-3 italic">
+          <p className="text-xs sm:text-sm text-gray-500 mt-3 italic">
             *(All opinions are from completed projects, sprints, and long-term
             collaborations.)*
           </p>

@@ -245,19 +245,19 @@ const VisionSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-8 px-4"
         >
-          <h1 className="text-4xl md:text-5xl font-extrabold text-white leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
             My Vision
           </h1>
 
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white mt-3">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white mt-3">
             Building Future-Ready Solutions
           </h2>
 
-          <h3 className="text-lg italic mt-4 text-white/90">
+          <h3 className="text-sm sm:text-base italic mt-4 text-white/90">
             “Where Ideas Evolve into Impactful Startups”
           </h3>
 
-          <p className="text-base md:text-lg mt-6 max-w-3xl mx-auto text-white/90 leading-relaxed">
+          <p className="text-sm sm:text-base md:text-lg mt-6 max-w-3xl mx-auto text-white/90 leading-relaxed">
             My vision is to create AI-powered, full-stack platforms that
             redefine industries, empower entrepreneurs, and fuel digital
             transformation across the globe.
@@ -280,7 +280,7 @@ const VisionSection = () => {
                 border: "1px solid rgba(255,255,255,0.06)",
               }}
             >
-              <h4 className="text-2xl font-semibold text-white mb-3">
+              <h4 className="text-lg sm:text-xl font-semibold text-white mb-3">
                 {vision.title}
               </h4>
 
@@ -288,13 +288,13 @@ const VisionSection = () => {
                 vision.text.map((para, i) => (
                   <p
                     key={i}
-                    className="text-white/90 leading-relaxed mb-3 text-left"
+                    className="text-sm sm:text-base text-white/90 leading-relaxed mb-3 text-left"
                   >
                     {para}
                   </p>
                 ))
               ) : (
-                <p className="text-white/90 leading-relaxed text-left">
+                <p className="text-sm sm:text-base text-white/90 leading-relaxed text-left">
                   {vision.text}
                 </p>
               )}

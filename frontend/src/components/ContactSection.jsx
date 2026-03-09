@@ -10,13 +10,11 @@ const ContactSection = ({ contacts = [], onDelete, user }) => {
         transition={{ delay: 0.2 }}
         className="bg-white p-6 rounded shadow hover:shadow-md transition mb-6"
       >
-        <h2 className="text-lg font-bold mb-2">📞 Contact Information</h2>
-
         {contacts.length === 0 ? (
           <p className="text-gray-500">No contact details available</p>
         ) : (
           contacts.map((contact, i) => (
-            <p key={i} className="mb-1">
+            <p key={i} className="mb-1 text-sm sm:text-base">
               <strong>{contact.type}:</strong> {contact.value}
             </p>
           ))

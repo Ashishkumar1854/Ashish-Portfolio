@@ -187,7 +187,7 @@ const About = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-8">
-      <h1 className="text-4xl font-bold mb-8 text-center">Meet My Team 🚀</h1>
+      <h1 className="text-4xl font-bold mb-8 text-center">Meet My Team </h1>
       {user?.role === "admin" && (
         <TeamForm
           onAdd={(newMember) => setTeams((prev) => [...prev, newMember])}
@@ -211,7 +211,9 @@ const About = () => {
         {user?.role === "admin" && (
           <div className="mt-6">
             <ServiceForm
-              onAdd={(newService) => setServices((prev) => [...prev, newService])}
+              onAdd={(newService) =>
+                setServices((prev) => [...prev, newService])
+              }
             />
           </div>
         )}

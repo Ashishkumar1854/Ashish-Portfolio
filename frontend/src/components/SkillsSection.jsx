@@ -719,7 +719,7 @@ const SkillsSection = () => {
           backgroundRepeat: "no-repeat",
         }}
       >
-        <div className="py-20 px-6 md:px-20">
+        <div className="py-12 sm:py-16 px-6 md:px-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -728,12 +728,12 @@ const SkillsSection = () => {
           >
             <div className="max-w-4xl mx-auto text-center">
               {/* Heading — black */}
-              <h2 className="text-5xl md:text-4xl font-extrabold text-black mb-4 drop-shadow-sm">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black mb-4 drop-shadow-sm">
                 My Skills - Built for Production
               </h2>
 
               {/* Intro — black */}
-              <p className="text-black mb-8 text-lg leading-relaxed">
+              <p className="text-black mb-8 text-sm sm:text-base leading-relaxed">
                 I design and ship scalable web products and ML systems used by
                 real users. From architecture and front-end UX to backend
                 services, deployment and monitoring — I focus on reliable
@@ -752,7 +752,7 @@ const SkillsSection = () => {
                     <div className="w-10 h-10 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-semibold">
                       FE
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                       Frontend Engineering
                     </h3>
                   </div>
@@ -768,7 +768,7 @@ const SkillsSection = () => {
                     <div className="w-10 h-10 rounded-lg bg-rose-500 flex items-center justify-center text-white font-semibold">
                       BE
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                       Backend & APIs
                     </h3>
                   </div>
@@ -784,7 +784,7 @@ const SkillsSection = () => {
                     <div className="w-10 h-10 rounded-lg bg-emerald-500 flex items-center justify-center text-white font-semibold">
                       ML
                     </div>
-                    <h3 className="text-lg font-semibold text-gray-900">
+                    <h3 className="text-base sm:text-lg font-semibold text-gray-900">
                       ML & Data
                     </h3>
                   </div>

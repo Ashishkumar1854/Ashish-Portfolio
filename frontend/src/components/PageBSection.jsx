@@ -356,24 +356,24 @@ const PageBSection = () => {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="absolute inset-0 flex items-center justify-center px-6 py-12"
+            className="absolute inset-0 flex items-center justify-center px-4 sm:px-6 py-10 sm:py-12"
           >
             <div className="max-w-4xl text-center">
               <div className="flex items-center justify-center mb-6">
                 <span className="h-1 w-20 bg-gradient-to-r from-purple-600 to-indigo-500 rounded-full" />
               </div>
 
-              <h2 className="text-4xl sm:text-5xl font-bold text-white leading-tight drop-shadow-lg">
+              <h2 className="text-2xl sm:text-3xl lg:text-5xl font-bold text-white leading-tight drop-shadow-lg">
                 From Concept to Execution — a Transparent Build Journey
               </h2>
 
-              <p className="mt-4 text-lg text-white/90 max-w-3xl mx-auto leading-relaxed">
+              <p className="mt-4 text-sm sm:text-base text-white/90 max-w-3xl mx-auto leading-relaxed">
                 A behind-the-scenes look into how I take raw ideas, break them
                 down, validate assumptions, and turn experiments into working
                 product features.
               </p>
 
-              <p className="mt-4 text-lg text-white/90 max-w-3xl mx-auto leading-relaxed">
+              <p className="mt-4 text-sm sm:text-base text-white/90 max-w-3xl mx-auto leading-relaxed">
                 I share prototypes, failures, iterations, and decisions —
                 exactly how real startup product teams work. Each post documents
                 my reasoning, mistakes, and the engineering choices that shaped
@@ -398,17 +398,19 @@ const PageBSection = () => {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <h3 className="text-3xl font-bold text-green-700">
+              <h3 className="text-xl sm:text-2xl font-bold text-green-700">
                 {item.title}
               </h3>
-              <p className="text-gray-700">{item.description}</p>
+              <p className="text-sm sm:text-base text-gray-700">
+                {item.description}
+              </p>
 
               {item.link && (
                 <a
                   href={item.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-block px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700 transition"
+                  className="inline-block px-4 py-2 text-sm text-white bg-blue-600 rounded hover:bg-blue-700 transition"
                 >
                   📎 View Document
                 </a>

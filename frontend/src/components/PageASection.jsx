@@ -319,10 +319,10 @@ const PageASection = () => {
         transition={{ duration: 0.8 }}
         className="text-center"
       >
-        <h2 className="text-5xl font-extrabold text-purple-700 flex justify-center items-center gap-3">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-purple-700 flex justify-center items-center gap-3">
           🏆 Showcasing My Achievements & Credentials
         </h2>
-        <h3 className="text-xl text-gray-800 italic mt-4">
+        <h3 className="text-base sm:text-lg text-gray-800 italic mt-4">
           “A journey through certifications, skills, and awards.”
         </h3>
       </motion.div>
@@ -338,7 +338,7 @@ const PageASection = () => {
             className="space-y-8"
           >
             <div className="flex justify-between items-center">
-              <h3 className="text-3xl font-bold text-pink-600 text-center">
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-pink-600 text-center">
                 📂 {section.sectionTitle}
               </h3>
               {user?.role === "admin" && (
@@ -361,10 +361,12 @@ const PageASection = () => {
                   transition={{ delay: itemIdx * 0.1 }}
                   className="bg-white p-6 rounded-xl shadow-md hover:shadow-xl transition"
                 >
-                  <h4 className="text-xl font-semibold text-purple-700 mb-2">
+                  <h4 className="text-lg sm:text-xl font-semibold text-purple-700 mb-2">
                     {item.title}
                   </h4>
-                  <p className="text-gray-700 mb-4">{item.description}</p>
+                  <p className="text-sm sm:text-base text-gray-700 mb-4">
+                    {item.description}
+                  </p>
                   <a
                     href={item.link}
                     target="_blank"
