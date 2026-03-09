@@ -463,11 +463,17 @@ exports.forgotPassword = async (req, res) => {
 
     const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
-    sendEmail(
+    const emailResult = await sendEmail(
       email,
       "🔑 Reset Your Password - Ashish ",
       `<p>Click the link below to reset your password:</p><a href="${resetLink}">${resetLink}</a>`
     );
+
+    if (!emailResult.ok) {
+      return res
+        .status(500)
+        .json({ message: "Failed to send reset link", error: emailResult.error });
+    }
 
     res.json({ message: "Password reset link sent to your email" });
   } catch (error) {
@@ -510,11 +516,17 @@ exports.sendOTP = async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     otpStore.set(email, otp);
 
-    sendEmail(
+    const emailResult = await sendEmail(
       email,
       "🔢 Your OTP - Ashish",
       `<p>Your OTP is: <strong>${otp}</strong></p>`
     );
+
+    if (!emailResult.ok) {
+      return res
+        .status(500)
+        .json({ message: "Failed to send OTP", error: emailResult.error });
+    }
 
     res.json({ message: "OTP sent to email" });
   } catch (error) {

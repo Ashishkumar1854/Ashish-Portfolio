@@ -34,27 +34,46 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// ✅ Email sending function with non-blocking + error logging
+const hasEmailEnv = Boolean(process.env.EMAIL_USER && process.env.EMAIL_PASS);
+
+if (!hasEmailEnv) {
+  console.error(
+    "⚠️ Email config missing at startup. Set EMAIL_USER and EMAIL_PASS."
+  );
+} else {
+  transporter.verify((err) => {
+    if (err) {
+      console.error("⚠️ Email transport verify failed:", err.message);
+    } else {
+      console.log("✅ Email transport ready");
+    }
+  });
+}
+
+// ✅ Email sending function (returns status, does not throw)
 const sendEmail = async (to, subject, html) => {
+  const missingEnv = [];
+  if (!process.env.EMAIL_USER) missingEnv.push("EMAIL_USER");
+  if (!process.env.EMAIL_PASS) missingEnv.push("EMAIL_PASS");
+
+  if (missingEnv.length > 0) {
+    const error = `Missing email config: ${missingEnv.join(", ")}`;
+    console.error("⚠️ Email send failed:", error);
+    return { ok: false, error };
+  }
+
   try {
-    // Send email in background (non-blocking)
-    transporter.sendMail(
-      {
-        from: `"StoneByte" <${process.env.EMAIL_USER}>`,
-        to,
-        subject,
-        html,
-      },
-      (err, info) => {
-        if (err) {
-          console.error("⚠️ Email send failed:", err.message);
-        } else {
-          console.log("✅ Email sent to:", to, "MessageId:", info.messageId);
-        }
-      }
-    );
+    const info = await transporter.sendMail({
+      from: `"StoneByte" <${process.env.EMAIL_USER}>`,
+      to,
+      subject,
+      html,
+    });
+    console.log("✅ Email sent to:", to, "MessageId:", info.messageId);
+    return { ok: true, info };
   } catch (error) {
-    console.error("❌ sendEmail error:", error.message);
+    console.error("⚠️ Email send failed:", error.message);
+    return { ok: false, error: error.message };
   }
 };
 
