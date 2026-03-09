@@ -6,3 +6,17 @@
 html {
   scroll-behavior: smooth;
 }
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+@media (min-width: 640px) {
+  body {
+    font-size: 16px;
+  }
+}

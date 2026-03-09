@@ -345,7 +345,7 @@ const HeroSection = () => {
 
   // redesigned without image
   return (
-    <section id="hero" className="mt-14 space-y-8">
+    <section id="hero" className="mt-14 space-y-8 antialiased">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="relative overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white shadow-[0_24px_60px_rgba(2,6,23,0.35)]">
           <motion.div
@@ -401,28 +401,32 @@ const HeroSection = () => {
             </svg>
           </div>
 
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 p-8 sm:p-10 lg:p-12">
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 p-6 sm:p-8 lg:p-12">
             <motion.div
               className="space-y-6"
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide">
+              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] sm:text-xs font-semibold tracking-wide">
                 Product Engineer • AI/ML Builder
               </div>
 
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight">
+              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold leading-tight tracking-tight">
                 Ashish Kumar builds fast, reliable products that feel premium.
               </h1>
 
-              <p className="text-sm sm:text-base text-slate-200 max-w-2xl">
-                <h4>AI Automation & Full Stack Developer</h4>
-                <br></br>I build AI chatbots, automation systems, and scalable
-                web apps that help startups save time and grow faster.
+              <p className="text-sm sm:text-base text-slate-200/90 max-w-2xl leading-relaxed">
+                <span className="block text-base sm:text-lg font-semibold text-white">
+                  AI Automation & Full Stack Developer
+                </span>
+                <span className="mt-2 block">
+                  I build AI chatbots, automation systems, and scalable web apps
+                  that help startups save time and grow faster.
+                </span>
               </p>
 
-              <div className="flex flex-wrap gap-2 text-xs text-slate-300">
+              <div className="flex flex-wrap gap-2 text-[11px] sm:text-xs text-slate-300">
                 <span className="rounded-full bg-white/10 px-3 py-1">
                   React • Node • MongoDB
                 </span>
@@ -473,10 +477,12 @@ const HeroSection = () => {
                   <div className="text-xs uppercase tracking-widest text-white/70">
                     {card.label}
                   </div>
-                  <div className="mt-2 text-lg font-semibold text-white">
+                  <div className="mt-2 text-base sm:text-lg font-semibold text-white">
                     {card.title}
                   </div>
-                  <p className="mt-2 text-sm text-white/70">{card.body}</p>
+                  <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">
+                    {card.body}
+                  </p>
                   {idx === 2 && (
                     <div className="mt-3 h-0.5 w-16 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500 opacity-70" />
                   )}
@@ -500,14 +506,14 @@ const HeroSection = () => {
               transition={{ type: "spring", stiffness: 300 }}
               className="min-w-[260px] max-w-sm p-5 rounded-2xl bg-white/70 backdrop-blur-md shadow-lg border border-purple-200 flex-shrink-0"
             >
-              <h3 className="text-lg font-bold text-purple-800 mb-2 truncate">
+              <h3 className="text-base sm:text-lg font-bold text-purple-800 mb-2 truncate">
                 {post.title}
               </h3>
               <a
                 href={post.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 underline text-sm break-all"
+                className="text-blue-600 underline text-xs sm:text-sm break-all"
               >
                 {post.link}
               </a>
@@ -517,7 +523,7 @@ const HeroSection = () => {
                     e.preventDefault();
                     handleDelete(i);
                   }}
-                  className="mt-3 text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
+                  className="mt-3 text-xs sm:text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
                 >
                   Delete
                 </button>
