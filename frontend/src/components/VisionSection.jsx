@@ -219,31 +219,33 @@ const VisionSection = () => {
   return (
     <section
       id="vision"
-      className="relative overflow-hidden py-16 px-8 rounded-xl shadow-xl"
+      className="relative overflow-hidden rounded-[28px] px-4 py-14 shadow-xl md:px-8 md:py-20"
       aria-label="Vision section"
     >
       {/* Background image with dark overlay so image stays visible but text white works */}
       <div
         className="absolute inset-0 -z-10"
         style={{
-          backgroundImage: `linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url(${bgImagePath})`,
+          backgroundImage: `linear-gradient(180deg, rgba(5,10,22,0.3) 0%, rgba(4,10,24,0.58) 42%, rgba(2,6,18,0.88) 100%), url(${bgImagePath})`,
           backgroundSize: "cover",
-          backgroundPosition: "center center",
+          backgroundPosition: "center right",
           backgroundRepeat: "no-repeat",
         }}
       />
+
+      <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-slate-950/75 via-slate-950/25 to-transparent -z-10" />
 
       {/* Decorative glows (kept subtle) */}
       <div className="absolute top-6 left-6 w-44 h-44 bg-purple-400 rounded-full mix-blend-screen filter blur-2xl opacity-20" />
       <div className="absolute bottom-6 right-6 w-44 h-44 bg-blue-400 rounded-full mix-blend-screen filter blur-2xl opacity-18" />
 
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div className="relative z-10 mx-auto max-w-6xl">
         {/* Heading area (white text) */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-8 px-4"
+          className="mb-10 px-4 text-center md:mb-14"
         >
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white leading-tight">
             My Vision
@@ -265,19 +267,20 @@ const VisionSection = () => {
         </motion.div>
 
         {/* Vision Cards (dark translucent panels so white text reads well) */}
-        <div className="grid md:grid-cols-2 gap-8 px-4">
+        <div className="grid gap-6 px-4 md:grid-cols-2 md:gap-8">
           {visions.map((vision, idx) => (
             <motion.div
               key={idx}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.15 + 0.15 }}
-              className="rounded-xl p-6 shadow-lg"
+              className="h-full rounded-3xl p-6 shadow-2xl md:p-7"
               style={{
-                background: "rgba(0,0,0,0.45)", // dark translucent
+                background:
+                  "linear-gradient(180deg, rgba(7,12,26,0.72), rgba(7,12,26,0.58))",
                 color: "#fff",
-                backdropFilter: "blur(6px)",
-                border: "1px solid rgba(255,255,255,0.06)",
+                backdropFilter: "blur(10px)",
+                border: "1px solid rgba(255,255,255,0.1)",
               }}
             >
               <h4 className="text-lg sm:text-xl font-semibold text-white mb-3">

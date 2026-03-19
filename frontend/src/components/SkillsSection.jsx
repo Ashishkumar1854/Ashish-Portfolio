@@ -604,6 +604,7 @@ const normalizeContent = (raw) => {
 const SkillsSection = () => {
   const [newSkills, setNewSkills] = useState({});
   const [editMode, setEditMode] = useState(false);
+  const [expandedCategory, setExpandedCategory] = useState(null);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -808,21 +809,48 @@ const SkillsSection = () => {
       </div>
 
       {/* LOWER PART — NO BACKGROUND IMAGE */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-10">
+      <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2">
         {Object.entries(newSkills || {}).map(([category, techs], idx) => (
-          <motion.div
+          <motion.article
             key={idx}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.2 }}
-            className="bg-white/95 border border-purple-100 hover:shadow-xl transition-all duration-300 p-6 rounded-2xl"
+            className="group relative flex h-full min-h-[430px] flex-col overflow-hidden rounded-[28px] border border-fuchsia-100 bg-white/95 p-6 shadow-[0_24px_80px_rgba(168,85,247,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_rgba(168,85,247,0.16)]"
           >
-            <h3 className="text-xl font-semibold text-pink-600 mb-4 capitalize">
-              {category.replace("_", " ")}
-            </h3>
+            <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-fuchsia-300 to-transparent opacity-70" />
 
-            <ul className="space-y-3">
-              {(techs || []).map((tech, i) => {
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-fuchsia-400">
+                  Skill Stack
+                </p>
+                <h3 className="text-2xl font-semibold capitalize text-slate-900">
+                  {category.replace("_", " ")}
+                </h3>
+              </div>
+
+              <div className="rounded-full border border-fuchsia-200 bg-fuchsia-50 px-3 py-1 text-xs font-semibold text-fuchsia-600">
+                {Array.isArray(techs) ? techs.length : 0} tools
+              </div>
+            </div>
+
+            <div className="mb-5 rounded-2xl border border-slate-100 bg-gradient-to-br from-fuchsia-50 via-white to-sky-50 p-4">
+              <p className="text-sm leading-relaxed text-slate-600">
+                Production-ready stack with the same progress format, now in a
+                cleaner fixed card layout for easier scanning.
+              </p>
+            </div>
+
+            <ul
+              className={`space-y-3 ${
+                expandedCategory === category || editMode ? "" : "flex-1"
+              }`}
+            >
+              {(expandedCategory === category || editMode
+                ? techs || []
+                : (techs || []).slice(0, 4)
+              ).map((tech, i) => {
                 const name = tech?.name ?? String(tech ?? "");
                 const level = tech?.level ?? pctFromName(name);
                 const dateToShow = tech?.date ?? null;
@@ -830,7 +858,7 @@ const SkillsSection = () => {
                 return (
                   <li
                     key={i}
-                    className="flex flex-col text-gray-800 bg-purple-50 p-3 rounded-lg"
+                    className="flex flex-col rounded-2xl border border-purple-100 bg-purple-50/70 p-4 text-gray-800 transition-all duration-300 group-hover:border-fuchsia-200 group-hover:bg-white"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -897,7 +925,9 @@ const SkillsSection = () => {
                             />
                           </>
                         ) : (
-                          <span>{name}</span>
+                          <span className="font-medium text-slate-800">
+                            {name}
+                          </span>
                         )}
                       </div>
 
@@ -906,9 +936,14 @@ const SkillsSection = () => {
                       </span>
                     </div>
 
-                    <div className="w-full bg-gray-200 rounded-full h-2 mt-2">
+                    <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
+                      <span>Proficiency</span>
+                      <span>{Math.min(100, Math.max(0, level))}%</span>
+                    </div>
+
+                    <div className="mt-2 h-2 w-full rounded-full bg-gray-200">
                       <div
-                        className="bg-purple-500 h-2 rounded-full"
+                        className="h-2 rounded-full bg-gradient-to-r from-violet-500 via-fuchsia-500 to-purple-400"
                         style={{
                           width: `${Math.min(100, Math.max(0, level))}%`,
                         }}
@@ -928,15 +963,35 @@ const SkillsSection = () => {
               })}
             </ul>
 
-            {editMode && (
+            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
               <button
-                onClick={() => handleAddSkill(category)}
-                className="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-1.5 rounded-md"
+                type="button"
+                onClick={() =>
+                  setExpandedCategory((prev) =>
+                    prev === category ? null : category
+                  )
+                }
+                className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-fuchsia-300 hover:text-fuchsia-600"
               >
-                ➕ Add Skill
+                {expandedCategory === category ? "Show less" : "More"}
               </button>
-            )}
-          </motion.div>
+
+              {!editMode && expandedCategory !== category && (techs || []).length > 4 && (
+                <span className="text-sm text-slate-500">
+                  +{(techs || []).length - 4} more skills
+                </span>
+              )}
+
+              {editMode && (
+                <button
+                  onClick={() => handleAddSkill(category)}
+                  className="rounded-full bg-green-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-green-600"
+                >
+                  Add Skill
+                </button>
+              )}
+            </div>
+          </motion.article>
         ))}
       </div>
 
