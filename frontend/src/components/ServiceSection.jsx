@@ -4,6 +4,14 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
+const whyChoosePreview = [
+  { icon: "🎯", text: "100% custom solutions built around your exact goals" },
+  { icon: "👁️", text: "Transparent workflow with clear progress and updates" },
+  { icon: "💬", text: "Smooth communication from planning to final delivery" },
+  { icon: "🔄", text: "Support that continues after launch, not just before it" },
+  { icon: "📈", text: "Systems designed to scale as your business grows" },
+];
+
 const ServiceSection = ({ services = [], onDelete, user }) => {
   const [expanded, setExpanded] = useState({});
 
@@ -235,6 +243,38 @@ const ServiceSection = ({ services = [], onDelete, user }) => {
           );
         })}
       </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.15 }}
+        className="rounded-[32px] bg-white px-6 py-8 shadow-[0_18px_50px_rgba(15,23,42,0.07)] ring-1 ring-slate-100 sm:px-10 sm:py-10"
+      >
+        <div className="max-w-5xl">
+          <h3 className="text-[2rem] font-bold tracking-[-0.03em] text-slate-900 sm:text-[2.2rem]">
+            💡 Why choose my services?
+          </h3>
+        </div>
+
+        <div className="mt-8 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+          {whyChoosePreview.map((item, index) => (
+            <motion.div
+              key={`${item.text}-${index}`}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 + index * 0.06 }}
+              className="flex items-start gap-4"
+            >
+              <span className="mt-1 text-[1.7rem] leading-none">
+                {item.icon}
+              </span>
+              <p className="text-[1.05rem] leading-9 text-slate-600">
+                {item.text}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
