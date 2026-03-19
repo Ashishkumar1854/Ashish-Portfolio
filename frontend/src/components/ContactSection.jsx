@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 const ContactSection = ({ contacts = [], onDelete, user }) => {
   return (
-    <section>
+    <section id="contact" className="scroll-mt-24">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
