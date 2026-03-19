@@ -149,7 +149,7 @@ const ProjectForm = ({ onAdd }) => {
       : [];
 
     try {
-      const { data } = await API.post("/api/projects", {
+      await API.post("/api/projects", {
         title: form.title,
         description: form.description,
         githubLink: form.githubLink,

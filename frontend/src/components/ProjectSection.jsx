@@ -114,7 +114,7 @@ const ProjectSection = ({ updateTrigger }) => {
     if (!window.confirm("Are you sure you want to delete this project?"))
       return;
     try {
-      const res = await API.delete(`/api/projects/${id}`); // ✅ replaced fetch
+      await API.delete(`/api/projects/${id}`); // ✅ replaced fetch
       setProjects((prev) => prev.filter((p) => p._id !== id));
     } catch (err) {
       console.error("Delete failed:", err);

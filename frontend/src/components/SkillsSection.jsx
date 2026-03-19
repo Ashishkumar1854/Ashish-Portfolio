@@ -816,49 +816,50 @@ const SkillsSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: idx * 0.2 }}
-            className="group relative flex h-full min-h-[430px] flex-col overflow-hidden rounded-[28px] border border-fuchsia-100 bg-white/95 p-6 shadow-[0_24px_80px_rgba(168,85,247,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_90px_rgba(168,85,247,0.16)]"
+            whileHover={{ y: -12, scale: 1.018, rotateX: 2 }}
+            className="group relative flex h-full min-h-[345px] flex-col overflow-hidden rounded-[24px] border border-white/40 bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(250,245,255,0.92)_38%,rgba(239,246,255,0.88))] p-5 shadow-[0_20px_70px_rgba(76,29,149,0.14)] transition-all duration-500 hover:shadow-[0_30px_95px_rgba(91,33,182,0.22)]"
+            style={{ transformStyle: "preserve-3d" }}
           >
-            <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-fuchsia-300 to-transparent opacity-70" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(217,70,239,0.18),transparent_34%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.14),transparent_32%)] opacity-90" />
+            <div className="absolute inset-x-5 top-0 h-px bg-gradient-to-r from-transparent via-fuchsia-400 to-transparent opacity-80" />
+            <div className="absolute -right-10 -top-12 h-28 w-28 rounded-full bg-fuchsia-300/45 blur-3xl transition duration-500 group-hover:scale-110 group-hover:bg-fuchsia-400/55" />
+            <div className="absolute -bottom-14 -left-8 h-24 w-24 rounded-full bg-sky-300/35 blur-3xl transition duration-500 group-hover:scale-110 group-hover:bg-sky-400/45" />
+            <div className="absolute inset-0 rounded-[24px] ring-1 ring-inset ring-white/50" />
 
-            <div className="mb-5 flex items-start justify-between gap-4">
+            <div className="relative z-10 mb-4 flex items-start justify-between gap-4">
               <div>
-                <p className="mb-2 text-xs font-semibold uppercase tracking-[0.28em] text-fuchsia-400">
-                  Skill Stack
-                </p>
-                <h3 className="text-2xl font-semibold capitalize text-slate-900">
+                <h3 className="bg-gradient-to-r from-violet-700 via-fuchsia-600 to-sky-600 bg-clip-text text-xl font-bold capitalize text-transparent">
                   {category.replace("_", " ")}
                 </h3>
               </div>
 
-              <div className="rounded-full border border-fuchsia-200 bg-fuchsia-50 px-3 py-1 text-xs font-semibold text-fuchsia-600">
+              <div className="rounded-full border border-white/60 bg-white/70 px-3 py-1 text-xs font-semibold text-fuchsia-700 shadow-sm backdrop-blur">
                 {Array.isArray(techs) ? techs.length : 0} tools
               </div>
             </div>
 
-            <div className="mb-5 rounded-2xl border border-slate-100 bg-gradient-to-br from-fuchsia-50 via-white to-sky-50 p-4">
-              <p className="text-sm leading-relaxed text-slate-600">
-                Production-ready stack with the same progress format, now in a
-                cleaner fixed card layout for easier scanning.
-              </p>
-            </div>
-
             <ul
-              className={`space-y-3 ${
+              className={`relative z-10 space-y-3 ${
                 expandedCategory === category || editMode ? "" : "flex-1"
               }`}
             >
               {(expandedCategory === category || editMode
                 ? techs || []
-                : (techs || []).slice(0, 4)
+                : (techs || []).slice(0, 3)
               ).map((tech, i) => {
                 const name = tech?.name ?? String(tech ?? "");
                 const level = tech?.level ?? pctFromName(name);
                 const dateToShow = tech?.date ?? null;
+                const isExpert = level > 80;
 
                 return (
-                  <li
+                  <motion.li
                     key={i}
-                    className="flex flex-col rounded-2xl border border-purple-100 bg-purple-50/70 p-4 text-gray-800 transition-all duration-300 group-hover:border-fuchsia-200 group-hover:bg-white"
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: idx * 0.08 + i * 0.06 }}
+                    whileHover={{ x: 4, scale: 1.01 }}
+                    className="flex flex-col rounded-2xl border border-white/60 bg-[linear-gradient(135deg,rgba(255,255,255,0.88),rgba(250,245,255,0.92)_55%,rgba(243,232,255,0.92))] p-3.5 text-gray-800 shadow-[0_10px_30px_rgba(168,85,247,0.08)] backdrop-blur-sm transition-all duration-300 group-hover:border-fuchsia-200/90 group-hover:shadow-[0_12px_34px_rgba(168,85,247,0.14)]"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
@@ -931,14 +932,16 @@ const SkillsSection = () => {
                         )}
                       </div>
 
-                      <span className="text-xs text-gray-500">
-                        {dateToShow ? formatDate(dateToShow) : " "}
-                      </span>
-                    </div>
-
-                    <div className="mt-3 flex items-center justify-between text-xs text-slate-500">
-                      <span>Proficiency</span>
-                      <span>{Math.min(100, Math.max(0, level))}%</span>
+                      <div className="flex items-center gap-2">
+                        {isExpert && !editMode && (
+                          <span className="rounded-full bg-emerald-100 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-emerald-700">
+                            Proficient
+                          </span>
+                        )}
+                        <span className="text-xs text-gray-500">
+                          {dateToShow ? formatDate(dateToShow) : " "}
+                        </span>
+                      </div>
                     </div>
 
                     <div className="mt-2 h-2 w-full rounded-full bg-gray-200">
@@ -958,12 +961,12 @@ const SkillsSection = () => {
                         Delete
                       </button>
                     )}
-                  </li>
+                  </motion.li>
                 );
               })}
             </ul>
 
-            <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
+            <div className="relative z-10 mt-6 flex flex-wrap items-center justify-between gap-3">
               <button
                 type="button"
                 onClick={() =>
@@ -971,14 +974,14 @@ const SkillsSection = () => {
                     prev === category ? null : category
                   )
                 }
-                className="inline-flex items-center rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-fuchsia-300 hover:text-fuchsia-600"
+                className="inline-flex items-center rounded-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-sky-500 px-4 py-2 text-sm font-semibold text-white shadow-[0_12px_24px_rgba(168,85,247,0.28)] transition duration-300 hover:shadow-[0_16px_30px_rgba(168,85,247,0.34)]"
               >
                 {expandedCategory === category ? "Show less" : "More"}
               </button>
 
               {!editMode && expandedCategory !== category && (techs || []).length > 4 && (
                 <span className="text-sm text-slate-500">
-                  +{(techs || []).length - 4} more skills
+                  +{(techs || []).length - 3} more skills
                 </span>
               )}
 
