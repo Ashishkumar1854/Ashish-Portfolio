@@ -5,7 +5,6 @@ const TimelineEditor = ({ onSubmit, editingEntry, cancelEdit }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
 
-  // Prefill form when editing
   useEffect(() => {
     if (editingEntry) {
       setYear(editingEntry.year);

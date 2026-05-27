@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import ProjectForm from "../../components/admin/ProjectForm";
 
-// Dummy projects (for frontend preview)
 const dummyProjects = [
   {
     title: "Voting System",
@@ -20,7 +19,6 @@ const dummyProjects = [
 const ProjectManager = () => {
   const [projects, setProjects] = useState(dummyProjects);
 
-  // Add new project (temporary - later from DB)
   const handleAddProject = (project) => {
     setProjects([project, ...projects]);
   };
@@ -31,10 +29,10 @@ const ProjectManager = () => {
         📊 Manage Projects
       </h2>
 
-      {/* Add Form */}
+      {}
       <ProjectForm onAdd={handleAddProject} />
 
-      {/* Project Cards */}
+      {}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
         {projects.map((proj, idx) => (
           <div

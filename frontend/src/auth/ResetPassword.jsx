@@ -1,88 +1,7 @@
-// import React, { useState } from "react";
-// import { useParams, useNavigate } from "react-router-dom";
-// import axios from "axios";
-// import { toast } from "react-toastify";
-
-// const ResetPassword = () => {
-//   const { token } = useParams();
-//   const navigate = useNavigate();
-
-//   const [password, setPassword] = useState("");
-//   const [loading, setLoading] = useState(false);
-//   const [errorMsg, setErrorMsg] = useState("");
-
-//   const handleReset = async () => {
-//     if (password.length < 6) {
-//       toast.error("⚠️ Password must be at least 6 characters long");
-//       return;
-//     }
-
-//     try {
-//       setLoading(true);
-//       const res = await axios.post(
-//         `http://localhost:5001/api/auth/reset-password/${token}`,
-//         { password },
-//         { withCredentials: true } // ✅ Important if backend sets cookie
-//       );
-
-//       toast.success(res.data.message || "✅ Password reset successful");
-//       toast.success("✅ Password reset & logged in");
-
-//       // ✅ Redirect to dashboard after success
-//       navigate("/dashboard");
-//     } catch (err) {
-//       const msg =
-//         err.response?.data?.message || "❌ Reset failed. Try again later.";
-//       toast.error(msg);
-//       setErrorMsg(msg);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   return (
-//     <div className="min-h-screen flex justify-center items-center bg-yellow-100 px-4">
-//       <div className="bg-white p-6 rounded shadow-md w-full max-w-md space-y-5">
-//         <h2 className="text-2xl font-bold text-center">🔐 Reset Password</h2>
-
-//         {errorMsg && (
-//           <div className="bg-red-100 text-red-700 p-2 text-sm rounded text-center">
-//             {errorMsg}
-//           </div>
-//         )}
-
-//         <input
-//           type="password"
-//           placeholder="New Password"
-//           className="w-full border border-gray-300 p-2 rounded"
-//           value={password}
-//           onChange={(e) => setPassword(e.target.value)}
-//         />
-
-//         <button
-//           onClick={handleReset}
-//           disabled={loading}
-//           className={`w-full py-2 rounded font-semibold ${
-//             loading
-//               ? "bg-gray-400 text-white cursor-not-allowed"
-//               : "bg-yellow-400 text-black hover:bg-yellow-300"
-//           }`}
-//         >
-//           {loading ? "Resetting..." : "Reset Password"}
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default ResetPassword;
-
-///src/auth/ResetPassword.jsx
-// used API and remove axios normal call
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import API from "../utils/api"; // ✅ centralized axios instance
+import API from "../utils/api";
 
 const ResetPassword = () => {
   const { token } = useParams();
@@ -107,7 +26,6 @@ const ResetPassword = () => {
       toast.success(res.data.message || "✅ Password reset successful");
       toast.success("✅ Password reset & logged in");
 
-      // ✅ Redirect to dashboard after success
       navigate("/dashboard");
     } catch (err) {
       const msg =
@@ -120,20 +38,23 @@ const ResetPassword = () => {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-yellow-100 px-4">
-      <div className="bg-white p-6 rounded shadow-md w-full max-w-md space-y-5">
-        <h2 className="text-2xl font-bold text-center">🔐 Reset Password</h2>
+    <div className="bg-surface-deep min-h-screen flex justify-center items-center p-4">
+      <div className="glass-card p-8 rounded-2xl w-full max-w-md space-y-5">
+        <div className="text-center mb-6">
+          <span className="material-symbols-outlined text-primary text-4xl mb-2">lock_reset</span>
+          <h2 className="text-2xl font-bold text-on-surface">Reset Password</h2>
+        </div>
 
         {errorMsg && (
-          <div className="bg-red-100 text-red-700 p-2 text-sm rounded text-center">
+          <div className="bg-error/10 border border-error/50 text-error p-3 text-sm rounded text-center label-caps">
             {errorMsg}
           </div>
         )}
 
         <input
           type="password"
-          placeholder="New Password"
-          className="w-full border border-gray-300 p-2 rounded"
+          placeholder="Enter new password"
+          className="w-full bg-surface-deep border border-border-subtle focus:border-primary px-4 py-3 rounded text-on-surface outline-none transition-colors"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -141,11 +62,7 @@ const ResetPassword = () => {
         <button
           onClick={handleReset}
           disabled={loading}
-          className={`w-full py-2 rounded font-semibold ${
-            loading
-              ? "bg-gray-400 text-white cursor-not-allowed"
-              : "bg-yellow-400 text-black hover:bg-yellow-300"
-          }`}
+          className="w-full btn-primary rounded py-3 mt-4"
         >
           {loading ? "Resetting..." : "Reset Password"}
         </button>

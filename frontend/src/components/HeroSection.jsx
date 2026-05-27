@@ -1,200 +1,25 @@
-// // // // src/components/HeroSection.jsx
-// import React, { useEffect, useState, useRef } from "react";
-// import { motion } from "framer-motion";
-// import { toast } from "react-toastify"; // ✅ toast added
-// import { useAuth } from "../context/AuthContext"; // ✅ added
-// import API from "../utils/api"; // ✅ centralized axios instance
-
-// const HeroSection = () => {
-//   const { user } = useAuth(); // ✅ user from context
-//   const [posts, setPosts] = useState([]);
-//   const [newPost, setNewPost] = useState({ title: "", link: "" });
-//   const scrollRef = useRef(null);
-
-//   // ⏩ Auto-scroll
-//   useEffect(() => {
-//     const interval = setInterval(() => {
-//       if (scrollRef.current) {
-//         scrollRef.current.scrollLeft += 1;
-//       }
-//     }, 25);
-//     return () => clearInterval(interval);
-//   }, []);
-
-//   // 📦 Fetch Recent Posts
-//   useEffect(() => {
-//     const fetchPosts = async () => {
-//       try {
-//         const res = await API.get("/api/home/recentPost");
-//         setPosts(res.data.data?.content || []);
-//       } catch (err) {
-//         console.error("Fetch Recent Posts Error:", err);
-//         toast.error("❌ Failed to load recent posts.");
-//       }
-//     };
-//     fetchPosts();
-//   }, []);
-
-//   // ➕ Add new post
-//   const handleAdd = async () => {
-//     if (!newPost.title || !newPost.link) {
-//       toast.warn("⚠️ Title and Link required");
-//       return;
-//     }
-
-//     try {
-//       const updated = [...posts, newPost];
-//       await API.post("/api/home", {
-//         section: "recentPost",
-//         content: updated,
-//       });
-//       setPosts(updated);
-//       setNewPost({ title: "", link: "" });
-//       toast.success("✅ Post added successfully");
-//     } catch (err) {
-//       console.error("Add Post Error:", err);
-//       toast.error("❌ Failed to add post");
-//     }
-//   };
-
-//   // 🗑️ Delete post
-//   const handleDelete = async (index) => {
-//     try {
-//       const updated = posts.filter((_, i) => i !== index);
-//       await API.post("/api/home", {
-//         section: "recentPost",
-//         content: updated,
-//       });
-//       setPosts(updated);
-//       toast.info("🗑️ Post deleted");
-//     } catch (err) {
-//       console.error("Delete Post Error:", err);
-//       toast.error("❌ Failed to delete post");
-//     }
-//   };
-
-//   return (
-//     <section className="space-y-12 mt-10 text-center" id="hero">
-//       {/* 🧠 Header */}
-//       <motion.div
-//         initial={{ opacity: 0, y: -20 }}
-//         animate={{ opacity: 1, y: 0 }}
-//         transition={{ delay: 0.2 }}
-//       >
-//         <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-700">
-//           🚀 Welcome to Ashish's Portfolio
-//         </h1>
-//         <h2 className="text-xl mt-2 text-gray-700 font-medium">
-//           Innovating Solutions. Crafting Digital Experiences.
-//         </h2>
-//         <p className="text-gray-600 text-lg mt-4 max-w-3xl mx-auto">
-//           Explore my journey through cutting-edge projects, AI/ML innovations,
-//           and full-stack development. Dive into recent highlights below 👇
-//         </p>
-//       </motion.div>
-
-//       {/* 🌀 Scrollable Highlights */}
-//       <div
-//         ref={scrollRef}
-//         className="overflow-x-auto whitespace-nowrap flex gap-6 px-4 py-6 scroll-smooth bg-gradient-to-br from-yellow-50 via-white to-purple-50 rounded-xl shadow-inner"
-//       >
-//         {posts.map((post, i) => (
-//           <motion.div
-//             key={i}
-//             whileHover={{ scale: 1.05 }}
-//             transition={{ type: "spring", stiffness: 300 }}
-//             className="min-w-[260px] max-w-sm p-5 rounded-2xl bg-white/60 backdrop-blur-md shadow-lg border border-purple-200 flex-shrink-0"
-//           >
-//             <h3 className="text-lg font-bold text-purple-800 mb-2 truncate">
-//               {post.title}
-//             </h3>
-//             <a
-//               href={post.link}
-//               target="_blank"
-//               rel="noopener noreferrer"
-//               className="text-blue-600 underline text-sm break-all"
-//             >
-//               {post.link}
-//             </a>
-//             {user?.role === "admin" && (
-//               <button
-//                 onClick={(e) => {
-//                   e.preventDefault();
-//                   handleDelete(i);
-//                 }}
-//                 className="mt-3 text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-//               >
-//                 Delete
-//               </button>
-//             )}
-//           </motion.div>
-//         ))}
-//       </div>
-
-//       {/* 🛠️ Admin Add Panel */}
-//       {user?.role === "admin" && (
-//         <motion.div
-//           initial={{ opacity: 0, y: 20 }}
-//           animate={{ opacity: 1, y: 0 }}
-//           transition={{ delay: 0.5 }}
-//           className="bg-white p-6 rounded-2xl shadow-md mt-8 space-y-4 max-w-md mx-auto border border-gray-200"
-//         >
-//           <h3 className="font-bold text-lg text-gray-800">
-//             ➕ Add New Recent Post
-//           </h3>
-//           <input
-//             type="text"
-//             placeholder="Post Title"
-//             value={newPost.title}
-//             onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-//             className="w-full border rounded px-3 py-2"
-//           />
-//           <input
-//             type="url"
-//             placeholder="Post Link"
-//             value={newPost.link}
-//             onChange={(e) => setNewPost({ ...newPost, link: e.target.value })}
-//             className="w-full border rounded px-3 py-2"
-//           />
-//           <button
-//             onClick={handleAdd}
-//             className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-//           >
-//             ✅ Add Post
-//           </button>
-//         </motion.div>
-//       )}
-//     </section>
-//   );
-// };
-
-// export default HeroSection;
-
-//02 december
-
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { toast } from "react-toastify"; // ✅ toast added
-import { useAuth } from "../context/AuthContext"; // ✅ added
-import API from "../utils/api"; // ✅ centralized axios instance
+import { toast } from "react-toastify";
+import { useAuth } from "../context/AuthContext";
+import API from "../utils/api";
+import { Link } from "react-router-dom";
 
 const HeroSection = () => {
-  const { user } = useAuth(); // ✅ user from context
+  const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [newPost, setNewPost] = useState({ title: "", link: "" });
   const scrollRef = useRef(null);
 
-  // ⏩ Auto-scroll
   useEffect(() => {
     const interval = setInterval(() => {
       if (scrollRef.current) {
         scrollRef.current.scrollLeft += 1;
       }
-    }, 25);
+    }, 30);
     return () => clearInterval(interval);
   }, []);
 
-  // 📦 Fetch Recent Posts
   useEffect(() => {
     const fetchPosts = async () => {
       try {
@@ -202,25 +27,19 @@ const HeroSection = () => {
         setPosts(res.data.data?.content || []);
       } catch (err) {
         console.error("Fetch Recent Posts Error:", err);
-        toast.error("❌ Failed to load recent posts.");
       }
     };
     fetchPosts();
   }, []);
 
-  // ➕ Add new post
   const handleAdd = async () => {
     if (!newPost.title || !newPost.link) {
       toast.warn("⚠️ Title and Link required");
       return;
     }
-
     try {
       const updated = [...posts, newPost];
-      await API.post("/api/home", {
-        section: "recentPost",
-        content: updated,
-      });
+      await API.post("/api/home", { section: "recentPost", content: updated });
       setPosts(updated);
       setNewPost({ title: "", link: "" });
       toast.success("✅ Post added successfully");
@@ -230,14 +49,10 @@ const HeroSection = () => {
     }
   };
 
-  // 🗑️ Delete post
   const handleDelete = async (index) => {
     try {
       const updated = posts.filter((_, i) => i !== index);
-      await API.post("/api/home", {
-        section: "recentPost",
-        content: updated,
-      });
+      await API.post("/api/home", { section: "recentPost", content: updated });
       setPosts(updated);
       toast.info("🗑️ Post deleted");
     } catch (err) {
@@ -246,327 +61,211 @@ const HeroSection = () => {
     }
   };
 
-  //   return (
-  //     <section className="space-y-12 mt-10 text-center" id="hero">
-  //       {/* 🧠 Header */}
-  //       <motion.div
-  //         initial={{ opacity: 0, y: -20 }}
-  //         animate={{ opacity: 1, y: 0 }}
-  //         transition={{ delay: 0.2 }}
-  //       >
-  //         <h1 className="text-4xl sm:text-5xl font-extrabold text-purple-700">
-  //           Welcome to Ashish's Portfolio
-  //         </h1>
-  //         <h2 className="text-xl mt-2 text-gray-700 font-medium">
-  //           Innovating Solutions. Crafting Digital Experiences.
-  //         </h2>
-  //         <p className="text-gray-600 text-lg mt-4 max-w-3xl mx-auto">
-  //           Explore my journey through cutting-edge projects, AI/ML innovations,
-  //           and full-stack development. Dive into recent highlights below 👇
-  //         </p>
-  //       </motion.div>
-
-  //       {/* 🌀 Scrollable Highlights */}
-  //       <div
-  //         ref={scrollRef}
-  //         className="overflow-x-auto whitespace-nowrap flex gap-6 px-4 py-6 scroll-smooth bg-gradient-to-br from-yellow-50 via-white to-purple-50 rounded-xl shadow-inner"
-  //       >
-  //         {posts.map((post, i) => (
-  //           <motion.div
-  //             key={i}
-  //             whileHover={{ scale: 1.05 }}
-  //             transition={{ type: "spring", stiffness: 300 }}
-  //             className="min-w-[260px] max-w-sm p-5 rounded-2xl bg-white/60 backdrop-blur-md shadow-lg border border-purple-200 flex-shrink-0"
-  //           >
-  //             <h3 className="text-lg font-bold text-purple-800 mb-2 truncate">
-  //               {post.title}
-  //             </h3>
-  //             <a
-  //               href={post.link}
-  //               target="_blank"
-  //               rel="noopener noreferrer"
-  //               className="text-blue-600 underline text-sm break-all"
-  //             >
-  //               {post.link}
-  //             </a>
-  //             {user?.role === "admin" && (
-  //               <button
-  //                 onClick={(e) => {
-  //                   e.preventDefault();
-  //                   handleDelete(i);
-  //                 }}
-  //                 className="mt-3 text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-  //               >
-  //                 Delete
-  //               </button>
-  //             )}
-  //           </motion.div>
-  //         ))}
-  //       </div>
-
-  //       {/* 🛠️ Admin Add Panel */}
-  //       {user?.role === "admin" && (
-  //         <motion.div
-  //           initial={{ opacity: 0, y: 20 }}
-  //           animate={{ opacity: 1, y: 0 }}
-  //           transition={{ delay: 0.5 }}
-  //           className="bg-white p-6 rounded-2xl shadow-md mt-8 space-y-4 max-w-md mx-auto border border-gray-200"
-  //         >
-  //           <h3 className="font-bold text-lg text-gray-800">
-  //             ➕ Add New Recent Post
-  //           </h3>
-  //           <input
-  //             type="text"
-  //             placeholder="Post Title"
-  //             value={newPost.title}
-  //             onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-  //             className="w-full border rounded px-3 py-2"
-  //           />
-  //           <input
-  //             type="url"
-  //             placeholder="Post Link"
-  //             value={newPost.link}
-  //             onChange={(e) => setNewPost({ ...newPost, link: e.target.value })}
-  //             className="w-full border rounded px-3 py-2"
-  //           />
-  //           <button
-  //             onClick={handleAdd}
-  //             className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
-  //           >
-  //             ✅ Add Post
-  //           </button>
-  //         </motion.div>
-  //       )}
-  //     </section>
-  //   );
-  // };
-
-  // export default HeroSection;
-
-  // redesigned without image
   return (
-    <section id="hero" className="mt-14 space-y-8 antialiased">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-        <div className="relative overflow-hidden rounded-3xl border border-white/40 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 text-white shadow-[0_24px_60px_rgba(2,6,23,0.35)]">
-          <motion.div
-            aria-hidden
-            className="absolute -top-24 -left-24 h-72 w-72 rounded-full bg-cyan-400/20 blur-3xl"
-            animate={{ x: [0, 18, 0], y: [0, 12, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <motion.div
-            aria-hidden
-            className="absolute -bottom-28 -right-24 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl"
-            animate={{ x: [0, -16, 0], y: [0, -10, 0] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          />
-          <div
-            aria-hidden
-            className="absolute bottom-8 left-10 hidden lg:block opacity-60"
-          >
-            <svg width="160" height="160" viewBox="0 0 200 200" fill="none">
-              <g filter="url(#blur)">
-                <path
-                  d="M100 35c12 0 22 10 22 22s-10 22-22 22-22-10-22-22 10-22 22-22Z"
-                  fill="url(#petal)"
-                  opacity="0.9"
-                />
-                <path
-                  d="M100 121c12 0 22 10 22 22s-10 22-22 22-22-10-22-22 10-22 22-22Z"
-                  fill="url(#petal)"
-                  opacity="0.7"
-                />
-                <path
-                  d="M35 100c0-12 10-22 22-22s22 10 22 22-10 22-22 22-22-10-22-22Z"
-                  fill="url(#petal)"
-                  opacity="0.7"
-                />
-                <path
-                  d="M121 100c0-12 10-22 22-22s22 10 22 22-10 22-22 22-22-10-22-22Z"
-                  fill="url(#petal)"
-                  opacity="0.6"
-                />
-                <circle cx="100" cy="100" r="18" fill="#0f172a" />
-                <circle cx="100" cy="100" r="10" fill="#38bdf8" />
-              </g>
-              <defs>
-                <linearGradient id="petal" x1="60" y1="40" x2="140" y2="160">
-                  <stop offset="0" stopColor="#38bdf8" />
-                  <stop offset="1" stopColor="#a855f7" />
-                </linearGradient>
-                <filter id="blur" x="-10" y="-10" width="220" height="220">
-                  <feGaussianBlur stdDeviation="0.6" />
-                </filter>
-              </defs>
-            </svg>
-          </div>
-
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.2fr_0.8fr] gap-8 p-6 sm:p-8 lg:p-12">
-            <motion.div
-              className="space-y-6"
-              initial={{ opacity: 0, y: 16 }}
+    <>
+      <section id="hero" className="bg-surface-deep pt-32 pb-section-gap-lg px-margin-mobile md:px-gutter max-w-[1280px] mx-auto">
+        <div className="flex flex-col lg:flex-row gap-12 items-center">
+          
+          {}
+          <div className="w-full lg:w-3/5 space-y-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              transition={{ duration: 0.5 }}
+              className="inline-block border border-border-subtle bg-surface-elevated rounded-full px-4 py-1.5 label-caps text-text-dim"
             >
-              <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[11px] sm:text-xs font-semibold tracking-wide">
-                Product Engineer • AI/ML Builder
-              </div>
-
-              <h1 className="text-2xl sm:text-3xl lg:text-5xl font-extrabold leading-tight tracking-tight">
-                Ashish Kumar builds fast, reliable products that feel premium.
-              </h1>
-
-              <p className="text-sm sm:text-base text-slate-200/90 max-w-2xl leading-relaxed">
-                <span className="block text-base sm:text-lg font-semibold text-white">
-                  AI Automation & Full Stack Developer
-                </span>
-                <span className="mt-2 block">
-                  I build AI chatbots, automation systems, and scalable web apps
-                  that help startups save time and grow faster.
-                </span>
-              </p>
-
-              <div className="flex flex-wrap gap-2 text-[11px] sm:text-xs text-slate-300">
-                <span className="rounded-full bg-white/10 px-3 py-1">
-                  React • Node • MongoDB
-                </span>
-                <span className="rounded-full bg-white/10 px-3 py-1">
-                  Python • AI/ML • APIs
-                </span>
-                <span className="rounded-full bg-white/10 px-3 py-1">
-                  Remote • India
-                </span>
-              </div>
+              Product Engineer • AI/ML Builder
             </motion.div>
-
-            <motion.div
-              className="grid gap-4"
-              initial="hidden"
-              animate="show"
-              variants={{
-                hidden: {},
-                show: { transition: { staggerChildren: 0.12 } },
-              }}
+            
+            <motion.h1 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="font-geist text-headline-lg-mobile md:text-headline-xl text-on-surface"
             >
-              {[
-                {
-                  label: "Recent Focus",
-                  title: "Admin dashboard + GPT assistant + hire workflow",
-                  body: "Built end-to-end UX with secure auth, analytics, and email automation.",
-                },
-                {
-                  label: "Open to",
-                  title: "Freelance, product roles, and collaborations",
-                  body: "I love shipping fast, clean builds with strong UX.",
-                },
-                {
-                  label: "Value",
-                  title: "Clean UI, clear logic, measurable impact",
-                  body: "Pragmatic engineering with a design-first approach.",
-                },
-              ].map((card, idx) => (
-                <motion.div
-                  key={card.label}
-                  variants={{
-                    hidden: { opacity: 0, y: 14 },
-                    show: { opacity: 1, y: 0 },
-                  }}
-                  transition={{ duration: 0.45, ease: "easeOut" }}
-                  className="group rounded-2xl bg-white/10 border border-white/10 p-5 backdrop-blur-md hover:border-white/30 hover:shadow-[0_12px_32px_rgba(56,189,248,0.18)] transition"
-                >
-                  <div className="text-xs uppercase tracking-widest text-white/70">
-                    {card.label}
-                  </div>
-                  <div className="mt-2 text-base sm:text-lg font-semibold text-white">
-                    {card.title}
-                  </div>
-                  <p className="mt-2 text-xs sm:text-sm text-white/70 leading-relaxed">
-                    {card.body}
-                  </p>
-                  {idx === 2 && (
-                    <div className="mt-3 h-0.5 w-16 rounded-full bg-gradient-to-r from-cyan-400 to-fuchsia-500 opacity-70" />
-                  )}
-                </motion.div>
+              Ashish Kumar builds fast, reliable products that feel premium.
+            </motion.h1>
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-body-lg text-on-surface-variant font-medium"
+            >
+              AI Automation & Full Stack Developer
+            </motion.h2>
+            
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="text-body-md text-text-dim max-w-lg"
+            >
+              I build AI chatbots, automation systems, and scalable web apps that help startups save time and grow faster.
+            </motion.p>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="flex flex-wrap gap-3 mt-6"
+            >
+              {["React • Node • MongoDB", "Python • AI/ML • APIs", "Remote • India"].map((chip, idx) => (
+                <span key={idx} className="border border-border-subtle label-caps text-text-dim px-3 py-1.5 rounded-full">
+                  {chip}
+                </span>
               ))}
             </motion.div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="flex flex-wrap items-center gap-4 mt-8"
+            >
+              <Link to="/projects" className="btn-primary rounded">View Projects</Link>
+              <Link to="/hire" className="btn-ghost rounded">Hire Me</Link>
+              <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" className="label-caps text-primary hover:underline ml-2">Download Resume</a>
+            </motion.div>
+          </div>
+
+          {}
+          <div className="w-full lg:w-2/5 flex flex-col gap-6">
+            {[
+              {
+                label: "RECENT FOCUS",
+                title: "Admin dashboard + GPT assistant + hire workflow",
+                body: "Built end-to-end UX with secure auth, analytics, and email automation.",
+              },
+              {
+                label: "OPEN TO",
+                title: "Freelance, product roles, and collaborations",
+                body: "I love shipping fast, clean builds with strong UX.",
+              },
+              {
+                label: "VALUE",
+                title: "Clean UI, clear logic, measurable impact",
+                body: "Pragmatic engineering with a design-first approach.",
+                isValue: true
+              },
+            ].map((card, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 + (idx * 0.1) }}
+                className="glass-card p-6 rounded-xl hover:shadow-[0_20px_40px_rgba(45,91,255,0.1)] transition-all"
+              >
+                <div className="label-caps text-text-dim">{card.label}</div>
+                <div className="text-headline-md text-on-surface mt-2">{card.title}</div>
+                <p className="text-body-md text-text-dim mt-2">{card.body}</p>
+                {card.isValue && (
+                  <div className="mt-4 h-[2px] w-12 bg-primary rounded" />
+                )}
+              </motion.div>
+            ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* ---------- Scrollable Highlights (kept matching style) ---------- */}
-      <div className="relative z-10 max-w-6xl mx-auto px-4 -mt-6">
-        <div
-          ref={scrollRef}
-          className="overflow-x-auto whitespace-nowrap flex gap-6 py-6 scroll-smooth bg-gradient-to-br from-yellow-50 via-white to-purple-50 rounded-xl shadow-inner"
-        >
-          {posts.map((post, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ scale: 1.04 }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="min-w-[260px] max-w-sm p-5 rounded-2xl bg-white/70 backdrop-blur-md shadow-lg border border-purple-200 flex-shrink-0"
-            >
-              <h3 className="text-base sm:text-lg font-bold text-purple-800 mb-2 truncate">
-                {post.title}
-              </h3>
-              <a
-                href={post.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline text-xs sm:text-sm break-all"
-              >
-                {post.link}
-              </a>
-              {user?.role === "admin" && (
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleDelete(i);
-                  }}
-                  className="mt-3 text-xs sm:text-sm bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded"
-                >
-                  Delete
-                </button>
-              )}
-            </motion.div>
+      {}
+      <div className="bg-surface-elevated border-y border-border-subtle py-6">
+        <div className="max-w-[1280px] mx-auto px-4 sm:px-6 flex flex-wrap justify-center sm:justify-between items-center gap-6 divide-y sm:divide-y-0 sm:divide-x divide-border-subtle">
+          {[
+            { num: "15+", text: "Projects Built" },
+            { num: "3+", text: "Years Experience" },
+            { num: "10+", text: "Clients Helped" },
+            { num: "●", text: "Available for Work" },
+          ].map((stat, idx) => (
+            <div key={idx} className="flex gap-2 items-center px-4 pt-4 sm:pt-0 w-full sm:w-auto justify-center">
+              <span className="text-primary font-geist text-xl font-bold">{stat.num}</span>
+              <span className="label-caps text-text-dim">{stat.text}</span>
+            </div>
           ))}
         </div>
       </div>
 
-      {/* ---------- Admin Add Panel ---------- */}
-      {user?.role === "admin" && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="relative z-10 bg-white p-6 rounded-2xl shadow-md mt-8 space-y-4 max-w-md mx-auto border border-gray-200"
-        >
-          <h3 className="font-bold text-lg text-gray-800">
-            ➕ Add New Recent Post
-          </h3>
-          <input
-            type="text"
-            placeholder="Post Title"
-            value={newPost.title}
-            onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
-            className="w-full border rounded px-3 py-2"
-          />
-          <input
-            type="url"
-            placeholder="Post Link"
-            value={newPost.link}
-            onChange={(e) => setNewPost({ ...newPost, link: e.target.value })}
-            className="w-full border rounded px-3 py-2"
-          />
-          <button
-            onClick={handleAdd}
-            className="w-full bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+      {}
+      {posts.length > 0 && (
+        <div className="bg-surface-deep py-12">
+          <div className="max-w-[1280px] mx-auto px-4 sm:px-6 mb-6">
+            <h3 className="label-caps text-primary">Live Updates</h3>
+          </div>
+          <div
+            ref={scrollRef}
+            className="overflow-x-auto whitespace-nowrap flex gap-6 px-4 sm:px-6 pb-6 scroll-smooth scrollbar-hide"
+            style={{ msOverflowStyle: 'none', scrollbarWidth: 'none' }}
           >
-            ✅ Add Post
-          </button>
-        </motion.div>
+            {posts.map((post, i) => (
+              <motion.div
+                key={i}
+                whileHover={{ scale: 1.02 }}
+                className="min-w-[300px] max-w-sm p-5 rounded-xl glass-card flex-shrink-0 flex flex-col justify-between"
+              >
+                <div>
+                  <h3 className="text-headline-md text-on-surface mb-2 truncate" title={post.title}>
+                    {post.title}
+                  </h3>
+                  <a
+                    href={post.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline text-sm break-all"
+                  >
+                    {post.link}
+                  </a>
+                </div>
+                {user?.role === "admin" && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleDelete(i);
+                    }}
+                    className="mt-4 label-caps text-error border border-error/50 px-3 py-1.5 rounded hover:bg-error/10 w-max"
+                  >
+                    Delete
+                  </button>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </div>
       )}
-    </section>
+
+      {}
+      {user?.role === "admin" && (
+        <div className="bg-surface-deep pb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="glass-card p-6 rounded-xl space-y-4 max-w-md mx-auto"
+          >
+            <h3 className="label-caps text-on-surface">➕ Add New Recent Post</h3>
+            <input
+              type="text"
+              placeholder="Post Title"
+              value={newPost.title}
+              onChange={(e) => setNewPost({ ...newPost, title: e.target.value })}
+              className="w-full bg-surface-deep border border-border-subtle rounded px-3 py-2 text-on-surface focus:border-primary outline-none"
+            />
+            <input
+              type="url"
+              placeholder="Post Link"
+              value={newPost.link}
+              onChange={(e) => setNewPost({ ...newPost, link: e.target.value })}
+              className="w-full bg-surface-deep border border-border-subtle rounded px-3 py-2 text-on-surface focus:border-primary outline-none"
+            />
+            <button
+              onClick={handleAdd}
+              className="w-full btn-primary rounded mt-2"
+            >
+              Add Post
+            </button>
+          </motion.div>
+        </div>
+      )}
+    </>
   );
 };
+
 export default HeroSection;

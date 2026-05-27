@@ -20,7 +20,7 @@ const AssistantManager = () => {
     <div className="p-6">
       <h2 className="text-2xl font-bold mb-6">🤖 Manage Assistant Replies</h2>
 
-      {/* Form */}
+      {}
       <form onSubmit={handleSubmit} className="space-y-4">
         <input
           type="text"
@@ -48,7 +48,7 @@ const AssistantManager = () => {
         </button>
       </form>
 
-      {/* Display */}
+      {}
       <div className="mt-8 space-y-4">
         {data.map((entry, idx) => (
           <div key={idx} className="p-4 border rounded bg-white shadow-sm">

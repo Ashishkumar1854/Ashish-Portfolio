@@ -1,4 +1,3 @@
-// src/components/admin/SkillForm.jsx
 
 import React, { useState } from "react";
 
@@ -24,13 +23,8 @@ const SkillForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Dummy console for now
     console.log("Submitting:", { category, skills });
 
-    // Future: Replace with axios POST to backend
-    // axios.post("/api/skills", { category, skills })
-    //   .then(() => alert("Saved!"))
-    //   .catch(err => console.error("Failed to save", err));
   };
 
   return (

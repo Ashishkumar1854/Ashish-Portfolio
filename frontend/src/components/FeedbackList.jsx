@@ -1,4 +1,3 @@
-// src/components/FeedbackList.jsx
 import React from "react";
 import FeedbackCard from "./FeedbackCard";
 

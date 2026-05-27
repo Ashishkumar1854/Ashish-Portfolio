@@ -5,14 +5,13 @@ import { useNavigate } from "react-router-dom";
 
 const LoginForm = ({ onForgot }) => {
   const { login, user } = useAuth();
-  console.log("👤 useAuth user:", user);
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
-      navigate("/"); // ✅ Redirect when user is set
+      navigate("/");
     }
   }, [user, navigate]);
 
@@ -26,7 +25,6 @@ const LoginForm = ({ onForgot }) => {
     try {
       await login(formData);
       toast.success("🎉 Login successful!");
-      // Don't need navigate("/") here anymore, handled by useEffect
     } catch (err) {
       const message =
         err.response?.data?.message || "❌ Login failed. Try again.";
@@ -45,7 +43,7 @@ const LoginForm = ({ onForgot }) => {
         value={formData.email}
         onChange={handleChange}
         required
-        className="w-full px-4 py-2 border rounded-md dark:bg-gray-800"
+        className="w-full bg-surface-deep border border-border-subtle focus:border-primary px-4 py-3 rounded text-on-surface outline-none transition-colors"
       />
       <input
         type="password"
@@ -54,13 +52,13 @@ const LoginForm = ({ onForgot }) => {
         value={formData.password}
         onChange={handleChange}
         required
-        className="w-full px-4 py-2 border rounded-md dark:bg-gray-800"
+        className="w-full bg-surface-deep border border-border-subtle focus:border-primary px-4 py-3 rounded text-on-surface outline-none transition-colors"
       />
       <div className="text-right text-sm">
         <button
           type="button"
           onClick={onForgot}
-          className="text-blue-500 hover:underline text-sm"
+          className="text-text-dim hover:text-primary transition-colors text-sm"
         >
           Forgot password?
         </button>
@@ -68,7 +66,7 @@ const LoginForm = ({ onForgot }) => {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-yellow-400 hover:bg-yellow-300 text-black font-bold py-2 rounded-md"
+        className="w-full btn-primary rounded py-3 mt-2"
       >
         {loading ? "Logging in..." : "Login"}
       </button>

@@ -1,4 +1,3 @@
-// ✅ src/pages/Home.jsx
 
 import React from "react";
 import HeroSection from "../components/HeroSection";
@@ -11,22 +10,22 @@ import PageCSection from "../components/PageCSection";
 const Home = ({ user }) => {
   return (
     <div className="space-y-20">
-      {/* ✅ Hero Section (Title, Description, CTA + Recent Posts inside it) */}
+      {}
       <HeroSection user={user} />
 
-      {/* ✅ Skills Section (Dynamic, DB-powered, Admin Editable) */}
+      {}
       <SkillsSection user={user} />
 
-      {/* ✅ Vision Section (Static or DB-driven if preferred) */}
+      {}
       <VisionSection />
 
-      {/* ✅ Page A Section (Role-based logic for Admin: add/delete) */}
+      {}
       <PageASection user={user} />
 
-      {/* ✅ Page B Section (Same logic as PageASection, no `sections[]` array) */}
+      {}
       <PageBSection user={user} />
 
-      {/* ✅ Page C Section (Same logic as PageASection, no `sections[]` array) */}
+      {}
       <PageCSection user={user} />
     </div>
   );

@@ -1,4 +1,3 @@
-// src/pages/Admin/SkillManager.jsx
 import React, { useState } from "react";
 import SkillForm from "../../components/admin/SkillForm";
 
@@ -12,7 +11,7 @@ const SkillManager = () => {
       </h2>
       <SkillForm setSkills={setSkills} />
 
-      {/* Preview added skills (local state for now) */}
+      {}
       <div className="mt-8">
         <h3 className="text-lg font-semibold mb-2">📊 Preview</h3>
         {skills.map((group, idx) => (

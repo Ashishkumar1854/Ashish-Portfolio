@@ -2,18 +2,18 @@ import React, { useState, useEffect, useRef } from "react";
 import ChatBubble from "../components/ChatBubble";
 import TimelineCard from "../components/TimelineCard";
 import VoiceRecorder from "../components/VoiceRecorder";
-import HireForm from "../pages/HireForm";
 import { useAssistantLogic } from "../hooks/useAssistantLogic";
+import { useNavigate } from "react-router-dom";
 
 const Assistant = () => {
   const [chat, setChat] = useState([]);
   const [input, setInput] = useState("");
   const [isVoiceOpen, setIsVoiceOpen] = useState(false);
-  const [isHireOpen, setIsHireOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [voices, setVoices] = useState([]);
   const [selectedVoice, setSelectedVoice] = useState(null);
   const chatEndRef = useRef(null);
+  const navigate = useNavigate();
 
   const {
     getBotReply,
@@ -72,7 +72,7 @@ const Assistant = () => {
     speak(botText);
 
     if (isHireTriggered) {
-      setIsHireOpen(true);
+      navigate("/hire");
       setIsHireTriggered(false);
     }
 
@@ -142,7 +142,7 @@ const Assistant = () => {
           </div>
         )}
 
-        {/* Input & Actions */}
+        {}
         <div className="mt-2 sm:mt-3 flex flex-col gap-2 sticky bottom-0 bg-gray-50 p-2 rounded-t-xl shadow-inner">
           <div className="flex flex-col sm:flex-row gap-2">
             <input
@@ -169,7 +169,7 @@ const Assistant = () => {
             </button>
             <button
               className="bg-green-500 text-white px-4 sm:px-5 py-2 rounded-xl hover:bg-green-600 transition w-full sm:w-auto"
-              onClick={() => setIsHireOpen(true)}
+              onClick={() => navigate("/hire")}
             >
               💼 Hire Freelancer
             </button>
@@ -214,16 +214,6 @@ const Assistant = () => {
         />
       )}
 
-      {/* ✅ Fixed HireForm mount issue */}
-      {isHireOpen && (
-        <HireForm
-          key={isHireOpen ? "open" : "closed"}
-          onClose={() => {
-            setIsHireOpen(false);
-            setTimeout(() => setIsHireOpen(false), 0);
-          }}
-        />
-      )}
     </div>
   );
 };

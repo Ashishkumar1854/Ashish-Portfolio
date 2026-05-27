@@ -1,7 +1,4 @@
-//.............after remove coin and streak logic ............
 
-//04/09/2026
-// File: src/auth/ProfileMenu.jsx
 
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -13,14 +10,12 @@ const ProfileMenu = () => {
   const [open, setOpen] = useState(false);
   const menuRef = useRef();
 
-  // Logout handler
   const handleLogout = async () => {
     await logout();
     setOpen(false);
     window.location.href = "/";
   };
 
-  // Close menu on click outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (menuRef.current && !menuRef.current.contains(e.target)) {
@@ -33,7 +28,7 @@ const ProfileMenu = () => {
 
   return (
     <div className="relative" ref={menuRef}>
-      {/* Profile Button */}
+      {}
       <button
         onClick={() => setOpen(!open)}
         className="bg-gray-800 text-yellow-400 px-4 py-2 rounded-md font-semibold text-sm hover:bg-gray-700 transition-colors"
@@ -41,7 +36,7 @@ const ProfileMenu = () => {
         {user?.name || "Profile"}
       </button>
 
-      {/* Dropdown Menu */}
+      {}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -57,7 +52,7 @@ const ProfileMenu = () => {
 
             <hr className="border-gray-700 my-1" />
 
-            {/* Quick Actions */}
+            {}
             <div className="flex flex-col">
               <Link
                 to="/settings"

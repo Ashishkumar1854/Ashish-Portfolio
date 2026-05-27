@@ -1,6 +1,4 @@
-//05/00
 
-// src/components/ServiceSection.jsx
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 

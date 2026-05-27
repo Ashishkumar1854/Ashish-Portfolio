@@ -1,88 +1,7 @@
-// //05/09
-
-// // frontend/src/components/ProjectSection.jsx
-// // frontend/src/components/ProjectSection.jsx
-// import React, { useEffect, useState } from "react";
-// import ProjectCard from "./ProjectCard";
-// import { useAuth } from "../context/AuthContext";
-
-// const ProjectSection = ({ updateTrigger }) => {
-//   const [projects, setProjects] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-
-//   const { user } = useAuth();
-//   const isAdmin = user?.role === "admin";
-
-//   const fetchProjects = async () => {
-//     setLoading(true);
-//     setError(null);
-//     try {
-//       const res = await fetch("http://localhost:5001/api/projects", {
-//         method: "GET",
-//         credentials: "include", // send cookie for auth
-//       });
-
-//       if (!res.ok) throw new Error(`Failed to fetch: ${res.status}`);
-//       const data = await res.json();
-//       setProjects(data || []);
-//     } catch (err) {
-//       console.error("Failed to fetch projects:", err);
-//       setError("Unable to load projects. Please try again later.");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchProjects();
-//   }, [updateTrigger]);
-
-//   const handleDelete = async (id) => {
-//     if (!window.confirm("Are you sure you want to delete this project?"))
-//       return;
-//     try {
-//       const res = await fetch(`http://localhost:5001/api/projects/${id}`, {
-//         method: "DELETE",
-//         headers: { "Content-Type": "application/json" },
-//         credentials: "include",
-//       });
-//       const result = await res.json().catch(() => ({}));
-//       if (!res.ok) return alert(result.message || "Failed to delete");
-//       setProjects((prev) => prev.filter((p) => p._id !== id));
-//     } catch (err) {
-//       console.error("Delete failed:", err);
-//       alert("Error deleting project. Try again.");
-//     }
-//   };
-
-//   if (loading)
-//     return <p className="text-center text-gray-500">Loading projects...</p>;
-//   if (error) return <p className="text-center text-red-500">{error}</p>;
-//   if (projects.length === 0)
-//     return <p className="text-center text-gray-500">No projects to show.</p>;
-
-//   return (
-//     <div className="grid gap-4">
-//       {projects.map((p) => (
-//         <ProjectCard
-//           key={p._id}
-//           project={p}
-//           onDelete={handleDelete}
-//           isAdmin={isAdmin}
-//         />
-//       ))}
-//     </div>
-//   );
-// };
-
-// export default ProjectSection;
-
-// frontend/src/components/ProjectSection.jsx
 import React, { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
 import { useAuth } from "../context/AuthContext";
-import API from "../utils/api"; // ✅ unified API
+import API from "../utils/api";
 
 const ProjectSection = ({ updateTrigger }) => {
   const [projects, setProjects] = useState([]);
@@ -96,7 +15,7 @@ const ProjectSection = ({ updateTrigger }) => {
     setLoading(true);
     setError(null);
     try {
-      const res = await API.get("/api/projects"); // ✅ replaced fetch
+      const res = await API.get("/api/projects");
       setProjects(res.data || []);
     } catch (err) {
       console.error("Failed to fetch projects:", err);
@@ -114,7 +33,7 @@ const ProjectSection = ({ updateTrigger }) => {
     if (!window.confirm("Are you sure you want to delete this project?"))
       return;
     try {
-      await API.delete(`/api/projects/${id}`); // ✅ replaced fetch
+      await API.delete(`/api/projects/${id}`);
       setProjects((prev) => prev.filter((p) => p._id !== id));
     } catch (err) {
       console.error("Delete failed:", err);
@@ -123,17 +42,18 @@ const ProjectSection = ({ updateTrigger }) => {
   };
 
   if (loading)
-    return <p className="text-center text-gray-500">Loading projects...</p>;
-  if (error) return <p className="text-center text-red-500">{error}</p>;
+    return <p className="text-center label-caps text-text-dim py-12">Loading projects...</p>;
+  if (error) return <p className="text-center label-caps text-error py-12">{error}</p>;
   if (projects.length === 0)
-    return <p className="text-center text-gray-500">No projects to show.</p>;
+    return <p className="text-center label-caps text-text-dim py-12">No projects to show.</p>;
 
   return (
-    <div className="grid gap-4">
-      {projects.map((p) => (
+    <div className="flex flex-col gap-12 lg:gap-16">
+      {projects.map((p, index) => (
         <ProjectCard
           key={p._id}
           project={p}
+          index={index}
           onDelete={handleDelete}
           isAdmin={isAdmin}
         />

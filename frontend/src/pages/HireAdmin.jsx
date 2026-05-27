@@ -3,12 +3,10 @@ import AdminHireList from "../components/admin/AdminHireList";
 
 const HireAdmin = () => {
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+    <div className="w-full">
       <AdminHireList />
     </div>
   );
 };
 
 export default HireAdmin;
-//controllers/adminHireController.js
