@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 const ProcessSection = () => {
   return (
     <section className="max-w-container mx-auto px-margin-mobile md:px-gutter py-section-gap-md relative">
-      <div className="glass-card border border-border-subtle rounded-2xl overflow-hidden relative min-h-[500px] flex items-center justify-center p-8">
+      <div className="glass-card group border border-border-subtle hover:border-primary/50 hover:shadow-[0_0_40px_rgba(45,91,255,0.2)] rounded-2xl overflow-hidden relative min-h-[500px] flex items-center justify-center p-8 transition-all duration-500">
         
         {/* Background Image with Overlay */}
         <div 
-          className="absolute inset-0 z-0 opacity-20 bg-cover bg-center"
+          className="absolute inset-0 z-0 opacity-20 bg-cover bg-center group-hover:scale-105 group-hover:opacity-30 transition-all duration-700"
           style={{ backgroundImage: "url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80')" }}
         ></div>
         <div className="absolute inset-0 z-0 bg-gradient-to-t from-surface-deep via-surface-deep/80 to-transparent"></div>
