@@ -8,7 +8,7 @@ const SkillsSection = () => {
     const fetchSkills = async () => {
       try {
         const res = await API.get("/api/home/skills");
-        setSkillsData(res.data?.data || {});
+        setSkillsData(res.data?.data?.content || {});
       } catch (err) {
         console.error("Failed to fetch skills", err);
       }
