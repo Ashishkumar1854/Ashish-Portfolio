@@ -16,9 +16,9 @@ const SkillsSection = () => {
     fetchSkills();
   }, []);
 
-  const frontendSkills = skillsData["Frontend"] || [];
-  const backendSkills = skillsData["Backend"] || [];
-  const dataScienceSkills = skillsData["Data Science"] || [];
+  const frontendSkills = skillsData["frontend"] || [];
+  const backendSkills = skillsData["backend"] || [];
+  const dataScienceSkills = skillsData["Data Science - AI/ML"] || [];
   const coreSkills = skillsData["Core Concept"] || [];
   return (
     <section className="max-w-container mx-auto px-margin-mobile md:px-gutter py-section-gap-md relative">
