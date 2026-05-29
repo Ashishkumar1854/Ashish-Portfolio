@@ -31,6 +31,12 @@ const SkillsSection = () => {
   const languageSkills = skillsData["languages"] || [];
   const toolSkills = skillsData["tools"] || [];
   const coreSkills = skillsData["Core Concept"] || [];
+  const databaseSkills = skillsData["DataBase"] || [];
+  const firewallSkills = skillsData["Firewall"] || [];
+  const securitySkills = skillsData["Security"] || [];
+  const softSkills = skillsData["Soft Skills"] || [];
+  const strengthsSkills = skillsData["Strengths"] || [];
+  const communicationSkills = skillsData["Communication Language"] || [];
 
   const renderSkillName = (skill) => typeof skill === 'object' ? skill.name : skill;
 
@@ -202,6 +208,85 @@ const SkillsSection = () => {
               </div>
             </div>
 
+          </div>
+        </div>
+
+        {/* ROW 3: Infrastructure, Security, and Soft Skills */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          {/* Databases Architecture */}
+          <div className="lg:col-span-4 rounded-3xl bg-[#111111] border border-white/5 p-8 hover:bg-[#151515] transition-colors flex flex-col">
+            <p className="text-xs font-mono text-white/40 mb-6 uppercase tracking-wider">03 / Infrastructure</p>
+            <h3 className="text-2xl font-medium text-white tracking-tight mb-8">Database Systems</h3>
+            <div className="space-y-4">
+              {databaseSkills.length > 0 ? databaseSkills.map((skill, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <Database className="w-4 h-4 text-emerald-400/60" />
+                  <span className="text-sm font-medium text-white/80">{renderSkillName(skill)}</span>
+                </div>
+              )) : <span className="text-white/40 text-sm">No databases found</span>}
+            </div>
+          </div>
+
+          {/* Security & Firewall */}
+          <div className="lg:col-span-4 rounded-3xl bg-[#111111] border border-white/5 p-8 hover:bg-[#151515] transition-colors flex flex-col">
+            <p className="text-xs font-mono text-white/40 mb-6 uppercase tracking-wider">04 / Protection</p>
+            <h3 className="text-2xl font-medium text-white tracking-tight mb-8">Security & Firewall</h3>
+            <div className="space-y-4">
+              {[...securitySkills, ...firewallSkills].length > 0 ? [...securitySkills, ...firewallSkills].map((skill, i) => (
+                <div key={i} className="flex items-center gap-3">
+                  <CheckCircle2 className="w-4 h-4 text-purple-400/60" />
+                  <span className="text-sm font-medium text-white/80">{renderSkillName(skill)}</span>
+                </div>
+              )) : <span className="text-white/40 text-sm">No security skills found</span>}
+            </div>
+          </div>
+
+          {/* Interpersonal */}
+          <div className="lg:col-span-4 rounded-3xl bg-[#111111] border border-white/5 p-8 hover:bg-[#151515] transition-colors flex flex-col">
+            <p className="text-xs font-mono text-white/40 mb-6 uppercase tracking-wider">05 / Interpersonal</p>
+            <h3 className="text-2xl font-medium text-white tracking-tight mb-6">Soft Skills & Comms</h3>
+            
+            <div className="flex-grow space-y-6">
+              {communicationSkills.length > 0 && (
+                <div>
+                  <h4 className="text-[10px] uppercase font-mono text-white/40 mb-2">Languages</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {communicationSkills.map((skill, i) => (
+                      <span key={i} className="px-2 py-1 bg-white/5 rounded text-xs text-white/80 border border-white/10">{renderSkillName(skill)}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {softSkills.length > 0 && (
+                <div>
+                  <h4 className="text-[10px] uppercase font-mono text-white/40 mb-2">Soft Skills</h4>
+                  <ul className="space-y-1">
+                    {softSkills.map((skill, i) => (
+                      <li key={i} className="text-sm text-white/80 flex items-center gap-2">
+                        <span className="w-1 h-1 rounded-full bg-white/40"></span>
+                        {renderSkillName(skill)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {strengthsSkills.length > 0 && (
+                <div>
+                  <h4 className="text-[10px] uppercase font-mono text-white/40 mb-2">Strengths</h4>
+                  <ul className="space-y-1">
+                    {strengthsSkills.map((skill, i) => (
+                      <li key={i} className="text-sm text-white/80 flex items-center gap-2">
+                        <span className="w-1 h-1 rounded-full bg-white/40"></span>
+                        {renderSkillName(skill)}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
