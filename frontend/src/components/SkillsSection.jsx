@@ -14,7 +14,7 @@ const SkillsSection = () => {
   useEffect(() => {
     const fetchSkills = async () => {
       try {
-        const res = await API.get("/api/home/skills");
+        const res = await API.get("/api/home/skill");
         setSkillsData(res.data?.data?.content || {});
       } catch (err) {
         console.error("Failed to fetch skills", err);

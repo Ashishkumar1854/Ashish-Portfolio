@@ -11,6 +11,7 @@ import {
 
 const baseNavItems = [
   { to: "/", label: "Home", icon: Home },
+  { to: "/about", label: "About", icon: User },
   { to: "/projects", label: "Projects", icon: FolderKanban },
   { to: "/skills", label: "Skills", icon: Code2 },
   { to: "/journey", label: "My Journey", icon: BookOpen },
