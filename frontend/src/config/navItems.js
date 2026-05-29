@@ -6,17 +6,15 @@ import {
   BookOpen,
   Headphones,
   LayoutDashboard,
+  Code2
 } from "lucide-react";
 
 const baseNavItems = [
   { to: "/", label: "Home", icon: Home },
-  { to: "/about", label: "About", icon: User },
   { to: "/projects", label: "Projects", icon: FolderKanban },
-
-
-  { to: "/blog", label: "Blog", icon: FileText, guestProtected: true },
+  { to: "/skills", label: "Skills", icon: Code2 },
   { to: "/journey", label: "My Journey", icon: BookOpen },
-  { to: "/assistant", label: "Hire Me ", icon: Headphones },
+  { to: "/blog", label: "Blog", icon: FileText, guestProtected: true },
   {
     to: "/admin",
     label: "Admin Dashboard",

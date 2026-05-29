@@ -1,18 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
@@ -85,7 +70,7 @@ const PageCSection = () => {
 
   return (
     <section id="pageC" className="py-8 px-10 bg-gray-50 rounded-xl space-y-16">
-      {}
+      { }
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
@@ -93,7 +78,7 @@ const PageCSection = () => {
         className="text-center"
       >
         <div className="mt-20 max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          {}
+          { }
           <div className="flex items-center justify-center gap-3">
             <span className="h-1.5 w-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-500"></span>
             <span className="uppercase tracking-widest text-[11px] sm:text-sm font-semibold text-purple-600">
@@ -101,22 +86,22 @@ const PageCSection = () => {
             </span>
           </div>
 
-          {}
+          { }
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mt-4 leading-tight">
             Client Feedback & Experience
           </h2>
 
-          {}
+          { }
           <p className="text-gray-700 mt-4 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
             Insights shared by founders, team leads, and collaborators I’ve
             worked with— highlighting how I approach problems, deliver
             solutions, and adapt to real-world challenges.
           </p>
 
-          {}
+          { }
           <div className="mt-6 h-[2px] max-w-3xl mx-auto bg-gradient-to-r from-gray-200 to-purple-300 rounded-full"></div>
 
-          {}
+          { }
           <p className="text-xs sm:text-sm text-gray-500 mt-3 italic">
             *(All opinions are from completed projects, sprints, and long-term
             collaborations.)*
@@ -124,7 +109,7 @@ const PageCSection = () => {
         </div>
       </motion.div>
 
-      {}
+      { }
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         {data.length > 0 ? (
           data.map((item, idx) => (
@@ -177,7 +162,7 @@ const PageCSection = () => {
         )}
       </div>
 
-      {}
+      { }
       {user ? (
         <form
           onSubmit={handleSubmit}

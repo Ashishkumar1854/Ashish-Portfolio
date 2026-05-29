@@ -46,6 +46,7 @@ import Assistant from "./pages/Assistant";
 import HireForm from "./pages/HireForm";
 import VerifySuccess from "./pages/VerifySuccess";
 import Footer from "./components/Footer";
+import Skills from "./pages/Skills";
 
 import AdminDashboard from "./pages/Admin/AdminDashboard"; // Charts + metrics
 import HireAdmin from "./pages/HireAdmin"; // Pending hire requests
@@ -70,6 +71,7 @@ const AppWrapper = () => {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/projects" element={<Projects />} />
+          <Route path="/skills" element={<Skills />} />
           <Route path="/journey" element={<Journey />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/assistant" element={<Assistant />} />
